@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>简单聊一聊单例设计模式 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="你是否曾经遇到过需要在应用程序的多个部分共享一个对象的情况，比如数据库连接、WebSocket 客户端或配置管理器或全局的 Logger 对象？
+你如何管理这样一个对象，使其在整个应用程序或进程生命周期中保持一致且可访问？这就是单例设计模式..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">简单聊一聊单例设计模式</h2>
+            <div class="post-date">2024-11-24</div>
+            
+            <div class="post-content" v-pre>
+              <p>你是否曾经遇到过需要在应用程序的多个部分共享一个对象的情况，比如数据库连接、WebSocket 客户端或配置管理器或全局的 Logger 对象？</p>
+<p>你如何管理这样一个对象，使其在整个应用程序或进程生命周期中保持一致且可访问？这就是单例设计模式发挥作用的地方。</p>
+<h2 id="概述">概述</h2>
+<p>单例是一种创建型设计模式，属于设计模式的一类，用于解决使用new关键字或操作符创建对象的原生方式所带来的不同问题。</p>
+<p>单例设计模式主要致力于解决两个主要问题：</p>
+<ol>
+<li>我们如何为实例提供一个全局访问点？</li>
+<li>我们如何确保一个类或特定类型的对象只有一个实例？</li>
+</ol>
+<p>它可以简化并规范我们管理特定种类或类型的全局状态的方式，例如数据库连接、WebSocket 客户端、缓存服务，或者任何我们在整个应用程序生命周期中需要在内存中持久化和修改的内容。</p>
+<h2 id="如何实现单例设计模式">如何实现单例设计模式</h2>
+<pre><code class="language-typescript">class Singleton {
+    private static instance: Singleton
+
+    private construct() {
+       // 私有构造函数确保只能通过静态方法创建唯一实例
+    }
+
+    public static getInstance () {
+        if (!this.instance) {
+            this.instance = new Singleton()
+        } 
+
+        return this.instance
+    }
+}
+</code></pre>
+<p>该类应该定义一个静态属性来存储唯一可共享的实例。<strong>static</strong> 关键字意味着实例对象与类的实例无关，而是与类定义本身相关联。类的构造函数应该标记为private 则无法通过 new 创建实例。获取类实例的唯一方法是调用 getInstance 静态方法。</p>
+<pre><code class="language-typescript">const instance = Singleton.getInstance()
+</code></pre>
+<p>我们可以通过调用与单例类相关联的静态方法getInstance来使用上述类。getInstance 方法保证即使我们在代码库的不同位置多次实例化我们的类，我们始终得到相同的实例。</p>
+<h2 id="第一个实际场景">第一个实际场景</h2>
+<p>在 node 服务中，需要记录调用接口产生的 log，因此要设计一个全局的 Logger 集中管理日志行为。</p>
+<pre><code class="language-typescript">class Logger {
+  private static instance: Logger;
+  private logs: string[] = [];
+
+  private constructor() {}
+
+  public static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
+
+  public log(message: string) {
+    this.logs.push(message);
+  }
+}
+
+// 使用
+const logger = Logger.getInstance();
+logger.log('Application started');
+</code></pre>
+<p>在这个例子中，private constructor() 确保：</p>
+<ul>
+<li>不能直接 new Logger()</li>
+<li>只能通过 Logger.getInstance() 获取唯一实例</li>
+<li>提供了对日志记录的集中管理</li>
+</ul>
+<h2 id="第二个实际场景">第二个实际场景</h2>
+<p>实现一个内存中的速率限制器服务。用户或黑客可以通过向特定端点发送大量请求来对其进行垃圾邮件攻击。这可能导致漏洞、意外成本或服务器故障。</p>
+<p>为了防止这种情况，我们可以实现一个基本的内存速率限制器服务。该服务应该在特定的时间窗口间隔（例如 60 秒）内限制每个 IP 地址的请求数量。</p>
+<pre><code class="language-typescript">class RateLimiterService {
+  private static instance: RateLimiterService
+  private requests: Map&lt;string, { count: number; lastRequestTime: number }&gt;
+  private readonly limit: number // 最大请求数量
+  private readonly window: number // 时间窗口（以毫秒为单位）
+
+  private constructor(limit: number = 5, window: number = 60000) {
+    this.requests = new Map()
+    this.limit = limit
+    this.window = window
+  }
+
+  // 获取唯一单例实例的方法
+  public static getInstance(): RateLimiterService {
+    if (!RateLimiterService.instance) {
+      RateLimiterService.instance = new RateLimiterService()
+    }
+    return RateLimiterService.instance
+  }
+
+  public isRateLimited(ip: string): boolean {
+    const currentTime = Date.now()
+    const userRequestData = this.requests.get(ip)
+
+    if (userRequestData) {
+      const isExpired =
+        currentTime - userRequestData.lastRequestTime &gt; this.window
+
+      if (isExpired) {
+        userRequestData.count = 1
+        userRequestData.lastRequestTime = currentTime
+        return false
+      } else {
+        userRequestData.count++
+        if (userRequestData.count &gt; this.limit) {
+          return true
+        }
+        return false
+      }
+    } else {
+      this.requests.set(ip, { count: 1, lastRequestTime: currentTime })
+      return false
+    }
+  }
+}
+
+export default RateLimiterService
+</code></pre>
+<p><strong>RateLimiterService</strong> 类存储了一个映射，该映射跟踪由 IP 地址（映射键）标识的特定用户在给定时间窗口（requests[ip].lastRequestTime）内发出的请求数量（requests[ip].count）。<br>
+我们的 <strong>RateLimiterService</strong> 旨在全局使用，或者换句话说，我们不希望每次导入<strong>RateLimiterService</strong> 时都重置由 requests 映射、limit 和 window 变量组成的内部状态值。</p>
+<h2 id="结论">结论</h2>
+<p>单例设计模式是在我们的应用程序中有效管理共享资源的强大工具。<br>
+关键要点：</p>
+<ul>
+<li>单例确保一个类只有一个实例，并为其提供一个全局访问点。</li>
+<li>它对于管理共享资源（如数据库连接、配置设置或缓存）很有用。</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/ke-shi-hua-qian-duan-ri-zhi-jia-gou-fang-an/">
+                  <h3 class="post-title">
+                    可追踪的前端日志架构方案
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

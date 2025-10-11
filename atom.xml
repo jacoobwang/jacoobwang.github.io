@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://jacoobwang.github.io</id>
+    <title>Jacoob</title>
+    <updated>2025-10-11T06:57:04.119Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://jacoobwang.github.io"/>
+    <link rel="self" href="https://jacoobwang.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://jacoobwang.github.io/images/avatar.png</logo>
+    <icon>https://jacoobwang.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2025, Jacoob</rights>
+    <entry>
+        <title type="html"><![CDATA[Fake Text Message - 制作手机截图工具]]></title>
+        <id>https://jacoobwang.github.io/post/fake-text-message-tools/</id>
+        <link href="https://jacoobwang.github.io/post/fake-text-message-tools/">
+        </link>
+        <updated>2025-10-11T06:45:07.000Z</updated>
+        <content type="html"><![CDATA[<p>点击访问: <a href="https://faketextmeassage.com">Fake Text Message</a></p>
+<figure data-type="image" tabindex="1"><img src="https://fastly.jsdelivr.net/gh/bucketio/img1@main/2025/10/08/1759914478941-b230f1b9-3da5-47e6-b572-d1444ff343f9.png" alt="" loading="lazy"></figure>
+<h2 id="竞争对手分析">竞争对手分析</h2>
+<p>现有排名第一的网站流量不错，但产品和运营有明显短板：</p>
+<p>技术栈： 纯前端技术即可实现，门槛低。<br>
+市场空白： 只有 iOS 端，没有安卓端。<br>
+功能升级空间： 功能非常基础，没有对接 AI 。可以加入 AI 对话功能形成代差优势。<br>
+SEO 短板： 网站缺少多语言和长尾词内容，流量获取方式单一。</p>
+<h2 id="主要功能">主要功能</h2>
+<p>手机短信聊天界面生成<br>
+支持 iOS 和 安卓<br>
+手机锁屏短信通知截屏<br>
+常用 emoji 拷贝<br>
+支持 dark mode</p>
+<h2 id="发布">发布</h2>
+<p>10.5 完成发布，并接入了 Google Search Console, 第一时间向谷歌提交了收录申请。<br>
+10.6 Google 显示收录了 3 个地址，一看都是首页，子路由完全没有收录。<br>
+10.7 继续优化 SEO ，完成 SEO 检测工具 100 分的指标要求。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[vite 开发环境编译流程]]></title>
+        <id>https://jacoobwang.github.io/post/vite-kai-fa-huan-jing-bian-yi-yuan-li/</id>
+        <link href="https://jacoobwang.github.io/post/vite-kai-fa-huan-jing-bian-yi-yuan-li/">
+        </link>
+        <updated>2025-06-05T13:39:17.000Z</updated>
+        <content type="html"><![CDATA[<p>Vite 的开发环境采用按需编译和原生 ES 模块驱动的架构，与传统打包工具（如 Webpack）有本质区别。以下是其编译流程及对不同文件类型的处理方式：</p>
+<h2 id="一-vite-开发环境核心原理">一、Vite 开发环境核心原理</h2>
+<ol>
+<li>启动服务器：<br>
+Vite 启动时不进行全量编译，而是创建一个 HTTP 服务器，监听文件变化。</li>
+<li>浏览器优先原则：<br>
+浏览器直接通过 ES 模块的import语句请求文件（如import './main.ts'），Vite 拦截这些请求并实时编译。</li>
+<li>按需编译：<br>
+只有当浏览器请求某个模块时，Vite 才会对其进行编译（如 TS 转 JS、Less 转 CSS），并返回处理后的结果。</li>
+</ol>
+<h2 id="二-不同文件类型的处理流程">二、不同文件类型的处理流程</h2>
+<ol>
+<li>
+<p>Less 文件处理<br>
+请求拦截：当浏览器请求.less文件时，Vite 拦截该请求。<br>
+编译：使用less编译器将 Less 转换为 CSS。<br>
+注入：将 CSS 通过 JavaScript 动态注入到页面的<style>标签中（支持 HMR 热更新）。</p>
+</li>
+<li>
+<p>TS 文件处理<br>
+请求拦截：拦截.ts文件请求。<br>
+编译：使用esbuild（速度极快）将 TS 转换为 JS，仅进行语法转换（不做类型检查）。<br>
+类型检查：类型检查由独立进程（如 VSCode 插件或tsc --watch）完成，不阻塞开发服务器。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[编辑器-前端代码风格规范]]></title>
+        <id>https://jacoobwang.github.io/post/bian-ji-qi-qian-duan-dai-ma-feng-ge-gui-fan/</id>
+        <link href="https://jacoobwang.github.io/post/bian-ji-qi-qian-duan-dai-ma-feng-ge-gui-fan/">
+        </link>
+        <updated>2025-03-10T02:30:03.000Z</updated>
+        <content type="html"><![CDATA[<p>最近在升级一个旧的项目，早前的项目由于没有使用 ts，改起来有点痛苦以及当时没有做好的规范约束，以至于不同人贡献的代码差别很大，看着着实痛苦。</p>
+<h1 id="规范的意义">规范的意义</h1>
+<p>1、保证代码的一致性，从根本上提高代码整体的可读性、可维护性、可复用性：保持一致的编码风格，能让其他人在维护代码时能快速上手，即使没有什么经验的开发同学也能保障其代码的交付质量，为后期维护提供更好的支持。</p>
+<p>2、有效降低开发和沟通的成本，提升团队整体效率：大型项目最复杂的模块往往仅占整体的一小部分，更多的是相对简单的日常开发和维护。遵循统一的技术规范，能够有效的降低多人协作工程中的沟通成本。如果没有统一规范则出现混乱的局面，留下庞大的技术债。</p>
+<h1 id="技术栈统一">技术栈统一</h1>
+<ul>
+<li>基础：Typescript + Tsx</li>
+<li>框架：React + React Dom</li>
+<li>Css 处理器：Sass</li>
+<li>UI 框架：Ant Design / DongDesign</li>
+<li>状态管理：React Redux + Rematch</li>
+<li>构建工具：Vite</li>
+</ul>
+<h1 id="eslint-规范">Eslint 规范</h1>
+<h4 id="基准规则">基准规则</h4>
+<p>不重复造轮子，基于 eslint:recommend 配置并改进<br>
+能够帮助发现代码错误的规则，全部开启</p>
+<h4 id="eslint-规则">ESLint 规则</h4>
+<ul>
+<li>允许非大写开头的构造函数名 ( new-cap: 0 )</li>
+<li>禁止使用 var ( no-var: 2 )</li>
+<li>限制 console 使用，仅允许 warn 和 error ( no-console: [1, { allow: ['warn', 'error'] }] )</li>
+<li>禁用内部声明 ( no-inner-declarations: 2 )</li>
+<li>强制使用 const 声明不会被修改的变量 ( prefer-const: [2, { 'destructuring': 'all' }] )</li>
+<li>禁止特定语法，如 debugger、label 和 with 语句</li>
+</ul>
+<h4 id="react-规则">React 规则</h4>
+<ul>
+<li>允许组件没有 displayName</li>
+<li>禁止 JSX 中的重复属性</li>
+<li>禁止未定义的 JSX 元素</li>
+<li>禁止直接修改 state</li>
+<li>强制组件的 render 方法返回值</li>
+<li>不要求 prop-types 验证</li>
+<li>不要求导入 React (新版 React 不需要)</li>
+<li>禁止在 componentDidUpdate 中使用 setState</li>
+<li>鼓励使用无状态函数组件</li>
+<li>强制执行 React Hooks 规则</li>
+</ul>
+<h4 id="import-规则">Import 规则</h4>
+<ul>
+<li>禁止未使用的模块</li>
+<li>import 语句后需要空行</li>
+<li>禁止使用 CommonJS 模块语法 (require)，但允许条件性 require</li>
+<li>禁止重复导入</li>
+</ul>
+<h4 id="import-排序">Import 排序</h4>
+<ul>
+<li>强制对 imports 和 exports 进行排序</li>
+</ul>
+<h4 id="typescript-规则">TypeScript 规则</h4>
+<ul>
+<li>不强制函数返回类型注解</li>
+<li>允许变量在定义前使用</li>
+<li>对未使用的变量发出警告</li>
+<li>不强制模块边界类型</li>
+<li>允许特定情况下的空函数</li>
+<li>允许 this 别名</li>
+<li>允许 require 语句</li>
+<li>允许 @ts-comment 注释</li>
+</ul>
+<h1 id="git-规范">Git 规范</h1>
+<h4 id="commit日志基本规范">commit日志基本规范</h4>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;
+</code></pre>
+<ul>
+<li>feat： 新增 feature</li>
+<li>fix: 修复 bug</li>
+<li>docs: 仅仅修改了文档，比如 README, CHANGELOG, CONTRIBUTE等等</li>
+<li>style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑</li>
+<li>refactor: 代码重构，没有加新功能或者修复 bug</li>
+<li>perf: 优化相关，比如提升性能、体验</li>
+<li>test: 测试用例，包括单元测试、集成测试等</li>
+<li>chore: 改变构建流程、或者增加依赖库、工具等</li>
+<li>revert: 回滚到上一个版本</li>
+</ul>
+<h4 id="分支规范">分支规范</h4>
+<p>test 测试分支<br>
+master 主分支<br>
+release release 分支<br>
+feat/xxx 特性分支<br>
+hotfix/xxx 修复分支</p>
+<pre><code class="language-yaml">extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+
+parser: '@typescript-eslint/parser'
+
+env:
+  es6: true
+  node: true
+
+plugins:
+  - react
+  - prettier
+  - react-hooks
+  - simple-import-sort
+  - unused-imports
+  - '@typescript-eslint'
+
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+
+rules:
+  prettier/prettier:
+    [
+      2,
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        semi: false,
+        'endOfLine': 'auto',
+      },
+    ]
+
+  # eslint
+  new-cap: 0
+  no-var: 2
+  no-console: [1, { allow: ['warn', 'error'] }]
+  no-unused-vars: 0
+  no-inner-declarations: 2
+  camelcase: 0
+  no-useless-escape: 0
+  no-prototype-builtins: 0
+  no-restricted-syntax:
+    - 2
+    - DebuggerStatement
+    - LabeledStatement
+    - WithStatement
+  require-atomic-updates: 0
+  prefer-rest-params: 0
+  prefer-const: [2, { 'destructuring': 'all' }]
+  prefer-spread: 0
+
+  # react
+  react/display-name: 0
+  react/jsx-no-duplicate-props: 2
+  react/jsx-no-undef: 2
+  react/no-deprecated: 0
+  react/no-direct-mutation-state: 2
+  react/no-render-return-value: 2
+  react/require-render-return: 2
+  react/jsx-uses-react: 1
+  react/jsx-uses-vars: 1
+  react/prop-types: 0
+  react/react-in-jsx-scope: 0
+  react/no-did-update-set-state: 2
+  react/no-redundant-should-component-update: 2
+  react/no-typos: 2
+  react/no-unused-prop-types: 2
+  react/no-unused-state: 2
+  react/prefer-stateless-function: [1, { ignorePureComponents: true }]
+  react/void-dom-elements-no-children: 2
+  react/jsx-boolean-value: 1
+  react/jsx-no-bind: [2, { ignoreRefs: true, allowArrowFunctions: true }]
+  react-hooks/rules-of-hooks: 2
+  react-hooks/exhaustive-deps: 1
+  react-perf/jsx-no-new-object-as-prop: 1
+  react-perf/jsx-no-new-array-as-prop: 1
+
+  # import
+  import/no-unused-modules: 2
+  import/newline-after-import: 2
+  import/no-commonjs: [2, { allowConditionalRequire: true }]
+  import/no-duplicates: 2
+
+  # simple-import-sort
+  simple-import-sort/imports: 2
+  simple-import-sort/exports: 2
+
+  # typescript
+  '@typescript-eslint/camelcase': 0
+  '@typescript-eslint/explicit-function-return-type': 0
+  '@typescript-eslint/no-use-before-define': 0
+  '@typescript-eslint/no-unused-vars': [1, { ignoreRestSiblings: true }]
+  '@typescript-eslint/explicit-module-boundary-types': 0
+  '@typescript-eslint/ban-types': 0
+  '@typescript-eslint/no-empty-function':
+    [1, { 'allow': ['private-constructors', 'protected-constructors'] }]
+  '@typescript-eslint/no-this-alias': 0
+  '@typescript-eslint/no-var-requires': 0
+  '@typescript-eslint/ban-ts-comment': 0
+  '@typescript-eslint/strict-boolean-expressions':
+    [1, { allowNullableBoolean: true }]
+
+overrides:
+  - files:
+      - '*.js'
+      - '*.jsx'
+    rules:
+      import/no-commonjs: 0
+  - files:
+      - '*.ts'
+      - '*.tsx'
+    rules:
+      import/no-unresolved: 0
+      lodash/prefer-lodash-method: 0
+</code></pre>
+<p>vscode 配置</p>
+<pre><code class="language-json">// Place your settings in this file to overwrite default and user settings.
+{
+  &quot;editor.tabSize&quot;: 2,
+  &quot;editor.insertSpaces&quot;: true,
+  &quot;search.exclude&quot;: {
+  },
+
+  &quot;editor.formatOnSave&quot;: false,
+  &quot;editor.renderControlCharacters&quot;: true,
+  &quot;editor.codeActionsOnSave&quot;: {
+    &quot;source.fixAll.eslint&quot;: &quot;explicit&quot;
+  },
+
+  &quot;[less]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[css]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[yaml]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[html]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[json]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;vscode.json-language-features&quot;,
+  },
+  &quot;[markdown]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[mdx]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;files.associations&quot;: {
+      &quot;*.xml&quot;: &quot;html&quot;,
+      &quot;*.svg&quot;: &quot;html&quot;,
+  },
+
+  &quot;prettier.ignorePath&quot;: &quot;.eslintignore&quot;,
+  &quot;liveServer.settings.port&quot;: 5501,
+  &quot;code-runner.executorMapByGlob&quot;: {
+    &quot;*.test.*&quot;: &quot;cd $dir &amp;&amp; yarn test --files $fullFileName&quot;,
+  },
+  &quot;typescript.tsdk&quot;: &quot;node_modules/typescript/lib&quot;,
+  &quot;search.followSymlinks&quot;: false,
+  &quot;files.exclude&quot;: {
+    &quot;**/.git&quot;: true,
+    &quot;**/.svn&quot;: true,
+    &quot;**/.hg&quot;: true,
+    &quot;**/CVS&quot;: true,
+    &quot;**/.DS_Store&quot;: true,
+    &quot;**/tmp&quot;: true,
+    &quot;**/bower_components&quot;: true,
+    // &quot;**/node_modules&quot;: true,
+    // &quot;**/dist&quot;: true
+  },
+  &quot;files.watcherExclude&quot;: {
+    &quot;**/.git/objects/**&quot;: true,
+    &quot;**/.git/subtree-cache/**&quot;: true,
+    &quot;**/node_modules/**&quot;: true,
+    &quot;**/tmp/**&quot;: true,
+    &quot;**/bower_components/**&quot;: true,
+    &quot;**/dist/**&quot;: true
+},
+&quot;makefile.configureOnOpen&quot;: false
+}
+</code></pre>
+<p>tsconfig 配置</p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    &quot;typeRoots&quot;: [&quot;./node_modules/@types&quot;, &quot;./types&quot;],
+    &quot;target&quot;: &quot;es5&quot;,
+    &quot;lib&quot;: [
+      &quot;dom&quot;,
+      &quot;dom.iterable&quot;,
+      &quot;esnext&quot;
+    ],
+    &quot;allowJs&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;esModuleInterop&quot;: true,
+    &quot;allowSyntheticDefaultImports&quot;: true,
+    &quot;strict&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: false,
+    &quot;noFallthroughCasesInSwitch&quot;: true,
+    &quot;module&quot;: &quot;esnext&quot;,
+    &quot;moduleResolution&quot;: &quot;node&quot;,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true,
+    &quot;jsx&quot;: &quot;react&quot;,
+    &quot;outDir&quot;: &quot;./dist&quot;,
+    &quot;plugins&quot;: [
+      {
+        &quot;name&quot;: &quot;typescript-plugin-css-modules&quot;
+      }
+    ],
+    &quot;paths&quot;: {
+      &quot;~/*&quot;: [&quot;./src/*&quot;],
+      &quot;@constant/*&quot;: [&quot;./src/constant/*&quot;]
+    }
+  },
+  &quot;exclude&quot;: [
+    &quot;build&quot;,
+    &quot;node_modules&quot;
+  ],
+  &quot;include&quot;: [
+    &quot;src&quot;, &quot;typing.d.ts&quot;
+  ]
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Relay/Figma 插件开发快速上手]]></title>
+        <id>https://jacoobwang.github.io/post/relayfigma-cha-jian-kai-fa-kuai-su-shang-shou/</id>
+        <link href="https://jacoobwang.github.io/post/relayfigma-cha-jian-kai-fa-kuai-su-shang-shou/">
+        </link>
+        <updated>2025-03-08T08:39:13.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="背景">背景</h1>
+<p>最近在负责 D2C  生成组件代码的需求，首先我们在设计工具上实现了一个组件绑定功能。大概就是研发需要选择设计组件然后逐个绑定设计属性，生成代码就能包含组件代码，提高代码可用率。</p>
+<p>由于手动绑定研发组件需要一个个点击表单，效率较低。大家的时间都很宝贵，因此批量操作通过自动化的方式就尤其有必要，插件是解决方案之一。</p>
+<h1 id="插件介绍">插件介绍</h1>
+<p>Figma 插件是扩展 Figma 设计工具功能的小程序。这些插件可以自动化设计流程，提供额外的设计资源，或者增强协作功能。设计师和开发者可以使用插件来提高工作效率，减少重复性工作。插件市场包含各种类型的插件，例如图标生成器、颜色工具、原型插件等。用户可以在 Figma 的插件商店中找到并安装这些插件，以满足特定的设计需求。</p>
+<p>而 Relay 插件跟 Figma 插件一摸一样，所以开发 relay 插件直接先在 figma 环境开发即可。</p>
+<h1 id="搭建初始项目">搭建初始项目</h1>
+<blockquote>
+<p>具体可以参考这篇文章   https://www.figma.com/plugin-docs/plugin-quickstart-guide/</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://jacoobwang.github.io/post-images/1741423655578.png" alt="" loading="lazy"></figure>
+<p>初始化项目之后，我们就得到这样一个初始化工程：<br>
+<img src="https://jacoobwang.github.io/post-images/1741423683824.png" alt="" loading="lazy"></p>
+<h1 id="插件运行环境">插件运行环境</h1>
+<p>为了保持第三方代码的安全性，不会因为恶意代码影响 figma 平台运行，figma 提供了一套沙箱环境来执行 js 代码，并在沙箱环境中提供相应的 API 操作图层数据，从而达到插件与 figma 的交互。</p>
+<p>在figma的沙箱环境是可以执行所有的 es6 语法，但不提供浏览器 DOM API。如果需要使用浏览器 API 或自定义 UI 则需要使用 figma.showUI()方法实现，figma.showUI 的实质则是创建一个 iframe 来运行你的 UI 代码。</p>
+<p>在沙箱与iframe之间则通过postMessage 进行通信，这套架构在vscode的插件实现上也是类似方案。<br>
+<img src="https://jacoobwang.github.io/post-images/1741423726085.png" alt="" loading="lazy"></p>
+<h1 id="逻辑与-ui-分离">逻辑与 UI 分离</h1>
+<p>首先，项目拆分成两个目录：</p>
+<ul>
+<li>native 用来存放逻辑相关的代码。执行在 sandbox 里的 js 代码，也是调用 figma API 的逻辑，如获取节点、创建节点、修改节点等；</li>
+<li>web 用来存放前端 UI 代码，用来渲染插件的界面。</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://jacoobwang.github.io/post-images/1741423762414.png" alt="" loading="lazy"></figure>
+<h1 id="双向通信">双向通信</h1>
+<p>在 Figma 插件的上下文中：</p>
+<ol>
+<li>iframe 内部的 JavaScript 可以通过 parent.postMessage() 向插件的主脚本发送消息。</li>
+<li>而 figma.ui.postMessage() 是在插件的主脚本中使用的,用于向 iframe 发送消息。</li>
+</ol>
+<p>所以,通信流程是这样的:</p>
+<ul>
+<li>iframe -&gt; 主脚本: parent.postMessage()</li>
+<li>主脚本 -&gt; iframe: figma.ui.postMessage()</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://jacoobwang.github.io/post-images/1741423813216.png" alt="" loading="lazy"></figure>
+<p>下面展示了主脚本发送消息和接收消息的核心代码：</p>
+<pre><code class="language-typescript">import * as EventEmitter from 'events'
+export const Event = new EventEmitter()
+interface MessageEvent{
+    callback: string;
+}
+
+interface RPCEventData{
+    code:number; // 0:失败 1：成功
+    msg?:string;
+    data?:any;
+}
+
+figma.ui.onmessage = msg =&gt; {
+    Event.emit(msg.type, msg.body)
+}
+
+/**
+ * 往 ui 层发送信息
+ * @param command 事件
+ * @param body 返回内容
+ * @param customize 是否自定义
+ */
+export function post(command:string | MessageEvent, body:any | RPCEventData) {
+    let type = command
+    if ( typeof(command) === 'object' ) {
+        type = command.callback
+    }
+    
+    let code = 0
+    let data = body
+    if (body instanceof Error) {
+        code = 1
+        data = body.message + body.stack
+    }
+
+    figma.ui.postMessage({ type, data: { code, data } })
+}
+</code></pre>
+<h1 id="调试">调试</h1>
+<p>有以下两种调试方式：</p>
+<ol>
+<li>在开发过程中，可以使用 Figma 的开发模式来测试和调试插件。在 Figma 中，选择 “开发” -&gt; “开发插件”，然后选择插件项目的根目录。这样，每次修改代码后，只需在 Figma 中重新运行插件即可查看最新的效果。</li>
+</ol>
+<p>2.也可以选择在浏览器调试，把插件代码打包成1个 js 文件，然后在平台随机抓一个插件的 js 请求，把这个  js 请求代理到本地就可以开始调试了。这里推荐使用 chrome dev tools 自带的 overrides 功能，非常方便，不需要任何代理软件或插件。</p>
+<figure data-type="image" tabindex="4"><img src="https://jacoobwang.github.io/post-images/1741423859850.png" alt="" loading="lazy"></figure>
+<h1 id="发布">发布</h1>
+<p>当插件开发完成并经过充分测试后，可以将其发布到 Figma 插件商店，供其他用户使用。在 Figma 中，选择 “开发” -&gt; “提交插件”，按照提示填写插件的相关信息，如名称、描述、截图等，然后提交审核。审核通过后，插件就会在 Figma 插件商店中上线。</p>
+<h1 id="问题">问题</h1>
+<p>figma 运行正常，relay 报错：&quot;TypeError: Cannot read properties of undefined (reading 'Array') at runInContext&quot;</p>
+<figure data-type="image" tabindex="5"><img src="https://jacoobwang.github.io/post-images/1741423900736.png" alt="" loading="lazy"></figure>
+<p>经过 debug 定位发现是 lodash 里获取 context 未获取到后报错，context 获取是通过 root 来，root 定义如下：</p>
+<pre><code class="language-typescript">var freeGlobal = typeof global == 'object' &amp;&amp; global &amp;&amp; global.Object === Object &amp;&amp; global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' &amp;&amp; self &amp;&amp; self.Object === Object &amp;&amp; self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+</code></pre>
+<p>可以看到 root 其实是获取的全局对象（global object），即在浏览器中的window对象，或在Node.js中的global对象。</p>
+<p>报错原因就是沙箱环境限制了全局对象的获取，导致异常。</p>
+<p>解决办法：1. 沙箱环境里支持获取全局对象或者传入空对象作为全局对象； 2. 放弃使用 lodash 。</p>
+<h1 id="沙箱环境-realms">沙箱环境 Realms</h1>
+<p>figma 沙箱采用  Realms shim 的技术，该技术将创建沙箱和支持插件作为潜在用例，Realms API 大致如下：</p>
+<pre><code class="language-typescript">let g = window; // outer global
+let r = new Realm(); // realm object
+
+let f = r.evaluate(&quot;(function() { return 17 })&quot;);
+
+f() === 17 // true
+
+Reflect.getPrototypeOf(f) === g.Function.prototype // false
+Reflect.getPrototypeOf(f) === r.global.Function.prototype // true
+</code></pre>
+<p>实际上，可以使用已有的 JavaScript 功能来实现该技术，沙箱可以隐藏全局变量，shim 起作用的核心大致如下：</p>
+<pre><code class="language-typescript">function simplifiedEval(scopeProxy, userCode) {
+  'use strict'
+  with (scopeProxy) {
+    eval(userCode)
+  }
+}
+</code></pre>
+<p>with(obj) 创建了一个新的作用域，在该作用域内可以使用 obj 的属性来解析变量。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[D2C - 生成 Tailwind Css 前端代码]]></title>
+        <id>https://jacoobwang.github.io/post/d2c-sheng-cheng-tailwind-css-qian-duan-dai-ma/</id>
+        <link href="https://jacoobwang.github.io/post/d2c-sheng-cheng-tailwind-css-qian-duan-dai-ma/">
+        </link>
+        <updated>2025-03-03T03:02:36.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="背景">背景：</h1>
+<p>目前 Relay 生成代码功能研发过程中，我们发现 D2C 的难点之一：Class 类名不语义化的问题。D2C 算法生成的类名，如 view0、view1、view2、text0、text1 等缺乏有效含义，对研发不够友好。</p>
+<h1 id="方案">方案：</h1>
+<h2 id="1-使用-llm-大模型如-gpt4-进行语义优化">1、使用 LLM 大模型如 GPT4 进行语义优化</h2>
+<p>经过测试大模型可以优化代码，但存在几个问题：</p>
+<p>•大模型存在 token 限制问题，输入和输出都存在可能超出的情况，特别是输出限制了 8K 大小，很多稿子跑下来就超出了。<br>
+•大模型耗时比较长，一个请求过去要好几秒，使用 SSE 体验会略好一点<br>
+•大模型如果不结合图片做多模态预览效果也会略差一点，比如不同的稿子，在没有图片 input 时候，输出的 class 有一定概率重复，并可能跟设计稿件毫无关联：如 view 大概率会变成 product等。</p>
+<h2 id="2-生成-tailwind-css-风格的-class不再需要自定义class">2、生成 Tailwind css 风格的 class，不再需要自定义class</h2>
+<figure data-type="image" tabindex="1"><img src="https://jacoobwang.github.io/post-images/1740971070038.png" alt="" loading="lazy"></figure>
+<p>Tailwind CSS 是目前世界上最流行的原子化 CSS 框架。它集成了诸如 flex, pt-4, text-center 和 rotate-90 这样语义化的类名。我们开发者能直接在各种脚本标记语言中编写它们，并把它们组合起来，构建出任何的设计。 自从 3.x 大版本开始，Tailwind CSS 把引擎升级为 Just in Time(jit) 。这使得我们能够编写代码的同时，实时生成各种 CSS，真正的做到了所写即所得。</p>
+<p>Tailwind CSS 特点：<br>
+•<strong>高度可定制化</strong><br>
+•<strong>响应式设计友好</strong><br>
+•<strong>提高开发速度</strong><br>
+•<strong>代码可读性和维护性</strong><br>
+在 HTML 代码中直接使用工具类来描述样式，使得样式和结构紧密结合，代码的可读性更高。例如，看到class=&quot;bg-gray-100 p-4 rounded-md&quot;这样的代码，就能够很直观地理解这个元素有一个浅灰色的背景、一定的内边距并且是中等圆角。</p>
+<p>除了以上优点外，使用 Tailwind CSS 在D2C中还能解决两个问题：</p>
+<p>1.不需要再进行 class 命名；<br>
+2.节省了 css 代码，避免冗余 css 。</p>
+<p>另外 Tailwind CSS 正在被越来越多团队广泛使用，现在 AI 大模型提供的图片直出代码功能，也是输出 Tailwind CSS；海外知名 D2C 工具也是以 Tailwind CSS 为默认选项：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971104790.png" alt="" loading="lazy"></p>
+<h2 id="实现-taiwind-css-converter">实现 Taiwind CSS Converter</h2>
+<p>在 D2C 中我们首先获取到挂在 NODE 上的 style，它是原生的 CSS 如下：</p>
+<p>{<br>
+&quot;color&quot;: &quot;rgb(0, 0, 0)&quot;,<br>
+&quot;fontFamily&quot;: &quot;Source Han Sans CN&quot;,<br>
+&quot;fontWeight&quot;: 400,<br>
+&quot;fontSize&quot;: 16,<br>
+&quot;lineHeight&quot;: 1.5,<br>
+&quot;textAlign&quot;: &quot;left&quot;,<br>
+&quot;flexShrink&quot;: 0<br>
+}<br>
+Tailwind CSS 为每一个 css 属性值预设了新的 class， 比如 Display 如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971184254.png" alt="" loading="lazy"></p>
+<p>因此 Converter 核心逻辑就需要按照 Tailwind 文档把全部 CSS 转换一下：</p>
+<pre><code>import isUnitlessNumber from './isUnitlessNumber'
+import { StyleObj } from './types'
+
+const cssToTailwindMap = {
+  'display': value =&gt; value,
+  'overflow': value =&gt; {
+    const map = {
+      'auto': 'overflow-auto',
+      'hidden': 'overflow-hidden',
+      'clip': 'overflow-clip',
+      'visible': 'overflow-visible',
+      'scroll': 'overflow-scroll',
+      'overflow-x': 'overflow-x-auto',
+      'overflow-y': 'overflow-y-auto',
+      'overflow-x-hidden': 'overflow-x-hidden',
+      'overflow-y-hidden': 'overflow-y-hidden',
+      'overflow-x-clip': 'overflow-x-clip',
+      'overflow-y-clip': 'overflow-y-clip',
+      'overflow-x-visible': 'overflow-x-visible',
+      'overflow-y-visible': 'overflow-y-visible',
+      'overflow-x-scroll': 'overflow-x-scroll',
+      'overflow-y-scroll': 'overflow-y-scroll'
+    }
+    return map[value]
+  },
+  'position': value =&gt; value,
+  // tailwind 规则映射过来
+  ...
+}
+
+export function convertCssToTailwind (style: StyleObj, styleUnit: string): string {
+  const tailwindClasses: string[] = []
+
+  for (const property in style) {
+    const tailwindClass = cssToTailwindMap[property]
+    if (tailwindClass) {
+      const value = (!isUnitlessNumber(property) &amp;&amp; typeof style[property] === 'number') ? `${style[property]}${styleUnit}` : style[property]
+      tailwindClasses.push(tailwindClass(value))
+    }
+  }
+
+  return tailwindClasses.join(' ')
+}
+</code></pre>
+<h1 id="ast-遍历">AST 遍历</h1>
+<p>生成完 Tailwind class 后，需要把 class 绑定到节点上，通过遍历 AST 节点，以 react 为例：</p>
+<pre><code>JSXAttribute: astPath =&gt; {    
+    const { node } = astPath
+    const attrName = node.name.name
+    
+    if (this.isTailWind &amp;&amp; attrName === 'className' &amp;&amp; t.isStringLiteral(node.value)) {
+      const clsNameArr = node.value?.value.split(' ')
+      let tailwindCls = ''
+    
+      // 转换成 tailwind class
+      clsNameArr.forEach((cls, idx) =&gt; {
+        const convertedCssToTailwind = convertCssToTailwind(this.styleObj[cls], this.styleUnit)
+        tailwindCls += convertedCssToTailwind
+      })
+    
+      // 更新到节点上
+      node.value = t.stringLiteral(tailwindCls)
+    }
+},
+</code></pre>
+<p>JSXAttribute 定义了一个处理 JSX 属性的访问器函数，通过 jsx 的 class Name 获取每一个 class 的具体 style然后调用 converter 得到 tailwind CSS，最后通过 t.stringLiteral 绑定即完成转换。</p>
+<p>效果如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971270992.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Webpack 与 Vite 构建工具之差]]></title>
+        <id>https://jacoobwang.github.io/post/webpack-yu-vite-gou-jian-gong-ju-zhi-chai/</id>
+        <link href="https://jacoobwang.github.io/post/webpack-yu-vite-gou-jian-gong-ju-zhi-chai/">
+        </link>
+        <updated>2025-01-10T07:54:53.000Z</updated>
+        <content type="html"><![CDATA[<p>在前端开发领域，Webpack 和 Vite 是两款备受瞩目的构建工具，它们在提升开发效率和优化项目构建流程方面发挥着关键作用，但在诸多方面存在显著差异。</p>
+<h2 id="一-构建原理">一、构建原理</h2>
+<p>Webpack 以其强大的模块打包能力著称，它会在启动时对整个项目进行依赖分析，递归地构建模块依赖图。从项目入口文件开始，将所有相关的 JavaScript、CSS、图片等资源都纳入处理范围，将它们打包成一个或多个 bundle 文件。在这个过程中，Webpack 会对代码进行各种处理，如代码压缩、模块合并、loader 转换等，以适应不同的环境和需求。</p>
+<p>而 Vite 则采用了一种截然不同的策略，利用浏览器原生（script type=&quot;module&quot;）的 ES 模块支持来实现快速的冷启动。在开发模式下，Vite 不会像 Webpack 那样预先打包所有模块，而是在浏览器请求某个模块时，才对其进行即时编译和传输。这使得 Vite 在启动项目时速度极快，大大缩短了开发过程中的等待时间。在生产环境下，Vite 会进行预构建来优化依赖，将一些常用的第三方库预先打包，进一步提升性能。</p>
+<h2 id="二-开发体验">二、开发体验</h2>
+<p>在开发过程中，Webpack 的热更新（HMR）功能虽然能够在一定程度上实现代码修改后的实时更新，但由于其全量构建的特性，在大型项目中可能会出现更新速度较慢的情况。每次代码修改后，Webpack 需要重新构建相关的模块和依赖，这个过程可能会耗费数秒甚至更长时间，影响开发的流畅性。</p>
+<p>相比之下，Vite 的热更新机制更为高效。由于其基于 ES 模块的按需加载特性，当代码发生变化时，Vite 能够精准地只更新受影响的模块，并且速度极快，几乎可以做到即时更新，让开发者能够迅速看到代码修改的效果，极大地提升了开发效率和体验。</p>
+<h2 id="三-配置复杂度">三、配置复杂度</h2>
+<p>Webpack 的配置向来以复杂著称，为了实现各种功能，如代码分割、优化、loader 和 plugin 的配置等，开发者需要编写大量的配置代码。对于初学者来说，这无疑是一个较高的门槛，需要花费较多时间去学习和理解各种配置选项的作用和相互关系。</p>
+<p>Vite 的配置则相对简洁明了，它默认提供了许多合理的配置，在大多数情况下，开发者只需要进行少量的配置调整即可满足项目需求。这使得 Vite 在项目初始化和配置方面更加便捷，能够让开发者更快地投入到实际开发中。</p>
+<h2 id="四-优缺点对比">四、优缺点对比</h2>
+<h3 id="webpack">Webpack</h3>
+<p><strong>优点</strong></p>
+<ul>
+<li>拥有丰富的插件和 loader 生态系统，几乎可以处理任何前端资源和构建需求，能够对项目进行深度定制和优化。例如，可以通过特定的 loader 将不同类型的文件转换为 JavaScript 模块，或者使用插件实现复杂的功能，如代码压缩、混淆、提取公共代码等。</li>
+<li>对大型项目的支持较为成熟，能够有效地管理复杂的依赖关系，确保项目的稳定性和可维护性。通过细致的配置，可以实现精确的代码分割，将不同页面或功能的代码拆分成独立的 chunk，提高页面加载速度和性能。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>配置复杂，学习成本高，对于新手开发者来说可能会感到困惑和无从下手。过多的配置选项也容易导致配置文件变得冗长和难以维护。</li>
+<li>开发时的热更新速度相对较慢，尤其是在大型项目中，每次代码修改后的重新构建过程可能会耗费较长时间，影响开发效率。</li>
+</ul>
+<h3 id="vite">Vite</h3>
+<p><strong>优点</strong></p>
+<ul>
+<li>开发启动速度极快，基于 ES 模块的按需加载和即时编译特性，大大缩短了冷启动时间和代码更新的反馈周期，提供了流畅的开发体验。</li>
+<li>配置简单，默认配置已经能够满足大多数项目的基本需求，开发者可以快速上手并开始项目开发，减少了在配置上花费的时间和精力。<br>
+<strong>缺点</strong></li>
+<li>对一些老旧项目或不遵循 ES 模块规范的代码兼容性可能较差，需要进行一定的改造才能顺利使用 Vite 进行构建。</li>
+<li>虽然在开发体验上表现出色，但在生产环境下的一些高级优化功能可能相对 Webpack 来说不够丰富，对于一些对性能极致追求的项目可能需要额外的配置和优化工作。</li>
+</ul>
+<h3 id="适用场景">适用场景</h3>
+<p>对于大型项目，尤其是那些具有复杂依赖关系和大量代码的项目，Webpack 的强大功能和丰富的插件生态系统能够更好地应对。它可以通过细致的配置对项目进行深度优化，例如实现精确的代码分割，将不同页面或功能的代码拆分成独立的 chunk，提高页面加载速度和性能。</p>
+<p>而对于中小型项目，特别是在开发过程中追求快速迭代和高效开发体验的项目，Vite 则是一个理想的选择。其快速的冷启动和高效的热更新能够显著缩短开发周期，让开发者能够更加专注于业务逻辑的实现。</p>
+<p>综上所述，Webpack 和 Vite 各有优劣，开发者在选择时应根据项目的规模、需求和开发团队的特点进行综合考虑，以充分发挥它们的优势，提升前端开发的效率和质量。在未来的前端开发中，这两款工具也将继续演进和发展，为开发者提供更强大的功能和更优质的体验。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CSS 单位到底怎么选]]></title>
+        <id>https://jacoobwang.github.io/post/css-dan-wei-dao-di-zen-me-xuan/</id>
+        <link href="https://jacoobwang.github.io/post/css-dan-wei-dao-di-zen-me-xuan/">
+        </link>
+        <updated>2024-12-30T13:58:32.000Z</updated>
+        <content type="html"><![CDATA[<p>在 CSS 样式表中，合理地运用单位来定义元素的尺寸、间距、字体大小等属性是至关重要的，不同的单位有着各自的特性和适用场景。本文将深入探讨几种常见的 CSS 单位：px、rpx、vm 和 rem。</p>
+<h2 id="px像素">px（像素）</h2>
+<p>像素（Pixel）是最为基础和常见的单位，它直接对应屏幕上的一个物理像素点。在早期的网页设计中，px 几乎一统天下。例如，当我们设置一个 div 的宽度为 200px 时，它在屏幕上所占据的空间就是实实在在的 200 个像素点。这种确定性使得布局相对直观，设计师可以精确掌控元素的尺寸。然而，px 的缺点也逐渐显现，随着设备屏幕分辨率的多样化，固定像素值在不同分辨率下可能出现显示效果差异巨大的问题。比如，同样一个宽度为 300px 的按钮，在低分辨率屏幕上可能看起来大小适中，而在高分辨率的视网膜屏上，就会显得细小局促。</p>
+<h2 id="rpx响应式像素">rpx（响应式像素）</h2>
+<p>rpx 是微信小程序特有的一种单位，它是根据屏幕宽度进行自适应调整的。小程序规定屏幕宽度为 750rpx，无论在何种设备上打开小程序，都会将屏幕宽度等比例划分为 750 份。这意味着如果一个元素设置宽度为 375rpx，那么在宽度为 375px 的设备上，它将占据屏幕宽度的一半；而在宽度为 750px 的设备上，它依然占据屏幕宽度的一半，即 375px。这种自适应特性使得小程序的页面布局能够很好地适配各种手机屏幕，极大地减轻了开发者对不同屏幕适配的工作量，为用户带来一致的视觉体验。</p>
+<h2 id="vm视口宽度百分比">vm（视口宽度百分比）</h2>
+<p>vm 代表视口宽度的百分比单位，1vm 等于视口宽度的 1%。相较于 px，它具有一定的响应式特性。例如，设置一个容器的宽度为 50vm，那么它将始终占据当前视口宽度的一半。这在构建一些需要随浏览器窗口大小动态变化的布局时非常实用，如自适应的侧边栏或弹性的图片展示区域。不过，使用 vm 时要注意，它只与视口宽度相关，若元素的高度也需要按比例自适应，还需结合其他技术或单位来综合实现。</p>
+<h2 id="rem根元素字体大小相对单位">rem（根元素字体大小相对单位）</h2>
+<p>rem 是以根元素（通常是 html 元素）的字体大小为基准的相对单位。默认情况下，大部分浏览器的根元素字体大小为 16px，此时 1rem 就等于 16px。但开发者可以通过修改根元素的字体大小来统一缩放整个页面的尺寸。比如，将根元素字体大小设置为 12px，那么后续所有以 rem 为单位的元素尺寸都会相应缩小。这使得页面在不同屏幕尺寸下，只要合理调整根元素字体大小，就能实现相对灵活且整体协调的布局。尤其在做移动端网页适配时，结合媒体查询动态修改根元素字体大小，rem 单位能发挥出强大的自适应优势，确保页面元素在各种手机和平板设备上都呈现出良好的视觉效果。</p>
+<h2 id="如何选择使用合适的单位">如何选择使用合适的单位？</h2>
+<p>怎样选择主要有以下两大纬度来决定：</p>
+<h3 id="项目类型">项目类型</h3>
+<h4 id="网页项目">网页项目：</h4>
+<ul>
+<li>px：对于一些需要精确控制尺寸的元素，如固定宽度的导航栏、按钮等，px 是一个不错的选择。它可以确保在不同浏览器和设备上都能呈现出一致的固定大小。</li>
+<li>rem：在进行网页整体布局和字体大小设置时，rem 更为合适。通过设置根元素的字体大小，可以方便地实现整个页面的相对缩放，适应不同屏幕尺寸的设备，尤其在响应式设计中表现出色。</li>
+<li>vm：当需要创建与视口宽度紧密相关的布局，如全屏的背景图片、自适应的轮播图等，vm 可以很好地实现根据视口宽度的动态调整。</li>
+</ul>
+<h4 id="微信小程序项目">微信小程序项目：</h4>
+<ul>
+<li>rpx：由于微信小程序的跨设备适配需求较高，rpx 是首选单位。它能够自动根据屏幕宽度进行自适应调整，大大减少了开发者在不同设备上进行适配的工作量，确保页面在各种手机屏幕上都能保持良好的视觉效果。</li>
+</ul>
+<h3 id="设计需求">设计需求</h3>
+<ul>
+<li>固定尺寸设计：如果设计稿中的元素尺寸是固定的，且不考虑设备屏幕的变化，那么 px 可以准确地还原设计稿中的尺寸。例如，一些品牌标识、特定尺寸的图标等，使用 px 可以确保其在任何情况下都保持原设计的大小和比例。</li>
+<li>自适应布局设计：对于需要在不同设备上自适应显示的页面，rem 和 vm 是更好的选择。例如，一个新闻列表页面，要求在不同屏幕宽度的设备上都能自适应显示，使用 rem 或 vm 可以使列表项的宽度、间距等随着屏幕大小的变化而自动调整，提供更好的用户体验。</li>
+<li>高分辨率屏幕适配：在处理高分辨率屏幕时，如视网膜屏，px 可能会导致元素在屏幕上显示得过于细小。此时，rem 可以通过调整根元素字体大小来进行整体缩放，使页面在高分辨率屏幕上也能保持清晰和易读。而 rpx 在微信小程序中已经自动处理了高分辨率屏幕的适配问题。</li>
+</ul>
+<p>在实际项目中，通常会根据具体情况综合使用多种单位。例如，在网页项目中，可以以 rem 为主要单位进行整体布局，对于一些需要精确控制的元素再结合使用 px；在微信小程序项目中，以 rpx 为主，对于一些特殊情况可以适当使用 px 进行微调。关键是要根据项目的特点和需求，权衡各种单位的优缺点，选择最合适的方案。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JavaScript 的 SOLID 原则]]></title>
+        <id>https://jacoobwang.github.io/post/javascript-de-solid-yuan-ze/</id>
+        <link href="https://jacoobwang.github.io/post/javascript-de-solid-yuan-ze/">
+        </link>
+        <updated>2024-12-13T02:44:39.000Z</updated>
+        <content type="html"><![CDATA[<p>SOLID 原则首先由著名的计算机科学家 Robert C·Martin （著名的Bob大叔）由 2000 年在他的论文中提出。但是 SOLID 缩略词是稍晚由 Michael Feathers 先使用的。</p>
+<p>Bob大叔也是畅销书《代码整洁之道》和《架构整洁之道》的作者，也是 &quot;Agile Alliance&quot; 的成员。</p>
+<p>SOLID 是一组原则的首字母缩写，包括：</p>
+<ul>
+<li>S 单一职责原则</li>
+<li>O 开闭原则</li>
+<li>L 里氏替换原则</li>
+<li>I 接口隔离原则</li>
+<li>D 依赖倒置原则</li>
+</ul>
+<p>有助于软件工程师设计和编写可维护、可扩展和灵活的代码。其目的是什么呢？是为了提高遵循面向对象编程（OOP）范式开发的软件质量。</p>
+<h2 id="单一职责原则srp">单一职责原则（SRP）</h2>
+<p>SOLID 中的第一个字母代表单一职责原则。该原则建议一个类或模块应该只执行一个功能。如果一个类处理多个功能，那么在不影响其他功能的情况下更新一个功能就会变得棘手。随之而来的复杂性可能会导致软件性能出现故障。为了避免这些问题，我们应尽力编写关注点分离的模块化软件。</p>
+<p>如果一个类有太多的职责或功能，修改起来就会很头疼。通过使用单一职责原则，我们可以编写模块化、更易于维护且不易出错的代码。例如，以一个人员模型为例：</p>
+<pre><code>class Person {
+    constructor(name, age, height, country) {
+        this.name = name;
+        this.age = age;
+        this.height = height;
+        this.country = country;
+    }
+
+    getPersonCountry() {
+        console.log(this.country);
+    }
+
+    greetPerson() {
+        console.log(&quot;Hi &quot; + this.name);
+    }
+
+    static calculateAge(dob) {
+        const today = new Date();
+        const birthDate = new Date(dob);
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff &lt; 0 || (monthDiff === 0 &amp;&amp; today.getDate() &lt; birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+}
+</code></pre>
+<p>上面的代码看起来没问题，对吧？不完全是。示例代码违反了单一职责原则。Person类不仅仅是可以创建其他Person实例的唯一模型，它还有其他职责，如calculateAge、greetPerson和getPersonCountry。</p>
+<p>Person类处理的这些额外职责使得仅更改代码的一个方面变得困难。例如，如果你试图重构calculateAge，可能还不得不重构Person模型。根据我们代码库的紧凑程度和复杂性，在不引发错误的情况下重新配置代码可能会很困难。</p>
+<p>让我们尝试修正这个错误。我们可以将职责分离到不同的类中，如下所示：</p>
+<pre><code>class Person {
+    constructor(name, dateOfBirth, height, country) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.height = height;
+        this.country = country;
+    }
+}
+
+class PersonUtils {
+    static calculateAge(dob) {
+        const today = new Date();
+        const birthDate = new Date(dob);
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff &lt; 0 || (monthDiff === 0 &amp;&amp; today.getDate() &lt; birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+}
+
+const person = new Person(&quot;John&quot;, new Date(1994, 11, 23), &quot;6ft&quot;, &quot;USA&quot;);
+console.log(&quot;Age: &quot; + PersonUtils.calculateAge(person.dateOfBirth));
+
+class PersonService {
+    getPersonCountry() {
+        console.log(this.country);
+    }
+
+    greetPerson() {
+        console.log(&quot;Hi &quot; + this.name);
+    }
+}
+</code></pre>
+<p>从上面的示例代码中可以看到，我们已经分离了职责。Person类现在是一个模型，我们可以用它创建新的人员对象。而PersonUtils类只有一个职责 —— 计算人员的年龄。PersonService类处理问候并显示每个人的国家。</p>
+<p>如果愿意，我们还可以进一步简化这个过程。遵循单一职责原则，我们希望将类的职责解耦到最低限度，以便在出现问题时，可以轻松进行重构和调试。</p>
+<p>通过将功能划分为单独的类，我们遵循了单一职责原则，并确保每个类负责应用程序的特定方面。</p>
+<p>然而，遵循单一职责原则意味着我们应该有意地为类分配功能。一个类执行的所有操作在各个方面都应该密切相关。我们必须注意不要到处都是零散的多个类，并且在代码库中应尽量避免臃肿的类。</p>
+<h2 id="开闭原则ocp">开闭原则（OCP）</h2>
+<p>开闭原则指出软件组件（类、函数、模块等）应该对扩展开放，对修改关闭。开闭原则只是要求软件的设计方式允许扩展，而不必修改源代码。</p>
+<p>开闭原则对于维护大型代码库至关重要，因为这个准则允许你引入新功能，而几乎没有破坏代码的风险。当出现新需求时，不应修改现有类或模块，而应通过添加新组件来扩展相关类。在这样做时，一定要检查新组件不会给系统引入任何错误。</p>
+<p>在 JavaScript 中，可以使用 ES6 + 的类继承特性来实现开闭原则。<br>
+以下代码片段说明了如何使用上述 ES6 + 的class关键字在 JavaScript 中实现开闭原则：</p>
+<pre><code>class Rectangle {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    area() {
+        return this.width * this.height;
+    }
+}
+
+class ShapeProcessor {
+    calculateArea(shape) {
+        if (shape instanceof Rectangle) {
+            return shape.area();
+        }
+    }
+}
+
+const rectangle = new Rectangle(10, 20);
+const shapeProcessor = new ShapeProcessor();
+console.log(shapeProcessor.calculateArea(rectangle));
+</code></pre>
+<p>上面的代码可以正常工作，但它仅限于计算矩形的面积。现在假设出现了一个新的计算需求。例如，我们需要计算圆形的面积。我们将不得不修改ShapeProcessor类来满足这个需求。然而，遵循 JavaScript ES6 + 标准，我们可以扩展这个功能以计算新形状的面积，而不必修改ShapeProcessor类。</p>
+<pre><code>class Shape {
+    area() {
+        console.log(&quot;Override method area in subclass&quot;);
+    }
+}
+
+class Rectangle extends Shape {
+    constructor(width, height) {
+        super();
+        this.width = width;
+        this.height = height;
+    }
+
+    area() {
+        return this.width * this.height;
+    }
+}
+
+class Circle extends Shape {
+    constructor(radius) {
+        super();
+        this.radius = radius;
+    }
+
+    area() {
+        return Math.PI * this.radius * this.radius;
+    }
+}
+
+class ShapeProcessor {
+    calculateArea(shape) {
+        return shape.area();
+    }
+}
+
+const rectangle = new Rectangle(20, 10);
+const circle = new Circle(2);
+const shapeProcessor = new ShapeProcessor();
+console.log(shapeProcessor.calculateArea(rectangle));
+console.log(shapeProcessor.calculateArea(circle));
+</code></pre>
+<p>在上面的代码片段中，我们使用extends关键字扩展了Shape类的功能。在每个子类中，我们重写了area()方法的实现。遵循这个原则，我们可以添加更多形状并计算面积，而无需修改ShapeProcessor类的功能。</p>
+<h2 id="为什么开闭原则很重要">为什么开闭原则很重要？</h2>
+<ul>
+<li>减少错误：开闭原则通过避免系统修改来帮助避免大型代码库中的错误。</li>
+<li>鼓励软件适应性：开闭原则还提高了在不破坏或更改源代码的情况下向软件添加新功能的容易程度。</li>
+<li>测试新功能：开闭原则提倡代码扩展而不是修改，使得新功能可以作为一个单元进行测试，而不影响整个代码库。</li>
+</ul>
+<h2 id="里氏替换原则">里氏替换原则</h2>
+<p>里氏替换原则指出，子类的对象应该能够替换父类的对象而不破坏代码。让我们通过一个例子来解释它是如何工作的：如果L是P的子类，那么L的对象应该能够替换P的对象而不破坏系统。这仅仅意味着子类应该能够以不破坏系统的方式重写父类的方法。<br>
+在实践中，里氏替换原则确保遵循以下条件：</p>
+<ul>
+<li>子类应该重写父类的方法而不破坏代码。</li>
+<li>子类不应偏离父类的行为，这意味着子类只能添加功能，而不能更改或删除父类的功能。</li>
+<li>使用父类实例的代码应该能够使用子类的实例，而无需知道类已经发生了变化。<br>
+是时候用 JavaScript 代码示例来说明里氏替换原则了。看一下：</li>
+</ul>
+<pre><code>class Vehicle {
+    OnEngine() {
+        console.log(&quot;Engine is steaming!&quot;);
+    }
+}
+
+class Car extends Vehicle {
+    // 你可以调用超类的OnEngine方法并实现汽车发动机启动的方式
+}
+
+class Bicycle extends Vehicle {
+    OnEngine() {
+        throw new Error(&quot;Bicycles technically don't have an engine&quot;);
+    }
+}
+
+const myCar = new Car();
+const myBicycle = new Bicycle();
+myCar.OnEngine();
+myBicycle.OnEngine();
+</code></pre>
+<p>在上面的代码片段中，我们创建了两个子类（Bicycle和Car）和一个超类（Vehicle）。出于本文的目的，我们为超类实现了一个单一方法（OnEngine）。</p>
+<p>里氏替换原则的一个核心条件是子类应该重写父类的功能而不破坏代码。记住这一点，让我们看看我们刚刚看到的代码片段是如何违反里氏替换原则的。实际上，汽车有发动机并且可以启动发动机，但自行车从技术上讲没有发动机，因此不能启动发动机。所以，Bicycle类不能在不破坏代码的情况下重写Vehicle类中的OnEngine方法。</p>
+<p>我们现在已经确定了违反里氏替换原则的代码部分。Car类可以重写超类中的OnEngine功能，并以一种使其与其他车辆（例如飞机）区分开来的方式实现它，并且代码不会被破坏。Car类满足里氏替换原则。</p>
+<p>在下面的代码片段中，我们将说明如何组织代码以符合里氏替换原则：</p>
+<pre><code>class Vehicle {
+    move() {
+        console.log(&quot;The vehicle is moving.&quot;);
+    }
+}
+</code></pre>
+<p>这是一个具有基本功能move的Vehicle类的基本示例。一般认为所有车辆都能移动；它们只是通过不同的机制移动。我们将通过重写move()方法并以一种描绘特定车辆（例如汽车）如何移动的方式来实现它，以此来说明里氏替换原则。</p>
+<p>为此，我们将创建一个Car类，它扩展Vehicle类并覆盖move方法以适应汽车的移动，如下所示：</p>
+<pre><code>class Car extends Vehicle {
+    move() {
+        console.log(&quot;Car is running on four wheels&quot;);
+    }
+}
+</code></pre>
+<p>我们仍然可以在另一个子车辆类（例如飞机）中实现move方法。我们可以这样做：</p>
+<pre><code>class Airplane extends Vehicle {
+    move() {
+        console.log(&quot;Airplane is flying...&quot;);
+    }
+}
+</code></pre>
+<p>在上面的两个示例中，我们说明了诸如继承和方法重写等关键概念。注意：允许子类实现已经在父类中定义的方法的编程特性称为方法重写。让我们进行一些整理并将所有内容放在一起，如下所示：</p>
+<pre><code>class Vehicle {
+    move() {
+        console.log(&quot;The vehicle is moving.&quot;);
+    }
+}
+
+class Car extends Vehicle {
+    move() {
+        console.log(&quot;Car is running on four wheels&quot;);
+    }
+
+    getSeatCapacity() {
+    }
+}
+
+class Airplane extends Vehicle {
+    move() {
+        console.log(&quot;Airplane is flying...&quot;);
+    }
+}
+
+const car = new Car();
+const airplane = new Airplane();
+car.move(); // 输出：Car is running on four wheels
+</code></pre>
+<p>现在，我们有两个子类继承并覆盖了父类的单个功能，并根据它们的需求实现了它。这个新的实现不会破坏代码。</p>
+<h2 id="接口隔离原则isp">接口隔离原则（ISP）</h2>
+<p>接口隔离原则指出，任何客户端都不应被迫依赖它不使用的接口。它希望我们创建更小、更具体的接口，这些接口与特定客户端相关，而不是有一个大的、单一的接口，迫使客户端实现他们不需要的方法。</p>
+<p>保持接口紧凑使代码库更易于调试、维护、测试和扩展。如果没有接口隔离原则，大型接口的一部分发生变化可能会迫使代码库中不相关的部分发生变化，导致我们进行代码重构，在大多数情况下，根据代码库的大小，这可能是一项艰巨的任务。</p>
+<p>与基于 C 的编程语言（如 Java）不同，JavaScript 没有内置的接口支持。然而，有一些技术可以在 JavaScript 中实现接口。</p>
+<p>接口是一组类必须实现的方法签名。在 JavaScript 中，你可以将接口定义为一个包含方法和函数签名名称的对象，如下所示：</p>
+<pre><code>const InterfaceA = {
+    method: function () { }
+}
+</code></pre>
+<p>要在 JavaScript 中实现接口，创建一个类并确保它包含与接口中指定的名称和签名相同的方法：</p>
+<pre><code>class LogRocket {
+    method() {
+        console.log(&quot;This is a method call implementing an interface&quot;);
+    }
+}
+</code></pre>
+<p>现在我们已经知道了如何在 JavaScript 中创建和使用接口。接下来我们需要做的是说明如何在 JavaScript 中隔离接口，以便我们可以看到它是如何组合在一起并使代码更易于维护的。</p>
+<p>在下面的示例中，我们将使用打印机来说明接口隔离原则。</p>
+<p>假设我们有一台打印机、扫描仪和传真机，让我们创建一个定义这些对象功能的接口：</p>
+<pre><code>const printerInterface = {
+    print: function () { }
+}
+
+const scannerInterface = {
+    scan: function () { }
+}
+
+const faxInterface = {
+    fax: function () { }
+}
+</code></pre>
+<p>在上面的代码中，我们创建了一系列分离的或隔离的接口，而不是一个定义所有这些功能的大型接口。通过将这些功能分解为更小的部分和更具体的接口，我们允许不同的客户端只实现他们需要的方法，并排除所有其他部分。</p>
+<p>在下一步中，我们将创建实现这些接口的类。遵循接口隔离原则，每个类将只实现它需要的方法。</p>
+<p>如果我们想要实现一个只能打印文档的基本打印机，我们可以通过printerInterface只实现print()方法，如下所示：</p>
+<pre><code>class Printer {
+    print() {
+        console.log(&quot;printing document&quot;);
+    }
+}
+</code></pre>
+<p>这个类只实现了PrinterInterface。它不实现scan或fax方法。通过遵循接口隔离原则，客户端（在这种情况下是Printer类）降低了其复杂性并提高了软件的性能。</p>
+<h2 id="依赖倒置原则dip">依赖倒置原则（DIP）</h2>
+<p>这个原则说，高层模块（业务逻辑）应该依赖于抽象，而不是直接依赖于低层模块（具体实现）。它帮助我们减少代码依赖，并为开发人员提供在更高层次上修改和扩展应用程序的灵活性，而不会遇到复杂情况。</p>
+<p>为什么依赖倒置原则倾向于抽象而不是直接依赖呢？这是因为抽象的引入减少了变化的潜在影响，提高了可测试性（模拟抽象而不是具体实现），并在你的代码中实现了更高程度的灵活性。这个规则使得通过模块化方法更容易扩展软件组件，也帮助我们修改低层组件而不影响高层逻辑。</p>
+<p>遵循依赖倒置原则使代码更易于维护、扩展，从而避免因代码变化而可能出现的错误。它建议开发人员在类之间使用松耦合而不是紧耦合。一般来说，通过采用优先考虑抽象而不是直接依赖的思维方式，团队将获得适应和添加新功能或更改旧组件的敏捷性，而不会引起连锁干扰。在 JavaScript 中，我们可以使用依赖注入方法来实现依赖倒置原则，如下所示：</p>
+<pre><code>class MySQLDatabase {
+    connect() {
+        console.log('Connecting to MySQL database...');
+    }
+}
+
+class MongoDBDatabase {
+    connect() {
+        console.log('Connecting to MongoDB database...');
+    }
+}
+
+class Application {
+    constructor(database) {
+        this.database = database;
+    }
+
+    start() {
+        this.database.connect();
+    }
+}
+
+const mySQLDatabase = new MySQLDatabase();
+const mySQLApp = new Application(mySQLDatabase);
+mySQLApp.start();
+
+const mongoDatabase = new MongoDBDatabase();
+const mongoApp = new Application(mongoDatabase);
+mongoApp.start();
+</code></pre>
+<p>在上面的基本示例中，Application类是高层模块，它依赖于数据库抽象。我们创建了两个数据库类：MySQLDatabase和MongoDBDatabase。数据库是低层模块，它们的实例被注入到Application运行时中，而无需修改Application本身。</p>
+<h2 id="结论">结论</h2>
+<p>SOLID 原则是可扩展、可维护和健壮软件设计的基本构建块。这组原则帮助开发人员编写干净、模块化和适应性强的代码。<br>
+SOLID 原则促进了内聚功能、无需修改的可扩展性、对象替换、接口分离以及抽象优于依赖。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[简单聊一聊单例设计模式]]></title>
+        <id>https://jacoobwang.github.io/post/jian-dan-liao-yi-liao-dan-li-she-ji-mo-shi/</id>
+        <link href="https://jacoobwang.github.io/post/jian-dan-liao-yi-liao-dan-li-she-ji-mo-shi/">
+        </link>
+        <updated>2024-11-24T03:28:52.000Z</updated>
+        <content type="html"><![CDATA[<p>你是否曾经遇到过需要在应用程序的多个部分共享一个对象的情况，比如数据库连接、WebSocket 客户端或配置管理器或全局的 Logger 对象？</p>
+<p>你如何管理这样一个对象，使其在整个应用程序或进程生命周期中保持一致且可访问？这就是单例设计模式发挥作用的地方。</p>
+<h2 id="概述">概述</h2>
+<p>单例是一种创建型设计模式，属于设计模式的一类，用于解决使用new关键字或操作符创建对象的原生方式所带来的不同问题。</p>
+<p>单例设计模式主要致力于解决两个主要问题：</p>
+<ol>
+<li>我们如何为实例提供一个全局访问点？</li>
+<li>我们如何确保一个类或特定类型的对象只有一个实例？</li>
+</ol>
+<p>它可以简化并规范我们管理特定种类或类型的全局状态的方式，例如数据库连接、WebSocket 客户端、缓存服务，或者任何我们在整个应用程序生命周期中需要在内存中持久化和修改的内容。</p>
+<h2 id="如何实现单例设计模式">如何实现单例设计模式</h2>
+<pre><code class="language-typescript">class Singleton {
+    private static instance: Singleton
+
+    private construct() {
+       // 私有构造函数确保只能通过静态方法创建唯一实例
+    }
+
+    public static getInstance () {
+        if (!this.instance) {
+            this.instance = new Singleton()
+        } 
+
+        return this.instance
+    }
+}
+</code></pre>
+<p>该类应该定义一个静态属性来存储唯一可共享的实例。<strong>static</strong> 关键字意味着实例对象与类的实例无关，而是与类定义本身相关联。类的构造函数应该标记为private 则无法通过 new 创建实例。获取类实例的唯一方法是调用 getInstance 静态方法。</p>
+<pre><code class="language-typescript">const instance = Singleton.getInstance()
+</code></pre>
+<p>我们可以通过调用与单例类相关联的静态方法getInstance来使用上述类。getInstance 方法保证即使我们在代码库的不同位置多次实例化我们的类，我们始终得到相同的实例。</p>
+<h2 id="第一个实际场景">第一个实际场景</h2>
+<p>在 node 服务中，需要记录调用接口产生的 log，因此要设计一个全局的 Logger 集中管理日志行为。</p>
+<pre><code class="language-typescript">class Logger {
+  private static instance: Logger;
+  private logs: string[] = [];
+
+  private constructor() {}
+
+  public static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
+
+  public log(message: string) {
+    this.logs.push(message);
+  }
+}
+
+// 使用
+const logger = Logger.getInstance();
+logger.log('Application started');
+</code></pre>
+<p>在这个例子中，private constructor() 确保：</p>
+<ul>
+<li>不能直接 new Logger()</li>
+<li>只能通过 Logger.getInstance() 获取唯一实例</li>
+<li>提供了对日志记录的集中管理</li>
+</ul>
+<h2 id="第二个实际场景">第二个实际场景</h2>
+<p>实现一个内存中的速率限制器服务。用户或黑客可以通过向特定端点发送大量请求来对其进行垃圾邮件攻击。这可能导致漏洞、意外成本或服务器故障。</p>
+<p>为了防止这种情况，我们可以实现一个基本的内存速率限制器服务。该服务应该在特定的时间窗口间隔（例如 60 秒）内限制每个 IP 地址的请求数量。</p>
+<pre><code class="language-typescript">class RateLimiterService {
+  private static instance: RateLimiterService
+  private requests: Map&lt;string, { count: number; lastRequestTime: number }&gt;
+  private readonly limit: number // 最大请求数量
+  private readonly window: number // 时间窗口（以毫秒为单位）
+
+  private constructor(limit: number = 5, window: number = 60000) {
+    this.requests = new Map()
+    this.limit = limit
+    this.window = window
+  }
+
+  // 获取唯一单例实例的方法
+  public static getInstance(): RateLimiterService {
+    if (!RateLimiterService.instance) {
+      RateLimiterService.instance = new RateLimiterService()
+    }
+    return RateLimiterService.instance
+  }
+
+  public isRateLimited(ip: string): boolean {
+    const currentTime = Date.now()
+    const userRequestData = this.requests.get(ip)
+
+    if (userRequestData) {
+      const isExpired =
+        currentTime - userRequestData.lastRequestTime &gt; this.window
+
+      if (isExpired) {
+        userRequestData.count = 1
+        userRequestData.lastRequestTime = currentTime
+        return false
+      } else {
+        userRequestData.count++
+        if (userRequestData.count &gt; this.limit) {
+          return true
+        }
+        return false
+      }
+    } else {
+      this.requests.set(ip, { count: 1, lastRequestTime: currentTime })
+      return false
+    }
+  }
+}
+
+export default RateLimiterService
+</code></pre>
+<p><strong>RateLimiterService</strong> 类存储了一个映射，该映射跟踪由 IP 地址（映射键）标识的特定用户在给定时间窗口（requests[ip].lastRequestTime）内发出的请求数量（requests[ip].count）。<br>
+我们的 <strong>RateLimiterService</strong> 旨在全局使用，或者换句话说，我们不希望每次导入<strong>RateLimiterService</strong> 时都重置由 requests 映射、limit 和 window 变量组成的内部状态值。</p>
+<h2 id="结论">结论</h2>
+<p>单例设计模式是在我们的应用程序中有效管理共享资源的强大工具。<br>
+关键要点：</p>
+<ul>
+<li>单例确保一个类只有一个实例，并为其提供一个全局访问点。</li>
+<li>它对于管理共享资源（如数据库连接、配置设置或缓存）很有用。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[可追踪的前端日志架构方案]]></title>
+        <id>https://jacoobwang.github.io/post/ke-shi-hua-qian-duan-ri-zhi-jia-gou-fang-an/</id>
+        <link href="https://jacoobwang.github.io/post/ke-shi-hua-qian-duan-ri-zhi-jia-gou-fang-an/">
+        </link>
+        <updated>2024-11-20T02:36:15.000Z</updated>
+        <content type="html"><![CDATA[<p>作为前端开发如何知道用户在页面上操作行为是否符合预期？用户点击某个按钮或使用某个功能异常时我们能否快速定位？上线的功能是否会导致线上 bug? 曾经一度这些问题深深困扰我们，作为一个没有测试团队的自研型产品研发团队，我们的上线依靠发布前走查关键测试用例来避免线上问题，但这种方式耗时耗力不说，因为人为测试总有遗漏的地方，也不能保证 100% 稳定可靠，只能保证核心功能不出问题。</p>
+<p>因此，我们需要一套可靠的前端日志系统，来帮助我们实时观测用户使用数据及线上异常情况，另可以快速定位问题，不至于出现问题还需要跟用户远程复现（效率太低）。我们把技术方案瞄准为<code> ELK 套件</code>架构来帮助解决以下问题：</p>
+<ul>
+<li><strong>全链路问题排查</strong>，通过日志搜索查询用户的入参出参报错等全链路信息、按时间序列分析或还原用户的操作行为排查问题</li>
+<li><strong>数据统计分析</strong>，通过日志数据可以灵活的自定义统计分析，如系统的UV、PV、用户行为分析、接口调用量、接口响应速度、异常报错统计等等</li>
+<li><strong>自定义上报</strong>，因前端无法直接打印日志到服务器或数据库中，需要满足前端的一些浏览点击、资源加载、js报错、自定义上报等场景日志等需求</li>
+<li><strong>智能归因分析</strong>，监控报警需要做好报警的收敛和治理，如何使用AIGC技术去做智能化的报警分析是非常值得探索的方向</li>
+<li><strong>持久化存储</strong>，一些数据统计分析需求需要部分日志持久化存储，自行控制日志的生命周期。</li>
+</ul>
+<h2 id="系统架构">系统架构</h2>
+<p>整体的系统架构采用的就是经典的ELK架构，即 Elasticsearch + Logstash + Kibana 的组合，同时引入了filebeat作为轻量化的nginx日志采集的组件。</p>
+<p>整体的系统架构如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1732071146440.png" alt="" loading="lazy"><br>
+整体的方案是借助ELK架构去收集前端服务器的nginx日志及后端日志进行结构化存储到ES集群，通过ES强大的全文搜索能力及Kibana组件数据可视化能力进行日志的搜索和分析。</p>
+<h3 id="nginx服务器">nginx服务器</h3>
+<p>前端服务主要使用的就是nginx进行页面部署和一些接口的代理转发，nginx日志本身就会记录用户所有的接口请求，但是nginx日志默认是不能记录到请求的响应值的和做一些前端自定义上报日志记录的，所以我们需要对nginx进行一些配置个改造。</p>
+<p>为了能打印到接口的响应值，我们引入了OpenResty替代nginx，使用OpenResty结合lua脚本就可以非常简单的获取到接口的返回值并打印到nginx的access日志里，主要是获取接口的返回buffered并使用zlib库进行解码。</p>
+<p>下面是nginx配置文件的简单示例，可以根据自己业务需求获取及打印所需字段：</p>
+<pre><code class="language-shell">log_format main escape=json '{&quot;user&quot;:&quot;$user&quot;,&quot;uri&quot;:&quot;$uri&quot;,&quot;$http_appkey&quot;,&quot;req_body&quot;,&quot;resp_body&quot;:&quot;$resp_body&quot;,&quot;timestamp&quot;:&quot;$time_iso8601&quot;,&quot;ups_res_time&quot;:&quot;$upstream_response_time&quot;}';
+
+location /api/ {
+    proxy_pass http://api.xxxx.jd.com/;
+    body_filter_by_lua '
+        local zlib = require(&quot;zlib&quot;)
+        if type(ngx.arg[1]) == &quot;string&quot; then
+            local resp_body = string.sub(ngx.arg[1], 1, 5000000)
+            ngx.ctx.buffered = (ngx.ctx.buffered or &quot;&quot;) .. resp_body
+            if ngx.arg[2] then
+                local inflate = zlib.inflate()
+                local ok, decoded = pcall(inflate, ngx.ctx.buffered)
+                ngx.var.resp_body = ok and decoded or ngx.ctx.buffered
+            end
+        else
+            ngx.var.resp_body = &quot;&quot;
+        end
+    ';
+}
+</code></pre>
+<p>为了实现前端可以自定义上报一些报警日志到nginx，我们采用的是构造一些约定的请求和对应的nginx日志字段，前段需要上报日志的时候去发起请求并把上报内容放到请求体，nginx端将其写入nginx日志即可完成对应的流程。</p>
+<p>统一封装前端SDK，将不同类型的上报约定为不同的接口，如定义一个/log的一个请求，并在nginx定义该接口返回成功状态码200，前端需要上报日志数据的时候，只需要调用SDK的方法并触发请求这个请求即可。</p>
+<p>因为有约定的接口路径，后续进行再日志收集和处理中即对该接口做对应的数据结构化存储，实现最终的一个自定义上报数据的需求。</p>
+<h3 id="filebeat组件">Filebeat组件</h3>
+<p>由于我们前端nginx部署使用的我们自已定制的基础镜像，所以可视非常方便的去做一些nginx的配置和一些组件的安装，这里我们采用的是Filebeat组件进行nginx日志的收集。</p>
+<p>首先在基础镜像里集成Filebeat组件，以便可以再应用镜像里直接使用，然后在项目里暴露Filebeat的配置文件以及在dockerfile中添加启动Filebeat命令，下面是示例配置：</p>
+<pre><code class="language-shell">filebeat.inputs:
+- type: log
+  paths:
+    - /export/access_80.log*
+  json.keys_under_root: true
+  json.add_error_key: true
+  json.message_key: uri
+  include_lines:
+    [
+      '/feedback',
+      '/ping',
+      '/api',
+      '/point',
+      '/log-reporting'
+    ]
+  exclude_lines: ['/api/xxxxxx', '/fn-service/xxxxxx']
+  fields_under_root: true
+  json.overwrite_keys: true
+
+- type: log
+  paths:
+    - /export/error.log*
+
+output.logstash:
+  hosts: ['logstash.jd.local:2000']
+
+logging:
+  files:
+    path: /export/filebeat
+    name: myfilebeat.log
+    keepfiles: 7
+    permissions: 0644
+</code></pre>
+<h3 id="logstash组件">Logstash组件</h3>
+<p>Logstash组件主要是将多个容器的Filebeat采集数据进行统一的转换处理，如上文提到的针对不同的接口路径对数据进行结构化转换、统一的对一些不需要字段进行丢弃、提取保留接口相应的的traceId等</p>
+<p>通过Logstash的转换处理，将不同的数据传输写入到ES集群的不同索引，最终实现日志的索引存储，以下是一个将单条日志直接写入ES的示例：</p>
+<pre><code class="language-shell"># Beats -&gt; Logstash -&gt; Elasticsearch pipeline.
+input {
+  beats {
+    port =&gt; 5044
+  }
+}
+
+filter {
+  json {
+    source =&gt; &quot;message[data]&quot;
+  }
+  mutate {
+    convert =&gt; {
+      &quot;ups_res_time&quot; =&gt; &quot;float&quot;
+    }
+  }
+  prune {
+    whitelist_names =&gt; [&quot;timestamp&quot;,&quot;user&quot;, &quot;domain&quot;,&quot;uri&quot;,&quot;ip&quot;,&quot;referer&quot;,&quot;args&quot;, &quot;resp_body&quot;,&quot;ups_res_time&quot;,&quot;ups_status&quot;]
+  }
+}
+
+output {
+  elasticsearch {
+    hosts =&gt; [&quot;http://xxxxxxx.jd.com:40000&quot;]
+    index =&gt; &quot;access_log&quot;
+    user =&gt; &quot;test&quot;
+    password =&gt; &quot;test&quot;
+  }
+}
+</code></pre>
+<h3 id="kibana可视化">Kibana可视化</h3>
+<p>经过以上的数据采集组件的层层处理，海量的日志数据已经存储到了ES集群，接下来就需要 Kibana 组件进行数据的快速搜索和可视化分析。</p>
+<p>直接下载对应ES版本的 Kibana 程序，配置好ES集群的一些连接串信息和其他配置就可以直接部署后访问了。</p>
+<p>Kibana 面板功能强大，我们可以基于自己业务的诉求定制面板。</p>
+<h3 id="traceid">traceID</h3>
+<p>在服务端我们通常通过 traceID 来做连路追踪，前端我们也可以借此思路，在用户打开平台时候通过 md5 等哈希算法生成一个 traceID，上报 traceID 来追踪用户在页面的操作路径。当然你可能会觉得都有用户 ID呢，为啥还需要 traceID，但非登录用户也需要考虑，那何不更通用一点。</p>
+<h2 id="总结">总结</h2>
+<p>ELK 是当下比较成熟的日志套件，未来我们希望能够把  sentry 的一部分功能也结合进来，打造更贴合前端使用的监控平台。</p>
+]]></content>
+    </entry>
+</feed>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>2024 年 Node.js 框架——Elysia/Hono/Nest/Encore | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Node.js 框架在 2024 年呈现出多样化的发展态势，其中 Elysia、Hono、Nest 和 Encore 等框架备受关注。本文尝试记录这些框架的优势、劣势以及适用场景，帮助日后技术选型。
+框架特性概述
+根据轻量级到功能丰富程度，..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">2024 年 Node.js 框架——Elysia/Hono/Nest/Encore</h2>
+            <div class="post-date">2024-11-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>Node.js 框架在 2024 年呈现出多样化的发展态势，其中 Elysia、Hono、Nest 和 Encore 等框架备受关注。本文尝试记录这些框架的优势、劣势以及适用场景，帮助日后技术选型。</p>
+<h2 id="框架特性概述">框架特性概述</h2>
+<p>根据轻量级到功能丰富程度，这些框架的排序如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1730859509428.jpg" alt="" loading="lazy"></p>
+<p>这并不意味着轻量级框架不好，而是取决于项目需求。Hono 的轻量级特性使其非常适合部署到 Cloudflare Workers，而 Encore.ts 则内置了许多功能，如自动追踪和本地基础设施。</p>
+<h2 id="encorets">Encore.ts</h2>
+<p>仓库地址：<a href="https://github.com/encoredev/encore"> https://github.com/encoredev/encore</a></p>
+<p>Encore.ts 是一个开源框架，旨在简化使用 TypeScript 构建健壮且类型安全的后端应用。它内置了丰富的工具，可提升开发体验，在性能方面表现卓越，是本次比较中速度最快的框架。</p>
+<p>Encore 具有内置的请求验证功能，使用常规 TypeScript 定义的请求和响应类型可在编译和运行时验证请求。与其他框架不同，实际验证在 Rust 中完成，而非 JavaScript，这使其验证速度极快。</p>
+<p>Encore 便于创建和调用服务，从代码角度看，服务就像存储库中的普通文件夹，调用服务端点如同调用普通函数。其神奇之处在于，这些函数调用在底层会转换为实际的 HTTP 调用。部署时，你甚至可以选择将服务部署到不同实例，如 Kubernetes 集群，同时保持所有服务代码在同一存储库中。</p>
+<p>Encore 还带有内置的开发仪表板，启动应用后，可通过localhost:9400访问。在这里，你可以像使用 Postman 一样调用端点，每次调用都会生成一个跟踪，用于检查 API 请求、数据库调用和发布 / 订阅消息。本地开发仪表板还包括自动 API 文档和系统的最新架构图。值得一提的是，尽管 Encore 功能丰富，但它没有任何 npm 依赖项。</p>
+<h2 id="hono">Hono</h2>
+<p>仓库地址：<a href="https://github.com/honojs/hono"> https://github.com/honojs/hono</a></p>
+<p>Hono 由 Yusuke Wada 创建，始于 2021 年，旨在解决 Node.js 框架在 Cloudflare Workers 上运行不佳的问题。此后，Hono 增加了对 Node.js、Bun 和 Deno 等多种运行时的支持。</p>
+<pre><code class="language-js">import { Hono } from 'hono'
+const app = new Hono()
+
+app.get('/', (c) =&gt; c.text('Hono!'))
+
+export default app
+</code></pre>
+<p>Hono 非常小巧，hono/tiny预设版本不到 13KB，非常适合部署到 Cloudflare Workers，并且它也没有 NPM 依赖项，令人印象深刻！</p>
+<p>其多运行时支持的卖点很有趣，无论使用何种 JavaScript 运行时，都能运行 Hono。在其存储库中，有适配器概念，可查看针对每个运行时所做的调整。这对框架的采用和用户增长意义重大，但对于单个用户而言，一旦应用部署到云端，可能不会切换运行时。</p>
+<p>尽管 Hono 开箱即用很轻量，但它有许多中间件可供安装，以增强应用功能，采用的是 Express 流行的 “即用即装” 方法。对于小型应用，这种方式效果不错，但对于大型应用，维护大量依赖项可能会令人沮丧。</p>
+<h2 id="elysia">Elysia</h2>
+<p>Elysia 专为 TypeScript 构建，在 API 处理程序中提供类型安全，这能节省大量时间，无需在代码中到处进行类型检查。</p>
+<p>你可以使用t模块（TypeBox 验证库的扩展）指定请求类型。与 Encore 不同，Elysia 的验证在 JavaScript 层进行，这会增加一些性能开销。</p>
+<pre><code class="language-js">import { Elysia, t } from 'elysia'
+
+new Elysia()
+ .patch(&quot;/profile&quot;, ({ body }) =&gt; body.profile, {
+    body: t.Object({
+      id: t.Number(),
+      profile: t.File({ type: &quot;image&quot; }),
+    }),
+  })
+ .listen(3000);
+</code></pre>
+<p>添加 Swagger 文档只需一行代码，并且 Elysia 原生支持 OpenTelemetry，这意味着无论平台如何，都能轻松监控应用。Elysia 速度很快，但不如 Encore。</p>
+<h2 id="nestjs">Nest.js</h2>
+<p>Nest.js 与其他框架有所不同。Encore、Elysia 和 Hono 提供创建端点和中间件的简约 API，你可以自由组织业务逻辑，而 Nest.js 更具主见，强制你以特定方式组织代码，它提供模块化架构，将代码组织成不同抽象，如提供者、控制器、模块和中间件。</p>
+<p>Nest.js 旨在使大型应用的维护和开发更容易。然而，你是否喜欢 Nest 提供的这种有主见的结构因人而异。对于大规模项目，长期可维护性比速度和简单性更重要时，Nest 可能更具优势。对于只有几个开发人员的小型项目，额外的抽象层在大多数情况下可能过于复杂。与 Hono、Encore 和 Elysia 相比，Nest 的有主见特性也带来了更陡峭的学习曲线。</p>
+<p>使用 Nest 时，你可以选择使用 Express 或 Fastify 作为底层 HTTP 服务器框架，Nest 的所有功能都构建在其之上。</p>
+<h2 id="性能表现">性能表现</h2>
+<p>速度在选择框架时可能不是最重要的因素，但也不容忽视，它会影响应用响应能力和托管成本。<br>
+我们对这些框架进行了有无请求模式验证的基准测试，测量单位是每秒请求数。括号中的名称是使用的请求验证库，Encore.ts 内置了请求验证。</p>
+<figure data-type="image" tabindex="1"><img src="https://jacoobwang.github.io/post-images/1730860959987.png" alt="" loading="lazy"></figure>
+<p>在我们的基准测试中，Encore.ts 是所有框架中最快的，其次是 Elysia、Hono、Fastify 和 Express。Nest 在底层使用 Fastify 或 Express，因此其性能与之相当，可能会稍慢一些，因为 Nest 会增加一些开销。</p>
+<p>Encore.ts 之所以如此之快，秘诀在于它有一个 Rust 运行时，而 Rust 速度很快！<br>
+Encore.ts 实际上由两部分组成：</p>
+<ul>
+<li>面向用户的 TypeScript 部分，用于定义 API 和基础设施。</li>
+<li>底层是用 Rust 编写的多线程运行时。</li>
+</ul>
+<p>性能提升的关键是将尽可能多的工作从单线程 Node.js 事件循环转移到 Rust 运行时。例如，Rust 运行时处理所有输入 / 输出，如接受传入的 HTTP 请求或从数据库读取数据。一旦请求或数据库查询处理完成，就会交给 Node.js 事件循环。</p>
+<h2 id="代码结构">代码结构</h2>
+<p>Hono、Elysia 和 Encore 在代码结构组织上没有太多限制，创建 API 和中间件的方式在这些框架之间相当相似。</p>
+<p>以下是每个框架的 GET 端点示例，虽然存在一些差异，但在我看来，这些 API 足够相似，不至于成为决定性因素：</p>
+<p><strong>Encore.ts</strong></p>
+<pre><code class="language-js">interface Response {
+  message: string;
+}
+
+export const get = api(
+  { expose: true, method: &quot;GET&quot;, path: &quot;/hello/:name&quot; },
+  async ({ name }: { name: string }): Promise&lt;Response&gt; =&gt; {
+    const msg = `Hello ${name}!`;
+    return { message: msg };
+  },
+);
+</code></pre>
+<p><strong>Elysia</strong></p>
+<pre><code class="language-js">import { Elysia, t } from &quot;elysia&quot;;
+
+new Elysia()
+ .get(
+    &quot;/hello/:name&quot;,
+    ({ params }) =&gt; {
+      const msg = `Hello ${params.name}!`;
+      return { message: msg };
+    },
+    {
+      response: t.Object({
+        message: t.String(),
+      }),
+    },
+  )
+</code></pre>
+<p><strong>Hono</strong></p>
+<pre><code class="language-js">import { Hono } from &quot;hono&quot;;
+
+const app = new Hono();
+
+app.get(&quot;/hello/:name&quot;, async (c) =&gt; {
+ const msg = `Hello ${c.req.param(&quot;name&quot;)}!`;
+ return c.json({ message: msg });
+});
+</code></pre>
+<p><strong>Nest.js</strong></p>
+<pre><code class="language-js">import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+constructor(private readonly appService: AppService) {}
+
+@Get()
+getHello(): string {
+  return this.appService.getHello();
+}
+}
+</code></pre>
+<p>真正产生影响的是在构建健壮应用时能否依赖类型安全。Encore 和 Elysia 提供类型安全的 API，而 Encore 在处理像发布 / 订阅这样的基础设施时还提供编译时类型安全，并且在调用另一个服务的端点时也有编译时类型安全。如果你之前使用过微服务架构，就会知道这有多重要。</p>
+<p>Nest.js 在 API 设计方面脱颖而出，一个 Nest 应用涉及许多概念和抽象，这既是优点也是缺点，取决于个人偏好。查看 Nest 应用时，立即会注意到装饰器的使用，Nest 在依赖注入（将服务注入控制器）等方面严重依赖装饰器。</p>
+<h2 id="部署与基础设施">部署与基础设施</h2>
+<p>所有这些框架都可以部署到主流云平台（如 Digital Ocean 和 Fly.io）或直接部署到云提供商（如 AWS 或 GCP）。</p>
+<p>Encore 提供自动本地基础设施，encore run命令启动应用并启动所有本地基础设施，如数据库和发布 / 订阅主题，无需处理 YAML、Docker Compose 等繁琐配置。构建 Encore 应用时，会得到一个运行时配置，用于提供连接到云端基础设施所需的配置。如果你想快速将 Encore 应用部署到云端且不想自行管理基础设施，可以使用 Encore Cloud，它提供持续集成 / 持续部署（CI/CD）和拉取请求的预览环境，还可以在 AWS 或 GCP 上为你的应用配置所需的所有基础设施，这意味着你的应用不依赖任何第三方服务，你可以完全控制所有基础设施。</p>
+<p>Hono 的突出特点是支持多种不同的运行时，因此在部署时有很多选择，部署到 Cloudflare Workers、Netlify 或 AWS Lambda 很容易，且不需要大量配置。</p>
+<p>使用 Nest 时，运行nest build命令将 TypeScript 代码编译为 JavaScript，此过程会生成一个包含编译文件的dist目录，然后可以使用 Node.js 运行dist文件夹。</p>
+<p>推荐的 Elysia 应用部署方式是使用bun build命令将应用编译为二进制文件，一旦编译完成，运行服务器时无需在机器上安装Bun。</p>
+<h2 id="最后">最后</h2>
+<p>希望通过本文的介绍，你能在下次项目中明确选择合适的框架。每个框架都有其独特的特点和适用场景，根据项目需求和个人偏好做出选择，将有助于提高开发效率和项目质量。.</p>
+<p>原文：<a href="https://dev.to/encore/nodejs-frameworks-roundup-2024-elysia-hono-nest-encore-which-should-you-pick-19oj"> https://dev.to/encore/nodejs-frameworks-roundup-2024-elysia-hono-nest-encore-which-should-you-pick-19oj</a></p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/nginx-empty-git/">
+                  <h3 class="post-title">
+                    Nginx empty-gif 模块
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>关于 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+欢迎来到我的小站呀，很高兴遇见你！🤝
+
+🏠 关于本站
+记录个人成长中的一些点滴
+👨‍💻 博主是谁
+一个开发者，业余Geek，也是两位孩子的父亲
+
+编程：Nodejs、TypeScript、Java、Rust、MongoDB、Neo..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">关于</h2>
+            <div class="post-date">2019-01-25</div>
+            
+            <div class="post-content" v-pre>
+              <blockquote>
+<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
+</blockquote>
+<h2 id="关于本站">🏠 关于本站</h2>
+<p>记录个人成长中的一些点滴</p>
+<h2 id="博主是谁">👨‍💻 博主是谁</h2>
+<p>一个开发者，业余Geek，也是两位孩子的父亲</p>
+<!-- more -->
+<p>编程：<span style="background-color: yellow;"><strong>Nodejs</strong>、<strong>TypeScript</strong>、<strong>Java</strong>、<strong>Rust</strong>、<strong>MongoDB</strong>、<strong>Neo4J</strong></span></p>
+<p>其它：<strong>AIGC</strong>、<strong>AI Agent</strong>、<strong>英语</strong></p>
+<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
+<p><strong>跑步</strong> - 周末会跑一跑，给身体🔋，享受跑步时的思绪放空！ --- 🏃</p>
+<!-- more -->
+<p><strong>游泳</strong> - 深圳是一个温度相对较高的城市，跳入水中能让自己享受到清凉🆒！---🏊</p>
+<h2 id="做过一些有意思的项目">💻 做过一些有意思的项目</h2>
+<ul>
+<li><strong>D2C</strong> - UI2Code 把 figma 设计稿转成前端代码</li>
+<li><strong>AIGC</strong> - 通过工程化手段将文生图、图生图等模型应用在业务中</li>
+<li><strong>LING/Relay</strong> - 一款运行在浏览器的图形编辑软件</li>
+<li><strong>C2D</strong> - 程序化设计，通过知识图谱实现代码生成广告图</li>
+<li><strong>智能配色</strong> - 通过色条等配色规则实现图片自动换肤</li>
+<li><strong>智能合图</strong> - 使用 Nginx + lua + c + GraphicMagick 实现服务端秒级合图</li>
+<li><strong>尺寸延展</strong> - 通过算法和规则实现广告图的 1-N 裂变</li>
+</ul>
+<h2 id="个人履历">💻 个人履历</h2>
+<p><strong>京东</strong> · 软件开发工程师<br>
+<strong>腾讯</strong> · 软件开发工程师</p>
+
+            </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

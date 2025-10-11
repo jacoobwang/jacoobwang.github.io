@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>CSS 单位到底怎么选 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="在 CSS 样式表中，合理地运用单位来定义元素的尺寸、间距、字体大小等属性是至关重要的，不同的单位有着各自的特性和适用场景。本文将深入探讨几种常见的 CSS 单位：px、rpx、vm 和 rem。
+px（像素）
+像素（Pixel）是最为基础..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">CSS 单位到底怎么选</h2>
+            <div class="post-date">2024-12-30</div>
+            
+            <div class="post-content" v-pre>
+              <p>在 CSS 样式表中，合理地运用单位来定义元素的尺寸、间距、字体大小等属性是至关重要的，不同的单位有着各自的特性和适用场景。本文将深入探讨几种常见的 CSS 单位：px、rpx、vm 和 rem。</p>
+<h2 id="px像素">px（像素）</h2>
+<p>像素（Pixel）是最为基础和常见的单位，它直接对应屏幕上的一个物理像素点。在早期的网页设计中，px 几乎一统天下。例如，当我们设置一个 div 的宽度为 200px 时，它在屏幕上所占据的空间就是实实在在的 200 个像素点。这种确定性使得布局相对直观，设计师可以精确掌控元素的尺寸。然而，px 的缺点也逐渐显现，随着设备屏幕分辨率的多样化，固定像素值在不同分辨率下可能出现显示效果差异巨大的问题。比如，同样一个宽度为 300px 的按钮，在低分辨率屏幕上可能看起来大小适中，而在高分辨率的视网膜屏上，就会显得细小局促。</p>
+<h2 id="rpx响应式像素">rpx（响应式像素）</h2>
+<p>rpx 是微信小程序特有的一种单位，它是根据屏幕宽度进行自适应调整的。小程序规定屏幕宽度为 750rpx，无论在何种设备上打开小程序，都会将屏幕宽度等比例划分为 750 份。这意味着如果一个元素设置宽度为 375rpx，那么在宽度为 375px 的设备上，它将占据屏幕宽度的一半；而在宽度为 750px 的设备上，它依然占据屏幕宽度的一半，即 375px。这种自适应特性使得小程序的页面布局能够很好地适配各种手机屏幕，极大地减轻了开发者对不同屏幕适配的工作量，为用户带来一致的视觉体验。</p>
+<h2 id="vm视口宽度百分比">vm（视口宽度百分比）</h2>
+<p>vm 代表视口宽度的百分比单位，1vm 等于视口宽度的 1%。相较于 px，它具有一定的响应式特性。例如，设置一个容器的宽度为 50vm，那么它将始终占据当前视口宽度的一半。这在构建一些需要随浏览器窗口大小动态变化的布局时非常实用，如自适应的侧边栏或弹性的图片展示区域。不过，使用 vm 时要注意，它只与视口宽度相关，若元素的高度也需要按比例自适应，还需结合其他技术或单位来综合实现。</p>
+<h2 id="rem根元素字体大小相对单位">rem（根元素字体大小相对单位）</h2>
+<p>rem 是以根元素（通常是 html 元素）的字体大小为基准的相对单位。默认情况下，大部分浏览器的根元素字体大小为 16px，此时 1rem 就等于 16px。但开发者可以通过修改根元素的字体大小来统一缩放整个页面的尺寸。比如，将根元素字体大小设置为 12px，那么后续所有以 rem 为单位的元素尺寸都会相应缩小。这使得页面在不同屏幕尺寸下，只要合理调整根元素字体大小，就能实现相对灵活且整体协调的布局。尤其在做移动端网页适配时，结合媒体查询动态修改根元素字体大小，rem 单位能发挥出强大的自适应优势，确保页面元素在各种手机和平板设备上都呈现出良好的视觉效果。</p>
+<h2 id="如何选择使用合适的单位">如何选择使用合适的单位？</h2>
+<p>怎样选择主要有以下两大纬度来决定：</p>
+<h3 id="项目类型">项目类型</h3>
+<h4 id="网页项目">网页项目：</h4>
+<ul>
+<li>px：对于一些需要精确控制尺寸的元素，如固定宽度的导航栏、按钮等，px 是一个不错的选择。它可以确保在不同浏览器和设备上都能呈现出一致的固定大小。</li>
+<li>rem：在进行网页整体布局和字体大小设置时，rem 更为合适。通过设置根元素的字体大小，可以方便地实现整个页面的相对缩放，适应不同屏幕尺寸的设备，尤其在响应式设计中表现出色。</li>
+<li>vm：当需要创建与视口宽度紧密相关的布局，如全屏的背景图片、自适应的轮播图等，vm 可以很好地实现根据视口宽度的动态调整。</li>
+</ul>
+<h4 id="微信小程序项目">微信小程序项目：</h4>
+<ul>
+<li>rpx：由于微信小程序的跨设备适配需求较高，rpx 是首选单位。它能够自动根据屏幕宽度进行自适应调整，大大减少了开发者在不同设备上进行适配的工作量，确保页面在各种手机屏幕上都能保持良好的视觉效果。</li>
+</ul>
+<h3 id="设计需求">设计需求</h3>
+<ul>
+<li>固定尺寸设计：如果设计稿中的元素尺寸是固定的，且不考虑设备屏幕的变化，那么 px 可以准确地还原设计稿中的尺寸。例如，一些品牌标识、特定尺寸的图标等，使用 px 可以确保其在任何情况下都保持原设计的大小和比例。</li>
+<li>自适应布局设计：对于需要在不同设备上自适应显示的页面，rem 和 vm 是更好的选择。例如，一个新闻列表页面，要求在不同屏幕宽度的设备上都能自适应显示，使用 rem 或 vm 可以使列表项的宽度、间距等随着屏幕大小的变化而自动调整，提供更好的用户体验。</li>
+<li>高分辨率屏幕适配：在处理高分辨率屏幕时，如视网膜屏，px 可能会导致元素在屏幕上显示得过于细小。此时，rem 可以通过调整根元素字体大小来进行整体缩放，使页面在高分辨率屏幕上也能保持清晰和易读。而 rpx 在微信小程序中已经自动处理了高分辨率屏幕的适配问题。</li>
+</ul>
+<p>在实际项目中，通常会根据具体情况综合使用多种单位。例如，在网页项目中，可以以 rem 为主要单位进行整体布局，对于一些需要精确控制的元素再结合使用 px；在微信小程序项目中，以 rpx 为主，对于一些特殊情况可以适当使用 px 进行微调。关键是要根据项目的特点和需求，权衡各种单位的优缺点，选择最合适的方案。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/javascript-de-solid-yuan-ze/">
+                  <h3 class="post-title">
+                    JavaScript 的 SOLID 原则
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

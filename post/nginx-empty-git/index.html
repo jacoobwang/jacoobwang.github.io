@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Nginx empty-gif 模块 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="概述
+Nginx 是一个高性能的 HTTP 和反向代理服务器，广泛用于负载均衡、缓存和静态文件服务。Empty-GIF 模块是 Nginx 的一个第三方模块，主要用于处理透明的 GIF 图像（1x1 像素），通常用于跟踪用户行为或在网页中占..." />
+    <meta name="keywords" content="nginx" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Nginx empty-gif 模块</h2>
+            <div class="post-date">2018-12-12</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="概述">概述</h2>
+<p>Nginx 是一个高性能的 HTTP 和反向代理服务器，广泛用于负载均衡、缓存和静态文件服务。Empty-GIF 模块是 Nginx 的一个第三方模块，主要用于处理透明的 GIF 图像（1x1 像素），通常用于跟踪用户行为或在网页中占位。</p>
+<h2 id="主要功能">主要功能</h2>
+<p>Empty-GIF 模块的主要功能包括：</p>
+<ol>
+<li>生成透明 GIF: 该模块可以生成一个 1x1 像素的透明 GIF 图像，通常用于网页中的占位符或跟踪像素。</li>
+<li>减少带宽消耗: 通过使用透明 GIF，网站可以减少不必要的图像请求，从而节省带宽。</li>
+<li>简单的配置: 该模块的配置非常简单，用户只需在 Nginx 配置文件中添加几行代码即可启用。</li>
+</ol>
+<h2 id="配置">配置</h2>
+<p>在 Nginx 的配置文件中（通常是 /etc/nginx/nginx.conf），可以通过以下方式启用 Empty-GIF 模块：</p>
+<pre><code class="language-shell">http {
+    ...
+    server {
+        listen 80;
+        server_name example.com;
+
+        location /tracking {
+            empty_gif;  # 使用 empty-gif 模块
+        }
+    }
+}
+</code></pre>
+<h2 id="使用场景">使用场景</h2>
+<p>Empty-GIF 模块的使用场景包括：</p>
+<ul>
+<li>用户行为跟踪: 在网页中嵌入透明 GIF，以便跟踪用户的访问行为。</li>
+<li>广告监测: 广告网络可以使用透明 GIF 来监测广告的展示和点击情况。</li>
+<li>占位符: 在某些情况下，开发者可能希望在页面中使用占位符图像，而不希望加载实际的图像文件。</li>
+</ul>
+<h2 id="栗子">🌰栗子</h2>
+<p>生成如下链接：<br>
+https://www.jacoob.com/1.gif?timestamp=1545714096907&amp;sid=jq3a9fjlb2s&amp;sy=3758&amp;action=stay&amp;device_id=897668e8-da66-40ac-b456-2a54f6defc13&amp;app_key=aotu-blog-aotu.io-011&amp;title=test&amp;tz=-480&amp;oragin=localstorage&amp;token=cj3xr6lv200000f65xvv97nwc</p>
+<p>然后我们就可以使用上面的url来传递参数做前端上报了。</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://jacoobwang.github.io/tag/7Xy8U_AsT8/" class="tag">
+                    nginx
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

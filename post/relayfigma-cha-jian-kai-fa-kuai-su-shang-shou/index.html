@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Relay/Figma 插件开发快速上手 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="背景
+最近在负责 D2C  生成组件代码的需求，首先我们在设计工具上实现了一个组件绑定功能。大概就是研发需要选择设计组件然后逐个绑定设计属性，生成代码就能包含组件代码，提高代码可用率。
+由于手动绑定研发组件需要一个个点击表单，效率较低。大家..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Relay/Figma 插件开发快速上手</h2>
+            <div class="post-date">2025-03-08</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="背景">背景</h1>
+<p>最近在负责 D2C  生成组件代码的需求，首先我们在设计工具上实现了一个组件绑定功能。大概就是研发需要选择设计组件然后逐个绑定设计属性，生成代码就能包含组件代码，提高代码可用率。</p>
+<p>由于手动绑定研发组件需要一个个点击表单，效率较低。大家的时间都很宝贵，因此批量操作通过自动化的方式就尤其有必要，插件是解决方案之一。</p>
+<h1 id="插件介绍">插件介绍</h1>
+<p>Figma 插件是扩展 Figma 设计工具功能的小程序。这些插件可以自动化设计流程，提供额外的设计资源，或者增强协作功能。设计师和开发者可以使用插件来提高工作效率，减少重复性工作。插件市场包含各种类型的插件，例如图标生成器、颜色工具、原型插件等。用户可以在 Figma 的插件商店中找到并安装这些插件，以满足特定的设计需求。</p>
+<p>而 Relay 插件跟 Figma 插件一摸一样，所以开发 relay 插件直接先在 figma 环境开发即可。</p>
+<h1 id="搭建初始项目">搭建初始项目</h1>
+<blockquote>
+<p>具体可以参考这篇文章   https://www.figma.com/plugin-docs/plugin-quickstart-guide/</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://jacoobwang.github.io/post-images/1741423655578.png" alt="" loading="lazy"></figure>
+<p>初始化项目之后，我们就得到这样一个初始化工程：<br>
+<img src="https://jacoobwang.github.io/post-images/1741423683824.png" alt="" loading="lazy"></p>
+<h1 id="插件运行环境">插件运行环境</h1>
+<p>为了保持第三方代码的安全性，不会因为恶意代码影响 figma 平台运行，figma 提供了一套沙箱环境来执行 js 代码，并在沙箱环境中提供相应的 API 操作图层数据，从而达到插件与 figma 的交互。</p>
+<p>在figma的沙箱环境是可以执行所有的 es6 语法，但不提供浏览器 DOM API。如果需要使用浏览器 API 或自定义 UI 则需要使用 figma.showUI()方法实现，figma.showUI 的实质则是创建一个 iframe 来运行你的 UI 代码。</p>
+<p>在沙箱与iframe之间则通过postMessage 进行通信，这套架构在vscode的插件实现上也是类似方案。<br>
+<img src="https://jacoobwang.github.io/post-images/1741423726085.png" alt="" loading="lazy"></p>
+<h1 id="逻辑与-ui-分离">逻辑与 UI 分离</h1>
+<p>首先，项目拆分成两个目录：</p>
+<ul>
+<li>native 用来存放逻辑相关的代码。执行在 sandbox 里的 js 代码，也是调用 figma API 的逻辑，如获取节点、创建节点、修改节点等；</li>
+<li>web 用来存放前端 UI 代码，用来渲染插件的界面。</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://jacoobwang.github.io/post-images/1741423762414.png" alt="" loading="lazy"></figure>
+<h1 id="双向通信">双向通信</h1>
+<p>在 Figma 插件的上下文中：</p>
+<ol>
+<li>iframe 内部的 JavaScript 可以通过 parent.postMessage() 向插件的主脚本发送消息。</li>
+<li>而 figma.ui.postMessage() 是在插件的主脚本中使用的,用于向 iframe 发送消息。</li>
+</ol>
+<p>所以,通信流程是这样的:</p>
+<ul>
+<li>iframe -&gt; 主脚本: parent.postMessage()</li>
+<li>主脚本 -&gt; iframe: figma.ui.postMessage()</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://jacoobwang.github.io/post-images/1741423813216.png" alt="" loading="lazy"></figure>
+<p>下面展示了主脚本发送消息和接收消息的核心代码：</p>
+<pre><code class="language-typescript">import * as EventEmitter from 'events'
+export const Event = new EventEmitter()
+interface MessageEvent{
+    callback: string;
+}
+
+interface RPCEventData{
+    code:number; // 0:失败 1：成功
+    msg?:string;
+    data?:any;
+}
+
+figma.ui.onmessage = msg =&gt; {
+    Event.emit(msg.type, msg.body)
+}
+
+/**
+ * 往 ui 层发送信息
+ * @param command 事件
+ * @param body 返回内容
+ * @param customize 是否自定义
+ */
+export function post(command:string | MessageEvent, body:any | RPCEventData) {
+    let type = command
+    if ( typeof(command) === 'object' ) {
+        type = command.callback
+    }
+    
+    let code = 0
+    let data = body
+    if (body instanceof Error) {
+        code = 1
+        data = body.message + body.stack
+    }
+
+    figma.ui.postMessage({ type, data: { code, data } })
+}
+</code></pre>
+<h1 id="调试">调试</h1>
+<p>有以下两种调试方式：</p>
+<ol>
+<li>在开发过程中，可以使用 Figma 的开发模式来测试和调试插件。在 Figma 中，选择 “开发” -&gt; “开发插件”，然后选择插件项目的根目录。这样，每次修改代码后，只需在 Figma 中重新运行插件即可查看最新的效果。</li>
+</ol>
+<p>2.也可以选择在浏览器调试，把插件代码打包成1个 js 文件，然后在平台随机抓一个插件的 js 请求，把这个  js 请求代理到本地就可以开始调试了。这里推荐使用 chrome dev tools 自带的 overrides 功能，非常方便，不需要任何代理软件或插件。</p>
+<figure data-type="image" tabindex="4"><img src="https://jacoobwang.github.io/post-images/1741423859850.png" alt="" loading="lazy"></figure>
+<h1 id="发布">发布</h1>
+<p>当插件开发完成并经过充分测试后，可以将其发布到 Figma 插件商店，供其他用户使用。在 Figma 中，选择 “开发” -&gt; “提交插件”，按照提示填写插件的相关信息，如名称、描述、截图等，然后提交审核。审核通过后，插件就会在 Figma 插件商店中上线。</p>
+<h1 id="问题">问题</h1>
+<p>figma 运行正常，relay 报错：&quot;TypeError: Cannot read properties of undefined (reading 'Array') at runInContext&quot;</p>
+<figure data-type="image" tabindex="5"><img src="https://jacoobwang.github.io/post-images/1741423900736.png" alt="" loading="lazy"></figure>
+<p>经过 debug 定位发现是 lodash 里获取 context 未获取到后报错，context 获取是通过 root 来，root 定义如下：</p>
+<pre><code class="language-typescript">var freeGlobal = typeof global == 'object' &amp;&amp; global &amp;&amp; global.Object === Object &amp;&amp; global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' &amp;&amp; self &amp;&amp; self.Object === Object &amp;&amp; self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+</code></pre>
+<p>可以看到 root 其实是获取的全局对象（global object），即在浏览器中的window对象，或在Node.js中的global对象。</p>
+<p>报错原因就是沙箱环境限制了全局对象的获取，导致异常。</p>
+<p>解决办法：1. 沙箱环境里支持获取全局对象或者传入空对象作为全局对象； 2. 放弃使用 lodash 。</p>
+<h1 id="沙箱环境-realms">沙箱环境 Realms</h1>
+<p>figma 沙箱采用  Realms shim 的技术，该技术将创建沙箱和支持插件作为潜在用例，Realms API 大致如下：</p>
+<pre><code class="language-typescript">let g = window; // outer global
+let r = new Realm(); // realm object
+
+let f = r.evaluate(&quot;(function() { return 17 })&quot;);
+
+f() === 17 // true
+
+Reflect.getPrototypeOf(f) === g.Function.prototype // false
+Reflect.getPrototypeOf(f) === r.global.Function.prototype // true
+</code></pre>
+<p>实际上，可以使用已有的 JavaScript 功能来实现该技术，沙箱可以隐藏全局变量，shim 起作用的核心大致如下：</p>
+<pre><code class="language-typescript">function simplifiedEval(scopeProxy, userCode) {
+  'use strict'
+  with (scopeProxy) {
+    eval(userCode)
+  }
+}
+</code></pre>
+<p>with(obj) 创建了一个新的作用域，在该作用域内可以使用 obj 的属性来解析变量。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/d2c-sheng-cheng-tailwind-css-qian-duan-dai-ma/">
+                  <h3 class="post-title">
+                    D2C - 生成 Tailwind Css 前端代码
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

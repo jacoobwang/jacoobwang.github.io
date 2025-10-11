@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>es-toolkit 更快更轻量的 lodash  | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="lodash 作为前端的基础工具库，已经被大量广泛使用，lodash 提供了非常多的工具函数，涵盖数组、字符串、对象等多种数据结构类型，而且 lodash 有个最大的有点是兼容性好，能处理各种边界情况，不担心各种  undefine nul..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">es-toolkit 更快更轻量的 lodash </h2>
+            <div class="post-date">2024-11-14</div>
+            
+            <div class="post-content" v-pre>
+              <p>lodash 作为前端的基础工具库，已经被大量广泛使用，lodash 提供了非常多的工具函数，涵盖数组、字符串、对象等多种数据结构类型，而且 lodash 有个最大的有点是兼容性好，能处理各种边界情况，不担心各种  undefine null 或者 类型不对导致的报错，所以广受欢迎。  而最近出来了一个 es-toolkit ，是一个基于 es6 新特性的工具函数库，它使用了大量新的 es 新特性，相比 lodash 速度提高 2-3 倍，体积缩小 97%。</p>
+<h2 id="以下是-es-toolkit-和-lodash-之间的主要比较">以下是 es-toolkit 和 lodash 之间的主要比较</h2>
+<ol>
+<li>es - toolkit 提供了与 lodash 类似的关键工具函数，涵盖函数、数组、对象、字符串、数学和 Promise 等领域。</li>
+<li>es-toolkit 的函数通常比 lodash 的函数更快，因为它们在实现中使用了现代 JavaScript API，并且使用 TypeScript 进行类型检查，减少了对额外防御性代码的需求。</li>
+<li>性能基准测试表明，es - toolkit 函数的性能优于 lodash 的等效函数，有时优势明显。</li>
+<li>es-toolkit 的函数与 lodash 的等效函数相比，包大小显著更小，从而导致更快的加载时间和更好的性能。</li>
+<li>es-toolkit 通过利用现代 JavaScript 特性并避免 lodash 中存在的相互依赖关系来解决性能和包大小挑战。</li>
+<li>es-toolkit 的函数大多是独立的，防止意外包含不必要的代码，而在 lodash 中工具函数通常是相互依赖的。</li>
+</ol>
+<h2 id="es-toolkit-的主要特性">es-toolkit 的主要特性</h2>
+<ol>
+<li>函数，包括用于缓存函数结果的memoize和用于限制函数调用频率的debounce。</li>
+<li>数组相关函数，如用于过滤重复项的uniq和用于找出数组之间差异的difference。</li>
+<li>用于处理 JavaScript 对象的工具，如用于深度克隆的cloneDeep和用于将嵌套对象转换为扁平结构的flattenObject。</li>
+<li>字符串操作工具，包括用于将字符串转换为短横线命名法（kebab - case）的kebabCase。</li>
+<li>数学助手，如用于生成随机数的random和用于四舍五入的round。</li>
+<li>类型保护函数，如用于轻松检查null或undefined值的isNil。</li>
+<li>用于处理异步代码的工具，如用于暂停执行一段时间的delay。</li>
+</ol>
+<h2 id="性能">性能</h2>
+<p>es-toolkit 的函数通常比 lodash 的函数更快，因为它们在实现中使用了现代 JavaScript API。例如，es-toolkit 的omit函数比 lodash 的 omit 函数快约 11.8 倍。</p>
+<p>以下是一个比较es - toolkit和lodash - es各种函数性能的表格：<br>
+<img src="https://jacoobwang.github.io/post-images/1731552806381.png" alt="" loading="lazy"></p>
+<h2 id="包大小">包大小</h2>
+<p>在包大小方面，es - toolkit 表现出色。较小的包大小意味着你的 Web 应用程序将加载得更快，性能更好，特别是在较慢的网络上。</p>
+<p>以下是es - toolkit和lodash - es中一些常见函数的包大小比较：<br>
+<img src="https://jacoobwang.github.io/post-images/1731552949232.png" alt="" loading="lazy"><br>
+es-toolkit 的函数与它们的 Lodash 对应函数相比要小得多。例如，es-toolkit 中的sample函数只有 88 字节，而 Lodash 中的相同函数是 2,000 字节 —— 几乎小了 96%！</p>
+<h2 id="防抖示例">防抖示例</h2>
+<p>假设你正在为一个网站构建搜索功能，用户可以在其中查找不同主题的信息。</p>
+<p>你希望在用户输入时获取数据，但又不想为每个按键都发送请求；否则，你可能会用太多调用淹没 API。这就是 es-toolkit 的防抖函数派上用场的地方。</p>
+<p>它的工作原理如下：</p>
+<pre><code class="language-javascript">import { debounce } from &quot;es-toolkit&quot;;
+
+// 一个模拟API调用的函数
+function fetchData(query) {
+  console.log(`Fetching data for: ${query}`);
+}
+
+// 使用es - toolkit的防抖函数
+const debouncedFetchData = debounce(fetchData, 1000);
+
+document.getElementById(&quot;search-input&quot;).addEventListener(&quot;input&quot;, (event) =&gt; {
+    const query = event.target.value;
+    debouncedFetchData(query);
+});
+</code></pre>
+<p>在这个例子中，尽管我输入了五个字母，但fetchData函数只在我停止输入一秒钟后才被调用。通过这种方式，我们可以使用防抖函数避免在每次按键时进行不必要的 API 请求。</p>
+<h2 id="节流示例">节流示例</h2>
+<p>假设你的网页上有一个按钮，点击时会加载更多帖子。为了防止按钮被快速点击时进行多次 API 调用，你可以使用 es-toolkit 的节流函数。它确保即使按钮被多次点击，API 调用也只会在设定的时间间隔内发生。</p>
+<p>你可以这样使用它：</p>
+<pre><code class="language-javascript">// 节流示例
+import { throttle } from &quot;es-toolkit&quot;;
+
+// 从API获取帖子的函数
+async function fetchPosts() {
+  console.log(&quot;Fetching new posts...&quot;);
+  const response = await fetch(&quot;https://jsonplaceholder.typicode.com/posts&quot;);
+  const posts = await response.json();
+  console.log(&quot;Posts fetched:&quot;, posts);
+}
+// 创建fetchPosts的节流版本
+const throttledFetchPosts = throttle(fetchPosts, 2000);
+
+// 在按钮上设置事件监听器
+document.getElementById(&quot;fetch-more-posts&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+  console.log(&quot;button clicked&quot;);
+  throttledFetchPosts();
+});
+</code></pre>
+<p>在这个例子中，即使用户快速点击 “获取更多帖子” 按钮，fetchPosts函数也只会每两秒触发一次。</p>
+<h2 id="es-toolkit-如何解决性能和包大小挑战">es-toolkit 如何解决性能和包大小挑战</h2>
+<p>你可能好奇 es-toolkit 是如何应对这些挑战的。在底层，es-toolkit 利用现代 JavaScript API 来提供更快的性能和显著更小的包大小。</p>
+<p>除此之外，es-toolkit 使用 TypeScript，这有助于减少大量通常在运行时检查参数类型的额外防御性代码。这不仅使代码运行更高效，还最大限度地减少了任何可能减慢速度的不必要开销。</p>
+<p>另一个关键区别是 lodash 的工具函数通常是相互依赖的，这意味着导入一个函数可能会连带引入许多其他函数。相比之下，es-toolkit 的函数大多是独立的，这有助于保持你的包轻量级。</p>
+<h2 id="结论">结论</h2>
+<p>目前 es-toolkit 刚出来，其生态和覆盖的场景不如 lodash es-toolkit 可以在某些情况下替代 lodash，尤其是当你只需要一些基本的工具函数时。然而，如果你需要 lodash 提供的全面功能，lodash仍然是更好的选择。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/webassemblywasmqian-duan-xing-neng-ti-sheng-de-guan-jian-ji-zhu/">
+                  <h3 class="post-title">
+                    WebAssembly（Wasm）：前端性能提升的关键技术
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

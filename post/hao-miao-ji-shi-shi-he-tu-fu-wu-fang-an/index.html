@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>毫秒级实时合图服务方案 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="我所在的团队几年前开始实现一款基于 URL 拼接方式的实时合图能力，应用场景则是用在广告图千人千面的场景下，很多 App 首页都有 banner 广告位，为了最大程度提升广告的效率，广告算法推荐需要实现了一套通过不同的 sku + 不同的文..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">毫秒级实时合图服务方案</h2>
+            <div class="post-date">2024-11-18</div>
+            
+            <div class="post-content" v-pre>
+              <p>我所在的团队几年前开始实现一款基于 URL 拼接方式的实时合图能力，应用场景则是用在广告图千人千面的场景下，很多 App 首页都有 banner 广告位，为了最大程度提升广告的效率，广告算法推荐需要实现了一套通过不同的 sku + 不同的文案 + 不同的模版，然后生成一张广告图的技术方案。</p>
+<p>这套技术方案抛开推荐算法不提，最为重要的是如何在用户打开 App 的瞬间能够合成出广告图，而我当时主要负责服务端广告图合成技术。于是就有了本文的技术方案- 毫秒级广告图合成。</p>
+<h2 id="url-设计">URL 设计</h2>
+<p>对于图片服务器而言，要求业务逻辑尽量简单，最大化利用图片路径来做参数传递，当浏览器打开一个图片资源时，源服务器可以快速找到所在服务器分片并迅速定位到文件资源返回给上游。基于此我们设计了一套 URL 方式能够承载动态信息：</p>
+<p><code>http://img.example.com/${appName}/${image}/${variable}/${token}/${meta}/q.jpg</code></p>
+<ul>
+<li>appName: 业务名</li>
+<li>variable: 图片信息 + 文案信息 + 模版信息</li>
+<li>token: 加密参数, 把 variable 加密下校验 URL 合法性</li>
+<li>meta: 裁剪信息 + 缩放信息 + 质量信息<br>
+<img src="https://jacoobwang.github.io/post-images/1731931555471.png" alt="" loading="lazy"></li>
+</ul>
+<h2 id="技术架构">技术架构</h2>
+<p><img src="https://jacoobwang.github.io/post-images/1731939773625.png" alt="" loading="lazy"><br>
+架构设计一切从性能出发，使用了 Nginx + lua + c 扩展的方式来实现服务，而并不需要 nginx 接受请求转发给其它服务进程处理，减少 IO 开销与进程切换的开销。</p>
+<p>ngx_lua 采用 “one-coroutine-per-request” 的处理模型，对于每个用户请求，ngx_lua会唤醒一个协程用于执行用户代码处理请求，当请求处理完成这个协程会被销毁。每个协程都有一个独立的全局环境（变量空间），继承于全局共享的、只读的“comman data”。所以，被用户代码注入全局空间的任何变量都不会影响其他请求的处理，并且这些变量在请求处理完成后会被释放，这样就保证所有的用户代码都运行在一个“sandbox”（沙箱），这个沙箱与请求具有相同的生命周期。 得益于Lua协程的支持，ngx_lua在处理10000个并发请求时只需要很少的内存。根据测试，ngx_lua处理每个请求只需要2KB的内存，如果使用LuaJIT则会更少。所以ngx_lua非常适合用于实现可扩展的、高并发的服务。</p>
+<h3 id="lua-逻辑">lua 逻辑</h3>
+<p>Nginx 接受到请求后通过 location 匹配到对应的 lua 脚本并执行，lua 里面的逻辑主要包含参数提取，主要通过正则的方式取出来文案+图片+模版+缩放等信息，然后获取模版+获取图片信息然后调用 c 扩展实现合图，最后返回合成后的图片信息。</p>
+<h3 id="nginx-缓存">Nginx 缓存</h3>
+<p>这里还涉及到一个缓存优化，因为模版信息及图片获取信息依赖外部接口，因此为了减少外部请求（昂贵），借助于 Nginx 缓存可以实现基于内存级别的缓存。</p>
+<p>当启用了 Nginx 的缓存功能时，Nginx 会将服务端的响应保存在本地磁盘上，在后续的请求中只有请求满足缓存的条件就会命中缓存，Nginx不会再将请求转发到后端的服务上。</p>
+<pre><code class="language-shell">    proxy_cache                     file;
+    proxy_cache_key                 $1$is_args$args;
+    proxy_cache_min_uses            1;
+    proxy_cache_valid               200 1d;
+    proxy_no_cache                  $no_cache;
+    proxy_cache_expire              $2;
+</code></pre>
+<h3 id="合图引擎">合图引擎</h3>
+<p>合图引擎使用 c 实现，图形绘制能力基于 Graphics Magick 实现，大致流程如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1731986613979.png" alt="" loading="lazy"></p>
+<h3 id="cdn域名">CDN域名</h3>
+<p>最后通过 cdn 域名来缓解合图源站的压力，通过把域名改造为 CDN 域名能够大大降低合图的数量。只要 URL 没有发生改变，请求会先到 CDN ，如果 CDN 没有才会会源站请求合成图片，合成之后则推到 CDN 源站存储，以便后续快速获取资源。</p>
+<h2 id="总结">总结</h2>
+<p>最后这套方案的实时合图图层数量小于 10 的情况下，性能 TP99 稳定在 200ms 以内，图层数越多则消耗的时间会越长，但已经能满足当下的业务诉求。</p>
+<p>有了这套能力之后也尝试拓展更多应用场景，动态 banner 也使用了这套能力，能瞬间合成多张图片后通过 FFmpeg 合成为 GIF 或 MP4。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/tu-zhuan-she-ji-gao-zhuan-dai-ma-fang-an-si-kao/">
+                  <h3 class="post-title">
+                    图转设计稿转代码方案思考
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

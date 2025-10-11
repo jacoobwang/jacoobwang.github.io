@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>vite 开发环境编译流程 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Vite 的开发环境采用按需编译和原生 ES 模块驱动的架构，与传统打包工具（如 Webpack）有本质区别。以下是其编译流程及对不同文件类型的处理方式：
+一、Vite 开发环境核心原理
+
+启动服务器：
+Vite 启动时不进行全量编译，而是..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">vite 开发环境编译流程</h2>
+            <div class="post-date">2025-06-05</div>
+            
+            <div class="post-content" v-pre>
+              <p>Vite 的开发环境采用按需编译和原生 ES 模块驱动的架构，与传统打包工具（如 Webpack）有本质区别。以下是其编译流程及对不同文件类型的处理方式：</p>
+<h2 id="一-vite-开发环境核心原理">一、Vite 开发环境核心原理</h2>
+<ol>
+<li>启动服务器：<br>
+Vite 启动时不进行全量编译，而是创建一个 HTTP 服务器，监听文件变化。</li>
+<li>浏览器优先原则：<br>
+浏览器直接通过 ES 模块的import语句请求文件（如import './main.ts'），Vite 拦截这些请求并实时编译。</li>
+<li>按需编译：<br>
+只有当浏览器请求某个模块时，Vite 才会对其进行编译（如 TS 转 JS、Less 转 CSS），并返回处理后的结果。</li>
+</ol>
+<h2 id="二-不同文件类型的处理流程">二、不同文件类型的处理流程</h2>
+<ol>
+<li>
+<p>Less 文件处理<br>
+请求拦截：当浏览器请求.less文件时，Vite 拦截该请求。<br>
+编译：使用less编译器将 Less 转换为 CSS。<br>
+注入：将 CSS 通过 JavaScript 动态注入到页面的<style>标签中（支持 HMR 热更新）。</p>
+</li>
+<li>
+<p>TS 文件处理<br>
+请求拦截：拦截.ts文件请求。<br>
+编译：使用esbuild（速度极快）将 TS 转换为 JS，仅进行语法转换（不做类型检查）。<br>
+类型检查：类型检查由独立进程（如 VSCode 插件或tsc --watch）完成，不阻塞开发服务器。</p>
+</li>
+</ol>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/bian-ji-qi-qian-duan-dai-ma-feng-ge-gui-fan/">
+                  <h3 class="post-title">
+                    编辑器-前端代码风格规范
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

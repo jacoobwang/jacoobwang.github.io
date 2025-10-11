@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>编辑器-前端代码风格规范 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="最近在升级一个旧的项目，早前的项目由于没有使用 ts，改起来有点痛苦以及当时没有做好的规范约束，以至于不同人贡献的代码差别很大，看着着实痛苦。
+规范的意义
+1、保证代码的一致性，从根本上提高代码整体的可读性、可维护性、可复用性：保持一致的编..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">编辑器-前端代码风格规范</h2>
+            <div class="post-date">2025-03-10</div>
+            
+            <div class="post-content" v-pre>
+              <p>最近在升级一个旧的项目，早前的项目由于没有使用 ts，改起来有点痛苦以及当时没有做好的规范约束，以至于不同人贡献的代码差别很大，看着着实痛苦。</p>
+<h1 id="规范的意义">规范的意义</h1>
+<p>1、保证代码的一致性，从根本上提高代码整体的可读性、可维护性、可复用性：保持一致的编码风格，能让其他人在维护代码时能快速上手，即使没有什么经验的开发同学也能保障其代码的交付质量，为后期维护提供更好的支持。</p>
+<p>2、有效降低开发和沟通的成本，提升团队整体效率：大型项目最复杂的模块往往仅占整体的一小部分，更多的是相对简单的日常开发和维护。遵循统一的技术规范，能够有效的降低多人协作工程中的沟通成本。如果没有统一规范则出现混乱的局面，留下庞大的技术债。</p>
+<h1 id="技术栈统一">技术栈统一</h1>
+<ul>
+<li>基础：Typescript + Tsx</li>
+<li>框架：React + React Dom</li>
+<li>Css 处理器：Sass</li>
+<li>UI 框架：Ant Design / DongDesign</li>
+<li>状态管理：React Redux + Rematch</li>
+<li>构建工具：Vite</li>
+</ul>
+<h1 id="eslint-规范">Eslint 规范</h1>
+<h4 id="基准规则">基准规则</h4>
+<p>不重复造轮子，基于 eslint:recommend 配置并改进<br>
+能够帮助发现代码错误的规则，全部开启</p>
+<h4 id="eslint-规则">ESLint 规则</h4>
+<ul>
+<li>允许非大写开头的构造函数名 ( new-cap: 0 )</li>
+<li>禁止使用 var ( no-var: 2 )</li>
+<li>限制 console 使用，仅允许 warn 和 error ( no-console: [1, { allow: ['warn', 'error'] }] )</li>
+<li>禁用内部声明 ( no-inner-declarations: 2 )</li>
+<li>强制使用 const 声明不会被修改的变量 ( prefer-const: [2, { 'destructuring': 'all' }] )</li>
+<li>禁止特定语法，如 debugger、label 和 with 语句</li>
+</ul>
+<h4 id="react-规则">React 规则</h4>
+<ul>
+<li>允许组件没有 displayName</li>
+<li>禁止 JSX 中的重复属性</li>
+<li>禁止未定义的 JSX 元素</li>
+<li>禁止直接修改 state</li>
+<li>强制组件的 render 方法返回值</li>
+<li>不要求 prop-types 验证</li>
+<li>不要求导入 React (新版 React 不需要)</li>
+<li>禁止在 componentDidUpdate 中使用 setState</li>
+<li>鼓励使用无状态函数组件</li>
+<li>强制执行 React Hooks 规则</li>
+</ul>
+<h4 id="import-规则">Import 规则</h4>
+<ul>
+<li>禁止未使用的模块</li>
+<li>import 语句后需要空行</li>
+<li>禁止使用 CommonJS 模块语法 (require)，但允许条件性 require</li>
+<li>禁止重复导入</li>
+</ul>
+<h4 id="import-排序">Import 排序</h4>
+<ul>
+<li>强制对 imports 和 exports 进行排序</li>
+</ul>
+<h4 id="typescript-规则">TypeScript 规则</h4>
+<ul>
+<li>不强制函数返回类型注解</li>
+<li>允许变量在定义前使用</li>
+<li>对未使用的变量发出警告</li>
+<li>不强制模块边界类型</li>
+<li>允许特定情况下的空函数</li>
+<li>允许 this 别名</li>
+<li>允许 require 语句</li>
+<li>允许 @ts-comment 注释</li>
+</ul>
+<h1 id="git-规范">Git 规范</h1>
+<h4 id="commit日志基本规范">commit日志基本规范</h4>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+&lt;BLANK LINE&gt;
+&lt;body&gt;
+&lt;BLANK LINE&gt;
+&lt;footer&gt;
+</code></pre>
+<ul>
+<li>feat： 新增 feature</li>
+<li>fix: 修复 bug</li>
+<li>docs: 仅仅修改了文档，比如 README, CHANGELOG, CONTRIBUTE等等</li>
+<li>style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑</li>
+<li>refactor: 代码重构，没有加新功能或者修复 bug</li>
+<li>perf: 优化相关，比如提升性能、体验</li>
+<li>test: 测试用例，包括单元测试、集成测试等</li>
+<li>chore: 改变构建流程、或者增加依赖库、工具等</li>
+<li>revert: 回滚到上一个版本</li>
+</ul>
+<h4 id="分支规范">分支规范</h4>
+<p>test 测试分支<br>
+master 主分支<br>
+release release 分支<br>
+feat/xxx 特性分支<br>
+hotfix/xxx 修复分支</p>
+<pre><code class="language-yaml">extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+
+parser: '@typescript-eslint/parser'
+
+env:
+  es6: true
+  node: true
+
+plugins:
+  - react
+  - prettier
+  - react-hooks
+  - simple-import-sort
+  - unused-imports
+  - '@typescript-eslint'
+
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+
+rules:
+  prettier/prettier:
+    [
+      2,
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        semi: false,
+        'endOfLine': 'auto',
+      },
+    ]
+
+  # eslint
+  new-cap: 0
+  no-var: 2
+  no-console: [1, { allow: ['warn', 'error'] }]
+  no-unused-vars: 0
+  no-inner-declarations: 2
+  camelcase: 0
+  no-useless-escape: 0
+  no-prototype-builtins: 0
+  no-restricted-syntax:
+    - 2
+    - DebuggerStatement
+    - LabeledStatement
+    - WithStatement
+  require-atomic-updates: 0
+  prefer-rest-params: 0
+  prefer-const: [2, { 'destructuring': 'all' }]
+  prefer-spread: 0
+
+  # react
+  react/display-name: 0
+  react/jsx-no-duplicate-props: 2
+  react/jsx-no-undef: 2
+  react/no-deprecated: 0
+  react/no-direct-mutation-state: 2
+  react/no-render-return-value: 2
+  react/require-render-return: 2
+  react/jsx-uses-react: 1
+  react/jsx-uses-vars: 1
+  react/prop-types: 0
+  react/react-in-jsx-scope: 0
+  react/no-did-update-set-state: 2
+  react/no-redundant-should-component-update: 2
+  react/no-typos: 2
+  react/no-unused-prop-types: 2
+  react/no-unused-state: 2
+  react/prefer-stateless-function: [1, { ignorePureComponents: true }]
+  react/void-dom-elements-no-children: 2
+  react/jsx-boolean-value: 1
+  react/jsx-no-bind: [2, { ignoreRefs: true, allowArrowFunctions: true }]
+  react-hooks/rules-of-hooks: 2
+  react-hooks/exhaustive-deps: 1
+  react-perf/jsx-no-new-object-as-prop: 1
+  react-perf/jsx-no-new-array-as-prop: 1
+
+  # import
+  import/no-unused-modules: 2
+  import/newline-after-import: 2
+  import/no-commonjs: [2, { allowConditionalRequire: true }]
+  import/no-duplicates: 2
+
+  # simple-import-sort
+  simple-import-sort/imports: 2
+  simple-import-sort/exports: 2
+
+  # typescript
+  '@typescript-eslint/camelcase': 0
+  '@typescript-eslint/explicit-function-return-type': 0
+  '@typescript-eslint/no-use-before-define': 0
+  '@typescript-eslint/no-unused-vars': [1, { ignoreRestSiblings: true }]
+  '@typescript-eslint/explicit-module-boundary-types': 0
+  '@typescript-eslint/ban-types': 0
+  '@typescript-eslint/no-empty-function':
+    [1, { 'allow': ['private-constructors', 'protected-constructors'] }]
+  '@typescript-eslint/no-this-alias': 0
+  '@typescript-eslint/no-var-requires': 0
+  '@typescript-eslint/ban-ts-comment': 0
+  '@typescript-eslint/strict-boolean-expressions':
+    [1, { allowNullableBoolean: true }]
+
+overrides:
+  - files:
+      - '*.js'
+      - '*.jsx'
+    rules:
+      import/no-commonjs: 0
+  - files:
+      - '*.ts'
+      - '*.tsx'
+    rules:
+      import/no-unresolved: 0
+      lodash/prefer-lodash-method: 0
+</code></pre>
+<p>vscode 配置</p>
+<pre><code class="language-json">// Place your settings in this file to overwrite default and user settings.
+{
+  &quot;editor.tabSize&quot;: 2,
+  &quot;editor.insertSpaces&quot;: true,
+  &quot;search.exclude&quot;: {
+  },
+
+  &quot;editor.formatOnSave&quot;: false,
+  &quot;editor.renderControlCharacters&quot;: true,
+  &quot;editor.codeActionsOnSave&quot;: {
+    &quot;source.fixAll.eslint&quot;: &quot;explicit&quot;
+  },
+
+  &quot;[less]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[css]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[yaml]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[html]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[json]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;vscode.json-language-features&quot;,
+  },
+  &quot;[markdown]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;[mdx]&quot;: {
+    &quot;editor.formatOnSave&quot;: true,
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+  },
+  &quot;files.associations&quot;: {
+      &quot;*.xml&quot;: &quot;html&quot;,
+      &quot;*.svg&quot;: &quot;html&quot;,
+  },
+
+  &quot;prettier.ignorePath&quot;: &quot;.eslintignore&quot;,
+  &quot;liveServer.settings.port&quot;: 5501,
+  &quot;code-runner.executorMapByGlob&quot;: {
+    &quot;*.test.*&quot;: &quot;cd $dir &amp;&amp; yarn test --files $fullFileName&quot;,
+  },
+  &quot;typescript.tsdk&quot;: &quot;node_modules/typescript/lib&quot;,
+  &quot;search.followSymlinks&quot;: false,
+  &quot;files.exclude&quot;: {
+    &quot;**/.git&quot;: true,
+    &quot;**/.svn&quot;: true,
+    &quot;**/.hg&quot;: true,
+    &quot;**/CVS&quot;: true,
+    &quot;**/.DS_Store&quot;: true,
+    &quot;**/tmp&quot;: true,
+    &quot;**/bower_components&quot;: true,
+    // &quot;**/node_modules&quot;: true,
+    // &quot;**/dist&quot;: true
+  },
+  &quot;files.watcherExclude&quot;: {
+    &quot;**/.git/objects/**&quot;: true,
+    &quot;**/.git/subtree-cache/**&quot;: true,
+    &quot;**/node_modules/**&quot;: true,
+    &quot;**/tmp/**&quot;: true,
+    &quot;**/bower_components/**&quot;: true,
+    &quot;**/dist/**&quot;: true
+},
+&quot;makefile.configureOnOpen&quot;: false
+}
+</code></pre>
+<p>tsconfig 配置</p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    &quot;typeRoots&quot;: [&quot;./node_modules/@types&quot;, &quot;./types&quot;],
+    &quot;target&quot;: &quot;es5&quot;,
+    &quot;lib&quot;: [
+      &quot;dom&quot;,
+      &quot;dom.iterable&quot;,
+      &quot;esnext&quot;
+    ],
+    &quot;allowJs&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;esModuleInterop&quot;: true,
+    &quot;allowSyntheticDefaultImports&quot;: true,
+    &quot;strict&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: false,
+    &quot;noFallthroughCasesInSwitch&quot;: true,
+    &quot;module&quot;: &quot;esnext&quot;,
+    &quot;moduleResolution&quot;: &quot;node&quot;,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true,
+    &quot;jsx&quot;: &quot;react&quot;,
+    &quot;outDir&quot;: &quot;./dist&quot;,
+    &quot;plugins&quot;: [
+      {
+        &quot;name&quot;: &quot;typescript-plugin-css-modules&quot;
+      }
+    ],
+    &quot;paths&quot;: {
+      &quot;~/*&quot;: [&quot;./src/*&quot;],
+      &quot;@constant/*&quot;: [&quot;./src/constant/*&quot;]
+    }
+  },
+  &quot;exclude&quot;: [
+    &quot;build&quot;,
+    &quot;node_modules&quot;
+  ],
+  &quot;include&quot;: [
+    &quot;src&quot;, &quot;typing.d.ts&quot;
+  ]
+}
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/relayfigma-cha-jian-kai-fa-kuai-su-shang-shou/">
+                  <h3 class="post-title">
+                    Relay/Figma 插件开发快速上手
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

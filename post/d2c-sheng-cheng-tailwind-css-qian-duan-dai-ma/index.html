@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>D2C - 生成 Tailwind Css 前端代码 | Jacoob</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jacoobwang.github.io/favicon.ico?v=1760165813988">
+<link rel="stylesheet" href="https://jacoobwang.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/vue@2.7.16/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="背景：
+目前 Relay 生成代码功能研发过程中，我们发现 D2C 的难点之一：Class 类名不语义化的问题。D2C 算法生成的类名，如 view0、view1、view2、text0、text1 等缺乏有效含义，对研发不够友好。
+方案：..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jacoobwang.github.io">
+        <img src="https://jacoobwang.github.io/images/avatar.png?v=1760165813988" class="site-logo">
+        <h1 class="site-title">Jacoob</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      友情链接：<a href="https://faketextmeassage.com/">Fake Text Message</a> | <a class="rss" href="https://jacoobwang.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">D2C - 生成 Tailwind Css 前端代码</h2>
+            <div class="post-date">2025-03-03</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="背景">背景：</h1>
+<p>目前 Relay 生成代码功能研发过程中，我们发现 D2C 的难点之一：Class 类名不语义化的问题。D2C 算法生成的类名，如 view0、view1、view2、text0、text1 等缺乏有效含义，对研发不够友好。</p>
+<h1 id="方案">方案：</h1>
+<h2 id="1-使用-llm-大模型如-gpt4-进行语义优化">1、使用 LLM 大模型如 GPT4 进行语义优化</h2>
+<p>经过测试大模型可以优化代码，但存在几个问题：</p>
+<p>•大模型存在 token 限制问题，输入和输出都存在可能超出的情况，特别是输出限制了 8K 大小，很多稿子跑下来就超出了。<br>
+•大模型耗时比较长，一个请求过去要好几秒，使用 SSE 体验会略好一点<br>
+•大模型如果不结合图片做多模态预览效果也会略差一点，比如不同的稿子，在没有图片 input 时候，输出的 class 有一定概率重复，并可能跟设计稿件毫无关联：如 view 大概率会变成 product等。</p>
+<h2 id="2-生成-tailwind-css-风格的-class不再需要自定义class">2、生成 Tailwind css 风格的 class，不再需要自定义class</h2>
+<figure data-type="image" tabindex="1"><img src="https://jacoobwang.github.io/post-images/1740971070038.png" alt="" loading="lazy"></figure>
+<p>Tailwind CSS 是目前世界上最流行的原子化 CSS 框架。它集成了诸如 flex, pt-4, text-center 和 rotate-90 这样语义化的类名。我们开发者能直接在各种脚本标记语言中编写它们，并把它们组合起来，构建出任何的设计。 自从 3.x 大版本开始，Tailwind CSS 把引擎升级为 Just in Time(jit) 。这使得我们能够编写代码的同时，实时生成各种 CSS，真正的做到了所写即所得。</p>
+<p>Tailwind CSS 特点：<br>
+•<strong>高度可定制化</strong><br>
+•<strong>响应式设计友好</strong><br>
+•<strong>提高开发速度</strong><br>
+•<strong>代码可读性和维护性</strong><br>
+在 HTML 代码中直接使用工具类来描述样式，使得样式和结构紧密结合，代码的可读性更高。例如，看到class=&quot;bg-gray-100 p-4 rounded-md&quot;这样的代码，就能够很直观地理解这个元素有一个浅灰色的背景、一定的内边距并且是中等圆角。</p>
+<p>除了以上优点外，使用 Tailwind CSS 在D2C中还能解决两个问题：</p>
+<p>1.不需要再进行 class 命名；<br>
+2.节省了 css 代码，避免冗余 css 。</p>
+<p>另外 Tailwind CSS 正在被越来越多团队广泛使用，现在 AI 大模型提供的图片直出代码功能，也是输出 Tailwind CSS；海外知名 D2C 工具也是以 Tailwind CSS 为默认选项：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971104790.png" alt="" loading="lazy"></p>
+<h2 id="实现-taiwind-css-converter">实现 Taiwind CSS Converter</h2>
+<p>在 D2C 中我们首先获取到挂在 NODE 上的 style，它是原生的 CSS 如下：</p>
+<p>{<br>
+&quot;color&quot;: &quot;rgb(0, 0, 0)&quot;,<br>
+&quot;fontFamily&quot;: &quot;Source Han Sans CN&quot;,<br>
+&quot;fontWeight&quot;: 400,<br>
+&quot;fontSize&quot;: 16,<br>
+&quot;lineHeight&quot;: 1.5,<br>
+&quot;textAlign&quot;: &quot;left&quot;,<br>
+&quot;flexShrink&quot;: 0<br>
+}<br>
+Tailwind CSS 为每一个 css 属性值预设了新的 class， 比如 Display 如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971184254.png" alt="" loading="lazy"></p>
+<p>因此 Converter 核心逻辑就需要按照 Tailwind 文档把全部 CSS 转换一下：</p>
+<pre><code>import isUnitlessNumber from './isUnitlessNumber'
+import { StyleObj } from './types'
+
+const cssToTailwindMap = {
+  'display': value =&gt; value,
+  'overflow': value =&gt; {
+    const map = {
+      'auto': 'overflow-auto',
+      'hidden': 'overflow-hidden',
+      'clip': 'overflow-clip',
+      'visible': 'overflow-visible',
+      'scroll': 'overflow-scroll',
+      'overflow-x': 'overflow-x-auto',
+      'overflow-y': 'overflow-y-auto',
+      'overflow-x-hidden': 'overflow-x-hidden',
+      'overflow-y-hidden': 'overflow-y-hidden',
+      'overflow-x-clip': 'overflow-x-clip',
+      'overflow-y-clip': 'overflow-y-clip',
+      'overflow-x-visible': 'overflow-x-visible',
+      'overflow-y-visible': 'overflow-y-visible',
+      'overflow-x-scroll': 'overflow-x-scroll',
+      'overflow-y-scroll': 'overflow-y-scroll'
+    }
+    return map[value]
+  },
+  'position': value =&gt; value,
+  // tailwind 规则映射过来
+  ...
+}
+
+export function convertCssToTailwind (style: StyleObj, styleUnit: string): string {
+  const tailwindClasses: string[] = []
+
+  for (const property in style) {
+    const tailwindClass = cssToTailwindMap[property]
+    if (tailwindClass) {
+      const value = (!isUnitlessNumber(property) &amp;&amp; typeof style[property] === 'number') ? `${style[property]}${styleUnit}` : style[property]
+      tailwindClasses.push(tailwindClass(value))
+    }
+  }
+
+  return tailwindClasses.join(' ')
+}
+</code></pre>
+<h1 id="ast-遍历">AST 遍历</h1>
+<p>生成完 Tailwind class 后，需要把 class 绑定到节点上，通过遍历 AST 节点，以 react 为例：</p>
+<pre><code>JSXAttribute: astPath =&gt; {    
+    const { node } = astPath
+    const attrName = node.name.name
+    
+    if (this.isTailWind &amp;&amp; attrName === 'className' &amp;&amp; t.isStringLiteral(node.value)) {
+      const clsNameArr = node.value?.value.split(' ')
+      let tailwindCls = ''
+    
+      // 转换成 tailwind class
+      clsNameArr.forEach((cls, idx) =&gt; {
+        const convertedCssToTailwind = convertCssToTailwind(this.styleObj[cls], this.styleUnit)
+        tailwindCls += convertedCssToTailwind
+      })
+    
+      // 更新到节点上
+      node.value = t.stringLiteral(tailwindCls)
+    }
+},
+</code></pre>
+<p>JSXAttribute 定义了一个处理 JSX 属性的访问器函数，通过 jsx 的 class Name 获取每一个 class 的具体 style然后调用 converter 得到 tailwind CSS，最后通过 t.stringLiteral 绑定即完成转换。</p>
+<p>效果如下：<br>
+<img src="https://jacoobwang.github.io/post-images/1740971270992.png" alt="" loading="lazy"></p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jacoobwang.github.io/post/webpack-yu-vite-gou-jian-gong-ju-zhi-chai/">
+                  <h3 class="post-title">
+                    Webpack 与 Vite 构建工具之差
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
