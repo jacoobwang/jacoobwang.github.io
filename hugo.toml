@@ -1,10 +1,10 @@
 baseURL = 'https://jacoobwang.github.io'
 languageCode = 'zh-CN'
-title = 'Jacoob'
+title = 'Link'
 theme = 'PaperMod'
 
 [params]
-  author = 'Jacoob'
+  author = 'Link'
   description = '温故而知新'
   defaultTheme = 'auto'
   ShowReadingTime = true
@@ -17,7 +17,7 @@ theme = 'PaperMod'
 
 [params.profileMode]
   enabled = true
-  title = 'Jacoob'
+  title = 'Link'
   subtitle = '温故而知新'
   imageUrl = '/images/avatar.png'
   imageWidth = 120

@@ -1,6 +1,6 @@
 ---
 title: "编辑器-前端代码风格规范"
-date: 2025-03-10T00:00:00+08:00
+date: 2019-03-10T00:00:00+08:00
 draft: false
 description: "前端项目代码风格规范，包括 ESLint、Git、TypeScript 配置"
 ---

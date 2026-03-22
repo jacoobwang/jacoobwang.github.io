@@ -1,6 +1,6 @@
 ---
 title: "D2C - 生成 Tailwind Css 前端代码"
-date: 2025-03-03T00:00:00+08:00
+date: 2019-03-03T00:00:00+08:00
 draft: false
 description: "D2C 设计转代码方案，使用 Tailwind CSS 解决类名语义化问题"
 ---

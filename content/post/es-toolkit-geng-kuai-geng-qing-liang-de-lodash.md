@@ -1,6 +1,6 @@
 ---
 title: "es-toolkit 更快更轻量的 lodash"
-date: 2024-11-14T00:00:00+08:00
+date: 2023-11-14T00:00:00+08:00
 draft: false
 description: "es-toolkit 与 lodash 的性能对比及使用示例"
 ---

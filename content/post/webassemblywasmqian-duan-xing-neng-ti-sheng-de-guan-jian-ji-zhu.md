@@ -1,6 +1,6 @@
 ---
 title: "WebAssembly（Wasm）：前端性能提升的关键技术"
-date: 2024-11-10T00:00:00+08:00
+date: 2023-11-10T00:00:00+08:00
 draft: false
 description: "WebAssembly 技术介绍及在前端性能优化中的应用"
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Relay/Figma 插件开发快速上手"
-date: 2025-03-08T00:00:00+08:00
+date: 2023-03-08T00:00:00+08:00
 draft: false
 description: "Figma/Relay 插件开发入门指南，包括沙箱环境、双向通信和调试技巧"
 ---

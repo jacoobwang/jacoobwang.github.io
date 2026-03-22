@@ -1,6 +1,6 @@
 ---
 title: "Webpack 与 Vite 构建工具之差"
-date: 2025-01-10T00:00:00+08:00
+date: 2019-01-10T00:00:00+08:00
 draft: false
 description: "对比 Webpack 和 Vite 的构建原理、开发体验和配置复杂度"
 ---

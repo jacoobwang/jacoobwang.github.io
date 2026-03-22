@@ -1,6 +1,6 @@
 ---
 title: "JavaScript 的 SOLID 原则"
-date: 2024-12-13T00:00:00+08:00
+date: 2018-12-13T00:00:00+08:00
 draft: false
 description: "详解 SOLID 原则在 JavaScript 中的应用，包括单一职责、开闭原则、里氏替换、接口隔离和依赖倒置"
 ---
