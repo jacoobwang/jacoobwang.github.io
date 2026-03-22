@@ -71,7 +71,104 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><style>
+ 
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+ 
+.home-page #particles-canvas {
+    z-index: 0;
+}
+
+ 
+.main {
+    position: relative;
+    z-index: 1;
+}
+
+ 
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+ 
+.cursor-particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fadeOut 1s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+ 
+.glow-text {
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #ff00de,
+        0 0 30px #ff00de,
+        0 0 40px #ff00de;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+ 
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+</style>
 </head>
 <body class="list" id="top">
     <header class="header">
@@ -145,7 +242,219 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
         <path d="M12 6H0l6-6z" />
     </svg>
-</a>
+</a><canvas id="particles-canvas"></canvas>
+
+<script>
+(function() {
+    
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
+    let animationId;
+    let isActive = true;
+    
+    
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    
+    
+    const config = {
+        particleCount: isMobile ? 30 : 60,
+        connectionDistance: 120,
+        particleSpeed: 0.5,
+        particleSize: 2,
+        colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dfe6e9']
+    };
+    
+    
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    
+    
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * config.particleSpeed;
+            this.vy = (Math.random() - 0.5) * config.particleSpeed;
+            this.size = Math.random() * config.particleSize + 1;
+            this.color = config.colors[Math.floor(Math.random() * config.colors.length)];
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
+        
+        update() {
+            
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            
+            if (mouse.x !== null && mouse.y !== null && !isMobile) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < mouse.radius) {
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    const directionX = dx / distance;
+                    const directionY = dy / distance;
+                    this.vx += directionX * force * 0.02;
+                    this.vy += directionY * force * 0.02;
+                }
+            }
+            
+            
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+            
+            
+            const maxSpeed = 2;
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            if (speed > maxSpeed) {
+                this.vx = (this.vx / speed) * maxSpeed;
+                this.vy = (this.vy / speed) * maxSpeed;
+            }
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+    
+    
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < config.particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    
+    function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < config.connectionDistance) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = particles[i].color;
+                    ctx.globalAlpha = (1 - distance / config.connectionDistance) * 0.2;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+    }
+    
+    
+    function animate() {
+        if (!isActive) return;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        
+        drawConnections();
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    
+    
+    document.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+    
+    
+    document.addEventListener('click', (e) => {
+        createFirework(e.clientX, e.clientY);
+    });
+    
+    
+    function createFirework(x, y) {
+        const particleCount = 20;
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
+        
+        for (let i = 0; i < particleCount; i++) {
+            const angle = (Math.PI * 2 / particleCount) * i;
+            const velocity = Math.random() * 3 + 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            const particle = document.createElement('div');
+            particle.className = 'cursor-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.backgroundColor = color;
+            particle.style.boxShadow = `0 0 10px ${color}`;
+            document.body.appendChild(particle);
+            
+            
+            const tx = Math.cos(angle) * velocity * 50;
+            const ty = Math.sin(angle) * velocity * 50;
+            
+            particle.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+        }
+    }
+    
+    
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            isActive = false;
+            cancelAnimationFrame(animationId);
+        } else {
+            isActive = true;
+            animate();
+        }
+    });
+    
+    
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
+    
+    
+    resize();
+    initParticles();
+    animate();
+    
+    
+    const profileTitle = document.querySelector('.profile h1');
+    if (profileTitle) {
+        profileTitle.classList.add('glow-text', 'float-animation');
+    }
+})();
+</script>
 
 <script>
     let menu = document.getElementById('menu');

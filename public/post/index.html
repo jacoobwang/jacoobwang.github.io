@@ -71,7 +71,104 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
+</script><style>
+ 
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+ 
+.home-page #particles-canvas {
+    z-index: 0;
+}
+
+ 
+.main {
+    position: relative;
+    z-index: 1;
+}
+
+ 
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+ 
+.cursor-particle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fadeOut 1s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+ 
+.glow-text {
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #ff00de,
+        0 0 30px #ff00de,
+        0 0 40px #ff00de;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+ 
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+</style>
 </head>
 <body class="list" id="top">
     <header class="header">
@@ -137,48 +234,131 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Fake Text Message - 制作手机截图工具
+    <h2 class="entry-hint-parent">2024 年 Node.js 框架——Elysia/Hono/Nest/Encore
     </h2>
   </header>
   <div class="entry-content">
-    <p>点击访问: Fake Text Message
-竞争对手分析 现有排名第一的网站流量不错，但产品和运营有明显短板：
-技术栈：纯前端技术即可实现，门槛低。 市场空白：只有 iOS 端，没有安卓端。 功能升级空间：功能非常基础，没有对接 AI。可以加入 AI 对话功能形成代差优势。 SEO 短板：网站缺少多语言和长尾词内容，流量获取方式单一。 主要功能 手机短信聊天界面生成 支持 iOS 和 安卓 手机锁屏短信通知截屏 常用 emoji 拷贝 支持 dark mode 发布 10.5 完成发布，并接入了 Google Search Console，第一时间向谷歌提交了收录申请。 10.6 Google 显示收录了 3 个地址，一看都是首页，子路由完全没有收录。 10.7 继续优化 SEO，完成 SEO 检测工具 100 分的指标要求。 </p>
+    <p>Node.js 框架在 2024 年呈现出多样化的发展态势，其中 Elysia、Hono、Nest 和 Encore 等框架备受关注。本文尝试记录这些框架的优势、劣势以及适用场景，帮助日后技术选型。
+框架特性概述 根据轻量级到功能丰富程度，这些框架的排序如下：
+这并不意味着轻量级框架不好，而是取决于项目需求。Hono 的轻量级特性使其非常适合部署到 Cloudflare Workers，而 Encore.ts 则内置了许多功能，如自动追踪和本地基础设施。
+Encore.ts 仓库地址：https://github.com/encoredev/encore
+Encore.ts 是一个开源框架，旨在简化使用 TypeScript 构建健壮且类型安全的后端应用。它内置了丰富的工具，可提升开发体验，在性能方面表现卓越，是本次比较中速度最快的框架。
+Encore 具有内置的请求验证功能，使用常规 TypeScript 定义的请求和响应类型可在编译和运行时验证请求。与其他框架不同，实际验证在 Rust 中完成，而非 JavaScript，这使其验证速度极快。
+Encore 便于创建和调用服务，从代码角度看，服务就像存储库中的普通文件夹，调用服务端点如同调用普通函数。其神奇之处在于，这些函数调用在底层会转换为实际的 HTTP 调用。部署时，你甚至可以选择将服务部署到不同实例，如 Kubernetes 集群，同时保持所有服务代码在同一存储库中。
+Encore 还带有内置的开发仪表板，启动应用后，可通过localhost:9400访问。在这里，你可以像使用 Postman 一样调用端点，每次调用都会生成一个跟踪，用于检查 API 请求、数据库调用和发布 / 订阅消息。本地开发仪表板还包括自动 API 文档和系统的最新架构图。值得一提的是，尽管 Encore 功能丰富，但它没有任何 npm 依赖项。
+Hono 仓库地址：https://github.com/honojs/hono
+Hono 由 Yusuke Wada 创建，始于 2021 年，旨在解决 Node.js 框架在 Cloudflare Workers 上运行不佳的问题。此后，Hono 增加了对 Node.js、Bun 和 Deno 等多种运行时的支持。
+import { Hono } from &#39;hono&#39; const app = new Hono() app.get(&#39;/&#39;, (c) =&gt; c.text(&#39;Hono!&#39;)) export default app Hono 非常小巧，hono/tiny预设版本不到 13KB，非常适合部署到 Cloudflare Workers，并且它也没有 NPM 依赖项，令人印象深刻！
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-10-11 00:00:00 +0800 +0800'>October 11, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>47 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to Fake Text Message - 制作手机截图工具" href="http://localhost:1313/post/fake-text-message-%E5%88%B6%E4%BD%9C%E6%89%8B%E6%9C%BA%E6%88%AA%E5%9B%BE%E5%B7%A5%E5%85%B7/"></a>
+  <footer class="entry-footer"><span title='2024-11-06 00:00:00 +0800 +0800'>November 6, 2024</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>448 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to 2024 年 Node.js 框架——Elysia/Hono/Nest/Encore" href="http://localhost:1313/post/2024-%E5%B9%B4-node.js-%E6%A1%86%E6%9E%B6elysia/hono/nest/encore/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">vite 开发环境编译流程
+    <h2 class="entry-hint-parent">可追踪的前端日志架构方案
     </h2>
   </header>
   <div class="entry-content">
-    <p>Vite 的开发环境采用按需编译和原生 ES 模块驱动的架构，与传统打包工具（如 Webpack）有本质区别。以下是其编译流程及对不同文件类型的处理方式：
-一、Vite 开发环境核心原理 启动服务器： Vite 启动时不进行全量编译，而是创建一个 HTTP 服务器，监听文件变化。
-浏览器优先原则： 浏览器直接通过 ES 模块的 import 语句请求文件（如 import &#39;./main.ts&#39;），Vite 拦截这些请求并实时编译。
-按需编译： 只有当浏览器请求某个模块时，Vite 才会对其进行编译（如 TS 转 JS、Less 转 CSS），并返回处理后的结果。
-二、不同文件类型的处理流程 1. Less 文件处理 请求拦截：当浏览器请求 .less 文件时，Vite 拦截该请求。 编译：使用 less 编译器将 Less 转换为 CSS。 注入：将 CSS 通过 JavaScript 动态注入到页面的 &lt;style&gt; 标签中（支持 HMR 热更新）。 2. TS 文件处理 请求拦截：拦截 .ts 文件请求。 编译：使用 esbuild（速度极快）将 TS 转换为 JS，仅进行语法转换（不做类型检查）。 类型检查：类型检查由独立进程（如 VSCode 插件或 tsc --watch）完成，不阻塞开发服务器。 </p>
+    <p>作为前端开发如何知道用户在页面上操作行为是否符合预期？用户点击某个按钮或使用某个功能异常时我们能否快速定位？上线的功能是否会导致线上 bug? 曾经一度这些问题深深困扰我们，作为一个没有测试团队的自研型产品研发团队，我们的上线依靠发布前走查关键测试用例来避免线上问题，但这种方式耗时耗力不说，因为人为测试总有遗漏的地方，也不能保证 100% 稳定可靠，只能保证核心功能不出问题。
+因此，我们需要一套可靠的前端日志系统，来帮助我们实时观测用户使用数据及线上异常情况，另可以快速定位问题，不至于出现问题还需要跟用户远程复现（效率太低）。我们把技术方案瞄准为 ELK 套件 架构来帮助解决以下问题：
+全链路问题排查，通过日志搜索查询用户的入参出参报错等全链路信息、按时间序列分析或还原用户的操作行为排查问题 数据统计分析，通过日志数据可以灵活的自定义统计分析，如系统的UV、PV、用户行为分析、接口调用量、接口响应速度、异常报错统计等等 自定义上报，因前端无法直接打印日志到服务器或数据库中，需要满足前端的一些浏览点击、资源加载、js报错、自定义上报等场景日志等需求 智能归因分析，监控报警需要做好报警的收敛和治理，如何使用AIGC技术去做智能化的报警分析是非常值得探索的方向 持久化存储，一些数据统计分析需求需要部分日志持久化存储，自行控制日志的生命周期。 系统架构 整体的系统架构采用的就是经典的ELK架构，即 Elasticsearch &#43; Logstash &#43; Kibana 的组合，同时引入了filebeat作为轻量化的nginx日志采集的组件。
+整体的系统架构如下：
+整体的方案是借助ELK架构去收集前端服务器的nginx日志及后端日志进行结构化存储到ES集群，通过ES强大的全文搜索能力及Kibana组件数据可视化能力进行日志的搜索和分析。
+nginx服务器 前端服务主要使用的就是nginx进行页面部署和一些接口的代理转发，nginx日志本身就会记录用户所有的接口请求，但是nginx日志默认是不能记录到请求的响应值的和做一些前端自定义上报日志记录的，所以我们需要对nginx进行一些配置个改造。
+为了能打印到接口的响应值，我们引入了OpenResty替代nginx，使用OpenResty结合lua脚本就可以非常简单的获取到接口的返回值并打印到nginx的access日志里，主要是获取接口的返回buffered并使用zlib库进行解码。
+下面是nginx配置文件的简单示例，可以根据自己业务需求获取及打印所需字段：
+log_format main escape=json &#39;{&#34;user&#34;:&#34;$user&#34;,&#34;uri&#34;:&#34;$uri&#34;,&#34;$http_appkey&#34;,&#34;req_body&#34;,&#34;resp_body&#34;:&#34;$resp_body&#34;,&#34;timestamp&#34;:&#34;$time_iso8601&#34;,&#34;ups_res_time&#34;:&#34;$upstream_response_time&#34;}&#39;; location /api/ { proxy_pass http://api.xxxx.jd.com/; body_filter_by_lua &#39; local zlib = require(&#34;zlib&#34;) if type(ngx.arg[1]) == &#34;string&#34; then local resp_body = string.sub(ngx.arg[1], 1, 5000000) ngx.ctx.buffered = (ngx.ctx.buffered or &#34;&#34;) .. resp_body if ngx.arg[2] then local inflate = zlib.inflate() local ok, decoded = pcall(inflate, ngx.ctx.buffered) ngx.var.resp_body = ok and decoded or ngx.ctx.buffered end else ngx.var.resp_body = &#34;&#34; end &#39;; } 为了实现前端可以自定义上报一些报警日志到nginx，我们采用的是构造一些约定的请求和对应的nginx日志字段，前段需要上报日志的时候去发起请求并把上报内容放到请求体，nginx端将其写入nginx日志即可完成对应的流程。
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-06-05 00:00:00 +0800 +0800'>June 5, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>68 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to vite 开发环境编译流程" href="http://localhost:1313/post/vite-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B/"></a>
+  <footer class="entry-footer"><span title='2023-11-20 00:00:00 +0800 +0800'>November 20, 2023</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>231 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to 可追踪的前端日志架构方案" href="http://localhost:1313/post/%E5%8F%AF%E8%BF%BD%E8%B8%AA%E7%9A%84%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E6%9E%B6%E6%9E%84%E6%96%B9%E6%A1%88/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">编辑器-前端代码风格规范
+    <h2 class="entry-hint-parent">毫秒级实时合图服务方案
     </h2>
   </header>
   <div class="entry-content">
-    <p>最近在升级一个旧的项目，早前的项目由于没有使用 ts，改起来有点痛苦以及当时没有做好的规范约束，以至于不同人贡献的代码差别很大，看着着实痛苦。
-规范的意义 1、保证代码的一致性，从根本上提高代码整体的可读性、可维护性、可复用性：保持一致的编码风格，能让其他人在维护代码时能快速上手，即使没有什么经验的开发同学也能保障其代码的交付质量，为后期维护提供更好的支持。
-2、有效降低开发和沟通的成本，提升团队整体效率：大型项目最复杂的模块往往仅占整体的一小部分，更多的是相对简单的日常开发和维护。遵循统一的技术规范，能够有效的降低多人协作工程中的沟通成本。如果没有统一规范则出现混乱的局面，留下庞大的技术债。
-技术栈统一 基础：Typescript &#43; Tsx 框架：React &#43; React Dom Css 处理器：Sass UI 框架：Ant Design / DongDesign 状态管理：React Redux &#43; Rematch 构建工具：Vite ESLint 规范 基准规则 不重复造轮子，基于 eslint:recommend 配置并改进 能够帮助发现代码错误的规则，全部开启
-ESLint 规则 允许非大写开头的构造函数名 ( new-cap: 0 ) 禁止使用 var ( no-var: 2 ) 限制 console 使用，仅允许 warn 和 error ( no-console: [1, { allow: [‘warn’, ’error’] }] ) 禁用内部声明 ( no-inner-declarations: 2 ) 强制使用 const 声明不会被修改的变量 ( prefer-const: [2, { ‘destructuring’: ‘all’ }] ) 禁止特定语法，如 debugger、label 和 with 语句 React 规则 允许组件没有 displayName 禁止 JSX 中的重复属性 禁止未定义的 JSX 元素 禁止直接修改 state 强制组件的 render 方法返回值 不要求 prop-types 验证 不要求导入 React (新版 React 不需要) 禁止在 componentDidUpdate 中使用 setState 鼓励使用无状态函数组件 强制执行 React Hooks 规则 Import 规则 禁止未使用的模块 import 语句后需要空行 禁止使用 CommonJS 模块语法 (require)，但允许条件性 require 禁止重复导入 Import 排序 强制对 imports 和 exports 进行排序 TypeScript 规则 不强制函数返回类型注解 允许变量在定义前使用 对未使用的变量发出警告 不强制模块边界类型 允许特定情况下的空函数 允许 this 别名 允许 require 语句 允许 @ts-comment 注释 Git 规范 commit日志基本规范 &lt;type&gt;(&lt;scope&gt;): &lt;subject&gt; &lt;BLANK LINE&gt; &lt;body&gt; &lt;BLANK LINE&gt; &lt;footer&gt; feat： 新增 feature fix: 修复 bug docs: 仅仅修改了文档，比如 README, CHANGELOG, CONTRIBUTE等等 style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑 refactor: 代码重构，没有加新功能或者修复 bug perf: 优化相关，比如提升性能、体验 test: 测试用例，包括单元测试、集成测试等 chore: 改变构建流程、或者增加依赖库、工具等 revert: 回滚到上一个版本 分支规范 test 测试分支 master 主分支 release release 分支 feat/xxx 特性分支 hotfix/xxx 修复分支 ESLint 配置示例 extends: - eslint:recommended - plugin:react/recommended - plugin:@typescript-eslint/eslint-recommended - plugin:@typescript-eslint/recommended - prettier - plugin:import/errors - plugin:import/warnings - plugin:import/typescript parser: &#39;@typescript-eslint/parser&#39; env: es6: true node: true plugins: - react - prettier - react-hooks - simple-import-sort - unused-imports - &#39;@typescript-eslint&#39; parserOptions: sourceType: module ecmaFeatures: jsx: true rules: prettier/prettier: [ 2, { singleQuote: true, trailingComma: &#39;es5&#39;, semi: false, &#39;endOfLine&#39;: &#39;auto&#39;, }, ] # eslint new-cap: 0 no-var: 2 no-console: [1, { allow: [&#39;warn&#39;, &#39;error&#39;] }] no-unused-vars: 0 no-inner-declarations: 2 camelcase: 0 no-useless-escape: 0 no-prototype-builtins: 0 no-restricted-syntax: - 2 - DebuggerStatement - LabeledStatement - WithStatement require-atomic-updates: 0 prefer-rest-params: 0 prefer-const: [2, { &#39;destructuring&#39;: &#39;all&#39; }] prefer-spread: 0 # react react/display-name: 0 react/jsx-no-duplicate-props: 2 react/jsx-no-undef: 2 react/no-deprecated: 0 react/no-direct-mutation-state: 2 react/no-render-return-value: 2 react/require-render-return: 2 react/jsx-uses-react: 1 react/jsx-uses-vars: 1 react/prop-types: 0 react/react-in-jsx-scope: 0 react/no-did-update-set-state: 2 react/no-redundant-should-component-update: 2 react/no-typos: 2 react/no-unused-prop-types: 2 react/no-unused-state: 2 react/prefer-stateless-function: [1, { ignorePureComponents: true }] react/void-dom-elements-no-children: 2 react/jsx-boolean-value: 1 react/jsx-no-bind: [2, { ignoreRefs: true, allowArrowFunctions: true }] react-hooks/rules-of-hooks: 2 react-hooks/exhaustive-deps: 1 react-perf/jsx-no-new-object-as-prop: 1 react-perf/jsx-no-new-array-as-prop: 1 # import import/no-unused-modules: 2 import/newline-after-import: 2 import/no-commonjs: [2, { allowConditionalRequire: true }] import/no-duplicates: 2 # simple-import-sort simple-import-sort/imports: 2 simple-import-sort/exports: 2 # typescript &#39;@typescript-eslint/camelcase&#39;: 0 &#39;@typescript-eslint/explicit-function-return-type&#39;: 0 &#39;@typescript-eslint/no-use-before-define&#39;: 0 &#39;@typescript-eslint/no-unused-vars&#39;: [1, { ignoreRestSiblings: true }] &#39;@typescript-eslint/explicit-module-boundary-types&#39;: 0 &#39;@typescript-eslint/ban-types&#39;: 0 &#39;@typescript-eslint/no-empty-function&#39;: [1, { &#39;allow&#39;: [&#39;private-constructors&#39;, &#39;protected-constructors&#39;] }] &#39;@typescript-eslint/no-this-alias&#39;: 0 &#39;@typescript-eslint/no-var-requires&#39;: 0 &#39;@typescript-eslint/ban-ts-comment&#39;: 0 &#39;@typescript-eslint/strict-boolean-expressions&#39;: [1, { allowNullableBoolean: true }] overrides: - files: - &#39;*.js&#39; - &#39;*.jsx&#39; rules: import/no-commonjs: 0 - files: - &#39;*.ts&#39; - &#39;*.tsx&#39; rules: import/no-unresolved: 0 lodash/prefer-lodash-method: 0 VSCode 配置 { &#34;editor.tabSize&#34;: 2, &#34;editor.insertSpaces&#34;: true, &#34;search.exclude&#34;: { }, &#34;editor.formatOnSave&#34;: false, &#34;editor.renderControlCharacters&#34;: true, &#34;editor.codeActionsOnSave&#34;: { &#34;source.fixAll.eslint&#34;: &#34;explicit&#34; }, &#34;[less]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[css]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[yaml]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[html]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[json]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;vscode.json-language-features&#34;, }, &#34;[markdown]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[mdx]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;files.associations&#34;: { &#34;*.xml&#34;: &#34;html&#34;, &#34;*.svg&#34;: &#34;html&#34;, }, &#34;prettier.ignorePath&#34;: &#34;.eslintignore&#34;, &#34;liveServer.settings.port&#34;: 5501, &#34;code-runner.executorMapByGlob&#34;: { &#34;*.test.*&#34;: &#34;cd $dir &amp;&amp; yarn test --files $fullFileName&#34;, }, &#34;typescript.tsdk&#34;: &#34;node_modules/typescript/lib&#34;, &#34;search.followSymlinks&#34;: false, &#34;files.exclude&#34;: { &#34;**/.git&#34;: true, &#34;**/.svn&#34;: true, &#34;**/.hg&#34;: true, &#34;**/CVS&#34;: true, &#34;**/.DS_Store&#34;: true, &#34;**/tmp&#34;: true, &#34;**/bower_components&#34;: true, }, &#34;files.watcherExclude&#34;: { &#34;**/.git/objects/**&#34;: true, &#34;**/.git/subtree-cache/**&#34;: true, &#34;**/node_modules/**&#34;: true, &#34;**/tmp/**&#34;: true, &#34;**/bower_components/**&#34;: true, &#34;**/dist/**&#34;: true }, &#34;makefile.configureOnOpen&#34;: false } tsconfig 配置 { &#34;compilerOptions&#34;: { &#34;typeRoots&#34;: [&#34;./node_modules/@types&#34;, &#34;./types&#34;], &#34;target&#34;: &#34;es5&#34;, &#34;lib&#34;: [ &#34;dom&#34;, &#34;dom.iterable&#34;, &#34;esnext&#34; ], &#34;allowJs&#34;: true, &#34;skipLibCheck&#34;: true, &#34;esModuleInterop&#34;: true, &#34;allowSyntheticDefaultImports&#34;: true, &#34;strict&#34;: true, &#34;forceConsistentCasingInFileNames&#34;: false, &#34;noFallthroughCasesInSwitch&#34;: true, &#34;module&#34;: &#34;esnext&#34;, &#34;moduleResolution&#34;: &#34;node&#34;, &#34;resolveJsonModule&#34;: true, &#34;isolatedModules&#34;: true, &#34;jsx&#34;: &#34;react&#34;, &#34;outDir&#34;: &#34;./dist&#34;, &#34;plugins&#34;: [ { &#34;name&#34;: &#34;typescript-plugin-css-modules&#34; } ], &#34;paths&#34;: { &#34;~/*&#34;: [&#34;./src/*&#34;], &#34;@constant/*&#34;: [&#34;./src/constant/*&#34;] } }, &#34;exclude&#34;: [ &#34;build&#34;, &#34;node_modules&#34; ], &#34;include&#34;: [ &#34;src&#34;, &#34;typing.d.ts&#34; ] } </p>
+    <p>我所在的团队几年前开始实现一款基于 URL 拼接方式的实时合图能力，应用场景则是用在广告图千人千面的场景下，很多 App 首页都有 banner 广告位，为了最大程度提升广告的效率，广告算法推荐需要实现了一套通过不同的 sku &#43; 不同的文案 &#43; 不同的模版，然后生成一张广告图的技术方案。
+这套技术方案抛开推荐算法不提，最为重要的是如何在用户打开 App 的瞬间能够合成出广告图，而我当时主要负责服务端广告图合成技术。于是就有了本文的技术方案- 毫秒级广告图合成。
+URL 设计 对于图片服务器而言，要求业务逻辑尽量简单，最大化利用图片路径来做参数传递，当浏览器打开一个图片资源时，源服务器可以快速找到所在服务器分片并迅速定位到文件资源返回给上游。基于此我们设计了一套 URL 方式能够承载动态信息：
+http://img.example.com/${appName}/${image}/${variable}/${token}/${meta}/q.jpg appName: 业务名 variable: 图片信息 &#43; 文案信息 &#43; 模版信息 token: 加密参数, 把 variable 加密下校验 URL 合法性 meta: 裁剪信息 &#43; 缩放信息 &#43; 质量信息 技术架构 架构设计一切从性能出发，使用了 Nginx &#43; lua &#43; c 扩展的方式来实现服务，而并不需要 nginx 接受请求转发给其它服务进程处理，减少 IO 开销与进程切换的开销。
+ngx_lua 采用 “one-coroutine-per-request” 的处理模型，对于每个用户请求，ngx_lua会唤醒一个协程用于执行用户代码处理请求，当请求处理完成这个协程会被销毁。每个协程都有一个独立的全局环境（变量空间），继承于全局共享的、只读的&#34;comman data&#34;。所以，被用户代码注入全局空间的任何变量都不会影响其他请求的处理，并且这些变量在请求处理完成后会被释放，这样就保证所有的用户代码都运行在一个&#34;sandbox&#34;（沙箱），这个沙箱与请求具有相同的生命周期。 得益于Lua协程的支持，ngx_lua在处理10000个并发请求时只需要很少的内存。根据测试，ngx_lua处理每个请求只需要2KB的内存，如果使用LuaJIT则会更少。所以ngx_lua非常适合用于实现可扩展的、高并发的服务。
+lua 逻辑 Nginx 接受到请求后通过 location 匹配到对应的 lua 脚本并执行，lua 里面的逻辑主要包含参数提取，主要通过正则的方式取出来文案&#43;图片&#43;模版&#43;缩放等信息，然后获取模版&#43;获取图片信息然后调用 c 扩展实现合图，最后返回合成后的图片信息。
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-10 00:00:00 +0800 +0800'>March 10, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>633 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to 编辑器-前端代码风格规范" href="http://localhost:1313/post/%E7%BC%96%E8%BE%91%E5%99%A8-%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E8%A7%84%E8%8C%83/"></a>
+  <footer class="entry-footer"><span title='2023-11-18 00:00:00 +0800 +0800'>November 18, 2023</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>131 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to 毫秒级实时合图服务方案" href="http://localhost:1313/post/%E6%AF%AB%E7%A7%92%E7%BA%A7%E5%AE%9E%E6%97%B6%E5%90%88%E5%9B%BE%E6%9C%8D%E5%8A%A1%E6%96%B9%E6%A1%88/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">图转设计稿转代码方案思考
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近在 GitHub 上看到一个非常火的图转代码开源项目（https://github.com/abi/screenshot-to-code) ，star 数量达到了 5万&#43;，结合我自己在做的 UI2Code 项目，探究下它的具体实现方法。
+为什么值得学习？ 过往在 UI2Code 项目中都是基于设计稿件，通过解析出结构化的 Json 数据，然后来做布局处理，最后转化成代码。这里有一个前提，即需要提供 UI 设计稿，设计稿通常被定义为 figma 稿件 或者 sketch 稿件等。而这个开源项目使用的是静态图片，是无图层信息的位图，那这也是最吸引我的地方。
+screentshot-to-code 上传截图自动生成网页 HTML，背后原理是使用 Claude Sonnet 3.5 或 GPT-4o 生成代码，使用 DALL-E 3 生成相似图像。
+经过一番摸索测试，发现这个项目生成的效果不太稳定，如果用在业务中看起来不太可行。那么有没有一种更稳定的实现方式呢？
+实现路径 先构思下整体流程：
+大体而言，跟 UI2Code 流程无太大差异，最大区别还是在第一个步骤：如何将图片转成设计稿件。设计稿件转代码已经是一套现有非常成熟的解决方案。
+下面看下如何解决图片转设计稿件。
+图转稿件 首先，需要明确下稿件有哪几种数据类型，下面以我们自研的类 figma 工具而言，一个稿件的图层类型如下：
+而我们从静态图片中能够提取出来的数据类型有三种：
+文本类型 文本可以通过 ocr 的方式获取图像上包含的文字信息和文字坐标以及文字的颜色等信息。
+图像类型 需要去分解一张大图上的各个小图，从而实现图片类型图层的提取。
+容器类型 容器是一个组，它是若干文本和图像的区块，可以理解把一张图片划分成多个组，前端同学可以理解为我们经常用 div 来包裹若干内容图层。
+文本 OCR OCR 是比较成熟的技术，为了快速验证，选取 https://github.com/PaddlePaddle/PaddleOCR?tab=readme-ov-file 作为方案实现。提取文字内容和文字坐标。
+如何提取文字颜色？ 通过 OCR 获取文字坐标后，尝试通过 cv 的方式获取文字颜色。
+def get_font_color(self, image, text_nodes): for node in text_nodes: x0 = node[&#39;x&#39;] x1 = node[&#39;x&#39;] &#43; node[&#39;width&#39;] y0 = node[&#39;y&#39;] y1 = node[&#39;y&#39;] &#43; node[&#39;height&#39;] _img = image[y0:y1, x0:x1] _gray = cv2.cvtColor(_img, cv2.COLOR_BGR2GRAY) threshold = np.mean(_gray) rec, mask_ = cv2.threshold(_gray, threshold, 255, cv2.THRESH_BINARY) p = len(np.where(mask_ == 255)[0]) / (mask_.shape[0] * mask_.shape[1]) if p &lt; 0.5: font_value = 255 back_value = 0 else: font_value = 0 back_value = 255 font_color = np.mean(_img[np.where(mask_ == font_value)], axis=0) back_color = np.mean(_img[np.where(mask_ == back_value)], axis=0) node[&#39;font_color&#39;] = (int(font_color[0]), int(font_color[1]), int(font_color[2])) node[&#39;bg_color&#39;] = (int(back_color[0]), int(back_color[1]), int(back_color[2])) print(node) 图像分割 分割则需要用到当下比较流行的 SAM 模型， https://docs.ultralytics.com/zh/models/fast-sam/
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-17 00:00:00 +0800 +0800'>November 17, 2023</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>210 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to 图转设计稿转代码方案思考" href="http://localhost:1313/post/%E5%9B%BE%E8%BD%AC%E8%AE%BE%E8%AE%A1%E7%A8%BF%E8%BD%AC%E4%BB%A3%E7%A0%81%E6%96%B9%E6%A1%88%E6%80%9D%E8%80%83/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">es-toolkit 更快更轻量的 lodash
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>lodash 作为前端的基础工具库，已经被大量广泛使用，lodash 提供了非常多的工具函数，涵盖数组、字符串、对象等多种数据结构类型，而且 lodash 有个最大的优点是兼容性好，能处理各种边界情况，不担心各种 undefined null 或者类型不对导致的报错，所以广受欢迎。而最近出来了一个 es-toolkit，是一个基于 es6 新特性的工具函数库，它使用了大量新的 es 新特性，相比 lodash 速度提高 2-3 倍，体积缩小 97%。
+以下是 es-toolkit 和 lodash 之间的主要比较 es-toolkit 提供了与 lodash 类似的关键工具函数，涵盖函数、数组、对象、字符串、数学和 Promise 等领域。 es-toolkit 的函数通常比 lodash 的函数更快，因为它们在实现中使用了现代 JavaScript API，并且使用 TypeScript 进行类型检查，减少了对额外防御性代码的需求。 性能基准测试表明，es-toolkit 函数的性能优于 lodash 的等效函数，有时优势明显。 es-toolkit 的函数与 lodash 的等效函数相比，包大小显著更小，从而导致更快的加载时间和更好的性能。 es-toolkit 通过利用现代 JavaScript 特性并避免 lodash 中存在的相互依赖关系来解决性能和包大小挑战。 es-toolkit 的函数大多是独立的，防止意外包含不必要的代码，而在 lodash 中工具函数通常是相互依赖的。 es-toolkit 的主要特性 函数，包括用于缓存函数结果的memoize和用于限制函数调用频率的debounce。 数组相关函数，如用于过滤重复项的uniq和用于找出数组之间差异的difference。 用于处理 JavaScript 对象的工具，如用于深度克隆的cloneDeep和用于将嵌套对象转换为扁平结构的flattenObject。 字符串操作工具，包括用于将字符串转换为短横线命名法（kebab-case）的kebabCase。 数学助手，如用于生成随机数的random和用于四舍五入的round。 类型保护函数，如用于轻松检查null或undefined值的isNil。 用于处理异步代码的工具，如用于暂停执行一段时间的delay。 性能 es-toolkit 的函数通常比 lodash 的函数更快，因为它们在实现中使用了现代 JavaScript API。例如，es-toolkit 的omit函数比 lodash 的 omit 函数快约 11.8 倍。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-14 00:00:00 +0800 +0800'>November 14, 2023</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>237 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to es-toolkit 更快更轻量的 lodash" href="http://localhost:1313/post/es-toolkit-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E8%BD%BB%E9%87%8F%E7%9A%84-lodash/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">WebAssembly（Wasm）：前端性能提升的关键技术
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>想象一下你正在构建一个高性能的 Web 应用程序，比如一个 3D 游戏、一个图像编辑器或者一个数据处理仪表盘。你需要应用程序快速流畅，在不减速的情况下执行各种复杂操作。但是仅靠 JavaScript 能做到的有限：无论你如何优化，总会有 JavaScript 无法快速运行的代码。
+WebAssembly（Wasm）—— 有了这项酷炫的技术，现在我们可以在浏览器中运行高性能代码，几乎就像在原生应用程序中一样。
+WebAssembly 究竟是什么 WebAssembly 或 Wasm 到底是什么呢？它基本上是 JavaScript 的超级伙伴。WebAssembly 是一种低级二进制格式，可以在浏览器中以接近原生的速度运行。它是为计算密集型任务而构建的，而这些任务 JavaScript 自己处理起来效果不太好。
+最棒的是，WebAssembly 与特定编程语言无关。它是一个与语言无关的平台，像 C、C&#43;&#43; 或 Rust 等语言的代码可以直接在浏览器中运行。开发者终于可以将其他语言的高性能代码编译成 WebAssembly，在 Web 上与 JavaScript 一起使用。
+WebAssembly 特性 极速性能
+Wasm 代码的运行速度几乎与原生应用程序一样快，所以你可以将它用于性能密集型任务。如果你正在构建一个图像编辑器，Wasm 可以轻松处理实时图像处理，如调整大小、颜色调整或应用滤镜，而让 JavaScript 处理用户界面。
+跨浏览器一致
+所有主流浏览器都支持 WebAssembly，即 Chrome、Firefox、Safari 和 Edge。这意味着无论你的用户在哪里，Wasm 代码的运行方式都相似。所以，我们可以保证应用程序的性能始终一致且快速。
+更多语言选择
+有了 WebAssembly，你不限于使用 JavaScript。你可以引入其他语言，如 C&#43;&#43; 或 Rust，它们以性能和内存效率著称。这对于速度至关重要的项目，或者当你想重用现有代码库时非常有用。
+优化资源使用
+WebAssembly 被开发为低内存占用。这使得它适合资源有限的设备，如移动设备。这一点非常重要，因为现代应用程序需要在各种设备上运行。
+何时应该使用 WebAssembly 并非每个 Web 项目都需要 WebAssembly。对于许多事情，JavaScript 仍然完全够用：表单验证、基本交互、DOM 操作…… 但如果你需要更快的速度，或者你正在处理特别大量的数据，以下是 Wasm 可能派上用场的时候：
+图形密集型应用程序：需要 3D 渲染的应用程序，如基于 Web 的游戏或模拟等 实时数据处理：需要快速计算的应用程序，如金融 / 科学分析工具等 Web 上的遗留代码：如果你有现有的用 C&#43;&#43; 或 Rust 编写的代码，WebAssembly 允许你将其带到 Web 上而无需完全重写。 举个栗子 我所在的团队就开发了一款类似于 figma 的图形编辑软件，其底层的渲染引擎则是由 c&#43;&#43; 实现，然后通过编译成 WebAssembly 后提供给 js 层调用，从而保障丝滑的操作体验。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-10 00:00:00 +0800 +0800'>November 10, 2023</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>214 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to WebAssembly（Wasm）：前端性能提升的关键技术" href="http://localhost:1313/post/webassemblywasm%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -199,8 +379,45 @@ ESLint 规则 允许非大写开头的构造函数名 ( new-cap: 0 ) 禁止使�
 逻辑与 UI 分离 首先，项目拆分成两个目录：
 native 用来存放逻辑相关的代码。执行在 sandbox 里的 js 代码，也是调用 figma API 的逻辑，如获取节点、创建节点、修改节点等； web 用来存放前端 UI 代码，用来渲染插件的界面。 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-08 00:00:00 +0800 +0800'>March 8, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>397 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <footer class="entry-footer"><span title='2023-03-08 00:00:00 +0800 +0800'>March 8, 2023</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>397 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
   <a class="entry-link" aria-label="post link to Relay/Figma 插件开发快速上手" href="http://localhost:1313/post/relay/figma-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">useLayoutEffect与useEffect：React Hooks 理解
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>React Hooks 改变了我们在函数组件中管理状态和副作用的方式，为处理组件逻辑提供了更直观、灵活的途径。在众多可用的 Hooks 中，useEffect和useLayoutEffect在管理副作用（特别是涉及 DOM 更新或异步任务的副作用）方面起着关键作用。
+选择正确的 Hook 对于保持最佳性能和流畅的用户体验至关重要。useEffect和useLayoutEffect都可用于类似任务，但基于执行时机和行为，它们各有特定优势。理解这些差异有助于避免不必要的重新渲染，并确保最佳的用户体验。
+理解useEffect 用途 useEffect是 React 函数组件中处理副作用的首选 Hook，它取代了类组件中的生命周期方法，如componentDidMount、componentDidUpdate和componentWillUnmount，将它们整合为一个高效的 Hook。
+工作原理 与类组件中同步运行的生命周期方法不同，useEffect在组件渲染之后执行。这种延迟执行允许浏览器在运行任何副作用之前更新屏幕，使useEffect不会阻塞渲染。因此，它非常适合那些不需要立即进行 DOM 更新的操作，如数据获取或事件监听器。
+常见用例 useEffect用途广泛，常用于涉及非阻塞副作用的任务，以下是一些useEffect的理想场景：
+1. 数据获取：使用useEffect从 API 获取数据并更新组件状态，且不影响初始渲染。
+useEffect(() =&gt; { async function fetchData() { const response = await fetch(&#39;https://api.example.com/data&#39;); const data = await response.json(); setData(data); } fetchData(); }, []); 2. 设置事件监听器：使用useEffect在组件挂载时设置事件监听器，并在卸载时清理
+useEffect(() =&gt; { const handleResize = () =&gt; setWindowSize(window.innerWidth); window.addEventListener(&#39;resize&#39;, handleResize); return () =&gt; window.removeEventListener(&#39;resize&#39;, handleResize); }, []); 3. 管理异步任务：使用useEffect处理定时器或与本地存储交互，确保这些任务在组件挂载后运行
+useEffect(() =&gt; { const timer = setTimeout(() =&gt; { setIsVisible(true); }, 1000); return () =&gt; clearTimeout(timer); }, []); 由于useEffect的非阻塞特性，它通常是默认选择，是处理大多数副作用且不干扰初始渲染的高效方式。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2019-11-07 00:00:00 +0800 +0800'>November 7, 2019</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>202 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to useLayoutEffect与useEffect：React Hooks 理解" href="http://localhost:1313/post/uselayouteffect%E4%B8%8Euseeffectreact-hooks-%E7%90%86%E8%A7%A3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">编辑器-前端代码风格规范
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近在升级一个旧的项目，早前的项目由于没有使用 ts，改起来有点痛苦以及当时没有做好的规范约束，以至于不同人贡献的代码差别很大，看着着实痛苦。
+规范的意义 1、保证代码的一致性，从根本上提高代码整体的可读性、可维护性、可复用性：保持一致的编码风格，能让其他人在维护代码时能快速上手，即使没有什么经验的开发同学也能保障其代码的交付质量，为后期维护提供更好的支持。
+2、有效降低开发和沟通的成本，提升团队整体效率：大型项目最复杂的模块往往仅占整体的一小部分，更多的是相对简单的日常开发和维护。遵循统一的技术规范，能够有效的降低多人协作工程中的沟通成本。如果没有统一规范则出现混乱的局面，留下庞大的技术债。
+技术栈统一 基础：Typescript &#43; Tsx 框架：React &#43; React Dom Css 处理器：Sass UI 框架：Ant Design / DongDesign 状态管理：React Redux &#43; Rematch 构建工具：Vite ESLint 规范 基准规则 不重复造轮子，基于 eslint:recommend 配置并改进 能够帮助发现代码错误的规则，全部开启
+ESLint 规则 允许非大写开头的构造函数名 ( new-cap: 0 ) 禁止使用 var ( no-var: 2 ) 限制 console 使用，仅允许 warn 和 error ( no-console: [1, { allow: [‘warn’, ’error’] }] ) 禁用内部声明 ( no-inner-declarations: 2 ) 强制使用 const 声明不会被修改的变量 ( prefer-const: [2, { ‘destructuring’: ‘all’ }] ) 禁止特定语法，如 debugger、label 和 with 语句 React 规则 允许组件没有 displayName 禁止 JSX 中的重复属性 禁止未定义的 JSX 元素 禁止直接修改 state 强制组件的 render 方法返回值 不要求 prop-types 验证 不要求导入 React (新版 React 不需要) 禁止在 componentDidUpdate 中使用 setState 鼓励使用无状态函数组件 强制执行 React Hooks 规则 Import 规则 禁止未使用的模块 import 语句后需要空行 禁止使用 CommonJS 模块语法 (require)，但允许条件性 require 禁止重复导入 Import 排序 强制对 imports 和 exports 进行排序 TypeScript 规则 不强制函数返回类型注解 允许变量在定义前使用 对未使用的变量发出警告 不强制模块边界类型 允许特定情况下的空函数 允许 this 别名 允许 require 语句 允许 @ts-comment 注释 Git 规范 commit日志基本规范 &lt;type&gt;(&lt;scope&gt;): &lt;subject&gt; &lt;BLANK LINE&gt; &lt;body&gt; &lt;BLANK LINE&gt; &lt;footer&gt; feat： 新增 feature fix: 修复 bug docs: 仅仅修改了文档，比如 README, CHANGELOG, CONTRIBUTE等等 style: 仅仅修改了空格、格式缩进、逗号等等，不改变代码逻辑 refactor: 代码重构，没有加新功能或者修复 bug perf: 优化相关，比如提升性能、体验 test: 测试用例，包括单元测试、集成测试等 chore: 改变构建流程、或者增加依赖库、工具等 revert: 回滚到上一个版本 分支规范 test 测试分支 master 主分支 release release 分支 feat/xxx 特性分支 hotfix/xxx 修复分支 ESLint 配置示例 extends: - eslint:recommended - plugin:react/recommended - plugin:@typescript-eslint/eslint-recommended - plugin:@typescript-eslint/recommended - prettier - plugin:import/errors - plugin:import/warnings - plugin:import/typescript parser: &#39;@typescript-eslint/parser&#39; env: es6: true node: true plugins: - react - prettier - react-hooks - simple-import-sort - unused-imports - &#39;@typescript-eslint&#39; parserOptions: sourceType: module ecmaFeatures: jsx: true rules: prettier/prettier: [ 2, { singleQuote: true, trailingComma: &#39;es5&#39;, semi: false, &#39;endOfLine&#39;: &#39;auto&#39;, }, ] # eslint new-cap: 0 no-var: 2 no-console: [1, { allow: [&#39;warn&#39;, &#39;error&#39;] }] no-unused-vars: 0 no-inner-declarations: 2 camelcase: 0 no-useless-escape: 0 no-prototype-builtins: 0 no-restricted-syntax: - 2 - DebuggerStatement - LabeledStatement - WithStatement require-atomic-updates: 0 prefer-rest-params: 0 prefer-const: [2, { &#39;destructuring&#39;: &#39;all&#39; }] prefer-spread: 0 # react react/display-name: 0 react/jsx-no-duplicate-props: 2 react/jsx-no-undef: 2 react/no-deprecated: 0 react/no-direct-mutation-state: 2 react/no-render-return-value: 2 react/require-render-return: 2 react/jsx-uses-react: 1 react/jsx-uses-vars: 1 react/prop-types: 0 react/react-in-jsx-scope: 0 react/no-did-update-set-state: 2 react/no-redundant-should-component-update: 2 react/no-typos: 2 react/no-unused-prop-types: 2 react/no-unused-state: 2 react/prefer-stateless-function: [1, { ignorePureComponents: true }] react/void-dom-elements-no-children: 2 react/jsx-boolean-value: 1 react/jsx-no-bind: [2, { ignoreRefs: true, allowArrowFunctions: true }] react-hooks/rules-of-hooks: 2 react-hooks/exhaustive-deps: 1 react-perf/jsx-no-new-object-as-prop: 1 react-perf/jsx-no-new-array-as-prop: 1 # import import/no-unused-modules: 2 import/newline-after-import: 2 import/no-commonjs: [2, { allowConditionalRequire: true }] import/no-duplicates: 2 # simple-import-sort simple-import-sort/imports: 2 simple-import-sort/exports: 2 # typescript &#39;@typescript-eslint/camelcase&#39;: 0 &#39;@typescript-eslint/explicit-function-return-type&#39;: 0 &#39;@typescript-eslint/no-use-before-define&#39;: 0 &#39;@typescript-eslint/no-unused-vars&#39;: [1, { ignoreRestSiblings: true }] &#39;@typescript-eslint/explicit-module-boundary-types&#39;: 0 &#39;@typescript-eslint/ban-types&#39;: 0 &#39;@typescript-eslint/no-empty-function&#39;: [1, { &#39;allow&#39;: [&#39;private-constructors&#39;, &#39;protected-constructors&#39;] }] &#39;@typescript-eslint/no-this-alias&#39;: 0 &#39;@typescript-eslint/no-var-requires&#39;: 0 &#39;@typescript-eslint/ban-ts-comment&#39;: 0 &#39;@typescript-eslint/strict-boolean-expressions&#39;: [1, { allowNullableBoolean: true }] overrides: - files: - &#39;*.js&#39; - &#39;*.jsx&#39; rules: import/no-commonjs: 0 - files: - &#39;*.ts&#39; - &#39;*.tsx&#39; rules: import/no-unresolved: 0 lodash/prefer-lodash-method: 0 VSCode 配置 { &#34;editor.tabSize&#34;: 2, &#34;editor.insertSpaces&#34;: true, &#34;search.exclude&#34;: { }, &#34;editor.formatOnSave&#34;: false, &#34;editor.renderControlCharacters&#34;: true, &#34;editor.codeActionsOnSave&#34;: { &#34;source.fixAll.eslint&#34;: &#34;explicit&#34; }, &#34;[less]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[css]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[yaml]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[html]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[json]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;vscode.json-language-features&#34;, }, &#34;[markdown]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;[mdx]&#34;: { &#34;editor.formatOnSave&#34;: true, &#34;editor.defaultFormatter&#34;: &#34;esbenp.prettier-vscode&#34;, }, &#34;files.associations&#34;: { &#34;*.xml&#34;: &#34;html&#34;, &#34;*.svg&#34;: &#34;html&#34;, }, &#34;prettier.ignorePath&#34;: &#34;.eslintignore&#34;, &#34;liveServer.settings.port&#34;: 5501, &#34;code-runner.executorMapByGlob&#34;: { &#34;*.test.*&#34;: &#34;cd $dir &amp;&amp; yarn test --files $fullFileName&#34;, }, &#34;typescript.tsdk&#34;: &#34;node_modules/typescript/lib&#34;, &#34;search.followSymlinks&#34;: false, &#34;files.exclude&#34;: { &#34;**/.git&#34;: true, &#34;**/.svn&#34;: true, &#34;**/.hg&#34;: true, &#34;**/CVS&#34;: true, &#34;**/.DS_Store&#34;: true, &#34;**/tmp&#34;: true, &#34;**/bower_components&#34;: true, }, &#34;files.watcherExclude&#34;: { &#34;**/.git/objects/**&#34;: true, &#34;**/.git/subtree-cache/**&#34;: true, &#34;**/node_modules/**&#34;: true, &#34;**/tmp/**&#34;: true, &#34;**/bower_components/**&#34;: true, &#34;**/dist/**&#34;: true }, &#34;makefile.configureOnOpen&#34;: false } tsconfig 配置 { &#34;compilerOptions&#34;: { &#34;typeRoots&#34;: [&#34;./node_modules/@types&#34;, &#34;./types&#34;], &#34;target&#34;: &#34;es5&#34;, &#34;lib&#34;: [ &#34;dom&#34;, &#34;dom.iterable&#34;, &#34;esnext&#34; ], &#34;allowJs&#34;: true, &#34;skipLibCheck&#34;: true, &#34;esModuleInterop&#34;: true, &#34;allowSyntheticDefaultImports&#34;: true, &#34;strict&#34;: true, &#34;forceConsistentCasingInFileNames&#34;: false, &#34;noFallthroughCasesInSwitch&#34;: true, &#34;module&#34;: &#34;esnext&#34;, &#34;moduleResolution&#34;: &#34;node&#34;, &#34;resolveJsonModule&#34;: true, &#34;isolatedModules&#34;: true, &#34;jsx&#34;: &#34;react&#34;, &#34;outDir&#34;: &#34;./dist&#34;, &#34;plugins&#34;: [ { &#34;name&#34;: &#34;typescript-plugin-css-modules&#34; } ], &#34;paths&#34;: { &#34;~/*&#34;: [&#34;./src/*&#34;], &#34;@constant/*&#34;: [&#34;./src/constant/*&#34;] } }, &#34;exclude&#34;: [ &#34;build&#34;, &#34;node_modules&#34; ], &#34;include&#34;: [ &#34;src&#34;, &#34;typing.d.ts&#34; ] } </p>
+  </div>
+  <footer class="entry-footer"><span title='2019-03-10 00:00:00 +0800 +0800'>March 10, 2019</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>633 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <a class="entry-link" aria-label="post link to 编辑器-前端代码风格规范" href="http://localhost:1313/post/%E7%BC%96%E8%BE%91%E5%99%A8-%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E8%A7%84%E8%8C%83/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -216,112 +433,8 @@ Tailwind CSS 特点：
 高度可定制化 响应式设计友好 提高开发速度 代码可读性和维护性 在 HTML 代码中直接使用工具类来描述样式，使得样式和结构紧密结合，代码的可读性更高。例如，看到 class=&#34;bg-gray-100 p-4 rounded-md&#34; 这样的代码，就能够很直观地理解这个元素有一个浅灰色的背景、一定的内边距并且是中等圆角。
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-03-03 00:00:00 +0800 +0800'>March 3, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>346 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
+  <footer class="entry-footer"><span title='2019-03-03 00:00:00 +0800 +0800'>March 3, 2019</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>346 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
   <a class="entry-link" aria-label="post link to D2C - 生成 Tailwind Css 前端代码" href="http://localhost:1313/post/d2c-%E7%94%9F%E6%88%90-tailwind-css-%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Webpack 与 Vite 构建工具之差
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在前端开发领域，Webpack 和 Vite 是两款备受瞩目的构建工具，它们在提升开发效率和优化项目构建流程方面发挥着关键作用，但在诸多方面存在显著差异。
-一、构建原理 Webpack 以其强大的模块打包能力著称，它会在启动时对整个项目进行依赖分析，递归地构建模块依赖图。从项目入口文件开始，将所有相关的 JavaScript、CSS、图片等资源都纳入处理范围，将它们打包成一个或多个 bundle 文件。在这个过程中，Webpack 会对代码进行各种处理，如代码压缩、模块合并、loader 转换等，以适应不同的环境和需求。
-而 Vite 则采用了一种截然不同的策略，利用浏览器原生（script type=&#34;module&#34;）的 ES 模块支持来实现快速的冷启动。在开发模式下，Vite 不会像 Webpack 那样预先打包所有模块，而是在浏览器请求某个模块时，才对其进行即时编译和传输。这使得 Vite 在启动项目时速度极快，大大缩短了开发过程中的等待时间。在生产环境下，Vite 会进行预构建来优化依赖，将一些常用的第三方库预先打包，进一步提升性能。
-二、开发体验 在开发过程中，Webpack 的热更新（HMR）功能虽然能够在一定程度上实现代码修改后的实时更新，但由于其全量构建的特性，在大型项目中可能会出现更新速度较慢的情况。每次代码修改后，Webpack 需要重新构建相关的模块和依赖，这个过程可能会耗费数秒甚至更长时间，影响开发的流畅性。
-相比之下，Vite 的热更新机制更为高效。由于其基于 ES 模块的按需加载特性，当代码发生变化时，Vite 能够精准地只更新受影响的模块，并且速度极快，几乎可以做到即时更新，让开发者能够迅速看到代码修改的效果，极大地提升了开发效率和体验。
-三、配置复杂度 Webpack 的配置向来以复杂著称，为了实现各种功能，如代码分割、优化、loader 和 plugin 的配置等，开发者需要编写大量的配置代码。对于初学者来说，这无疑是一个较高的门槛，需要花费较多时间去学习和理解各种配置选项的作用和相互关系。
-Vite 的配置则相对简洁明了，它默认提供了许多合理的配置，在大多数情况下，开发者只需要进行少量的配置调整即可满足项目需求。这使得 Vite 在项目初始化和配置方面更加便捷，能够让开发者更快地投入到实际开发中。
-四、优缺点对比 Webpack 优点
-拥有丰富的插件和 loader 生态系统，几乎可以处理任何前端资源和构建需求，能够对项目进行深度定制和优化。例如，可以通过特定的 loader 将不同类型的文件转换为 JavaScript 模块，或者使用插件实现复杂的功能，如代码压缩、混淆、提取公共代码等。 对大型项目的支持较为成熟，能够有效地管理复杂的依赖关系，确保项目的稳定性和可维护性。通过细致的配置，可以实现精确的代码分割，将不同页面或功能的代码拆分成独立的 chunk，提高页面加载速度和性能。 缺点
-配置复杂，学习成本高，对于新手开发者来说可能会感到困惑和无从下手。过多的配置选项也容易导致配置文件变得冗长和难以维护。 开发时的热更新速度相对较慢，尤其是在大型项目中，每次代码修改后的重新构建过程可能会耗费较长时间，影响开发效率。 Vite 优点
-开发启动速度极快，基于 ES 模块的按需加载和即时编译特性，大大缩短了冷启动时间和代码更新的反馈周期，提供了流畅的开发体验。 配置简单，默认配置已经能够满足大多数项目的基本需求，开发者可以快速上手并开始项目开发，减少了在配置上花费的时间和精力。 缺点
-对一些老旧项目或不遵循 ES 模块规范的代码兼容性可能较差，需要进行一定的改造才能顺利使用 Vite 进行构建。 虽然在开发体验上表现出色，但在生产环境下的一些高级优化功能可能相对 Webpack 来说不够丰富，对于一些对性能极致追求的项目可能需要额外的配置和优化工作。 适用场景 对于大型项目，尤其是那些具有复杂依赖关系和大量代码的项目，Webpack 的强大功能和丰富的插件生态系统能够更好地应对。它可以通过细致的配置对项目进行深度优化，例如实现精确的代码分割，将不同页面或功能的代码拆分成独立的 chunk，提高页面加载速度和性能。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-01-10 00:00:00 +0800 +0800'>January 10, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>83 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to Webpack 与 Vite 构建工具之差" href="http://localhost:1313/post/webpack-%E4%B8%8E-vite-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E5%B7%AE/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CSS 单位到底怎么选
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在 CSS 样式表中，合理地运用单位来定义元素的尺寸、间距、字体大小等属性是至关重要的，不同的单位有着各自的特性和适用场景。本文将深入探讨几种常见的 CSS 单位：px、rpx、vw 和 rem。
-px（像素） 像素（Pixel）是最为基础和常见的单位，它直接对应屏幕上的一个物理像素点。在早期的网页设计中，px 几乎一统天下。例如，当我们设置一个 div 的宽度为 200px 时，它在屏幕上所占据的空间就是实实在在的 200 个像素点。这种确定性使得布局相对直观，设计师可以精确掌控元素的尺寸。然而，px 的缺点也逐渐显现，随着设备屏幕分辨率的多样化，固定像素值在不同分辨率下可能出现显示效果差异巨大的问题。比如，同样一个宽度为 300px 的按钮，在低分辨率屏幕上可能看起来大小适中，而在高分辨率的视网膜屏上，就会显得细小局促。
-rpx（响应式像素） rpx 是微信小程序特有的一种单位，它是根据屏幕宽度进行自适应调整的。小程序规定屏幕宽度为 750rpx，无论在何种设备上打开小程序，都会将屏幕宽度等比例划分为 750 份。这意味着如果一个元素设置宽度为 375rpx，那么在宽度为 375px 的设备上，它将占据屏幕宽度的一半；而在宽度为 750px 的设备上，它依然占据屏幕宽度的一半，即 375px。这种自适应特性使得小程序的页面布局能够很好地适配各种手机屏幕，极大地减轻了开发者对不同屏幕适配的工作量，为用户带来一致的视觉体验。
-vw（视口宽度百分比） vw 代表视口宽度的百分比单位，1vw 等于视口宽度的 1%。相较于 px，它具有一定的响应式特性。例如，设置一个容器的宽度为 50vw，那么它将始终占据当前视口宽度的一半。这在构建一些需要随浏览器窗口大小动态变化的布局时非常实用，如自适应的侧边栏或弹性的图片展示区域。不过，使用 vw 时要注意，它只与视口宽度相关，若元素的高度也需要按比例自适应，还需结合其他技术或单位来综合实现。
-rem（根元素字体大小相对单位） rem 是以根元素（通常是 html 元素）的字体大小为基准的相对单位。默认情况下，大部分浏览器的根元素字体大小为 16px，此时 1rem 就等于 16px。但开发者可以通过修改根元素的字体大小来统一缩放整个页面的尺寸。比如，将根元素字体大小设置为 12px，那么后续所有以 rem 为单位的元素尺寸都会相应缩小。这使得页面在不同屏幕尺寸下，只要合理调整根元素字体大小，就能实现相对灵活且整体协调的布局。尤其在做移动端网页适配时，结合媒体查询动态修改根元素字体大小，rem 单位能发挥出强大的自适应优势，确保页面元素在各种手机和平板设备上都呈现出良好的视觉效果。
-如何选择使用合适的单位？ 怎样选择主要有以下两大纬度来决定：
-项目类型 网页项目： px：对于一些需要精确控制尺寸的元素，如固定宽度的导航栏、按钮等，px 是一个不错的选择。它可以确保在不同浏览器和设备上都能呈现出一致的固定大小。 rem：在进行网页整体布局和字体大小设置时，rem 更为合适。通过设置根元素的字体大小，可以方便地实现整个页面的相对缩放，适应不同屏幕尺寸的设备，尤其在响应式设计中表现出色。 vw：当需要创建与视口宽度紧密相关的布局，如全屏的背景图片、自适应的轮播图等，vw 可以很好地实现根据视口宽度的动态调整。 微信小程序项目： rpx：由于微信小程序的跨设备适配需求较高，rpx 是首选单位。它能够自动根据屏幕宽度进行自适应调整，大大减少了开发者在不同设备上进行适配的工作量，确保页面在各种手机屏幕上都能保持良好的视觉效果。 设计需求 固定尺寸设计：如果设计稿中的元素尺寸是固定的，且不考虑设备屏幕的变化，那么 px 可以准确地还原设计稿中的尺寸。例如，一些品牌标识、特定尺寸的图标等，使用 px 可以确保其在任何情况下都保持原设计的大小和比例。 自适应布局设计：对于需要在不同设备上自适应显示的页面，rem 和 vw 是更好的选择。例如，一个新闻列表页面，要求在不同屏幕宽度的设备上都能自适应显示，使用 rem 或 vw 可以使列表项的宽度、间距等随着屏幕大小的变化而自动调整，提供更好的用户体验。 高分辨率屏幕适配：在处理高分辨率屏幕时，如视网膜屏，px 可能会导致元素在屏幕上显示得过于细小。此时，rem 可以通过调整根元素字体大小来进行整体缩放，使页面在高分辨率屏幕上也能保持清晰和易读。而 rpx 在微信小程序中已经自动处理了高分辨率屏幕的适配问题。 在实际项目中，通常会根据具体情况综合使用多种单位。例如，在网页项目中，可以以 rem 为主要单位进行整体布局，对于一些需要精确控制的元素再结合使用 px；在微信小程序项目中，以 rpx 为主，对于一些特殊情况可以适当使用 px 进行微调。关键是要根据项目的特点和需求，权衡各种单位的优缺点，选择最合适的方案。
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-12-30 00:00:00 +0800 +0800'>December 30, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>93 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to CSS 单位到底怎么选" href="http://localhost:1313/post/css-%E5%8D%95%E4%BD%8D%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E9%80%89/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">JavaScript 的 SOLID 原则
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>SOLID 原则首先由著名的计算机科学家 Robert C·Martin （著名的Bob大叔）由 2000 年在他的论文中提出。但是 SOLID 缩略词是稍晚由 Michael Feathers 先使用的。
-Bob大叔也是畅销书《代码整洁之道》和《架构整洁之道》的作者，也是 “Agile Alliance” 的成员。
-SOLID 是一组原则的首字母缩写，包括：
-S 单一职责原则 O 开闭原则 L 里氏替换原则 I 接口隔离原则 D 依赖倒置原则 有助于软件工程师设计和编写可维护、可扩展和灵活的代码。其目的是什么呢？是为了提高遵循面向对象编程（OOP）范式开发的软件质量。
-单一职责原则（SRP） SOLID 中的第一个字母代表单一职责原则。该原则建议一个类或模块应该只执行一个功能。如果一个类处理多个功能，那么在不影响其他功能的情况下更新一个功能就会变得棘手。随之而来的复杂性可能会导致软件性能出现故障。为了避免这些问题，我们应尽力编写关注点分离的模块化软件。
-如果一个类有太多的职责或功能，修改起来就会很头疼。通过使用单一职责原则，我们可以编写模块化、更易于维护且不易出错的代码。例如，以一个人员模型为例：
-class Person { constructor(name, age, height, country) { this.name = name; this.age = age; this.height = height; this.country = country; } getPersonCountry() { console.log(this.country); } greetPerson() { console.log(&#34;Hi &#34; &#43; this.name); } static calculateAge(dob) { const today = new Date(); const birthDate = new Date(dob); let age = today.getFullYear() - birthDate.getFullYear(); const monthDiff = today.getMonth() - birthDate.getMonth(); if (monthDiff &lt; 0 || (monthDiff === 0 &amp;&amp; today.getDate() &lt; birthDate.getDate())) { age--; } return age; } } 上面的代码看起来没问题，对吧？不完全是。示例代码违反了单一职责原则。Person类不仅仅是可以创建其他Person实例的唯一模型，它还有其他职责，如calculateAge、greetPerson和getPersonCountry。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-12-13 00:00:00 +0800 +0800'>December 13, 2024</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>698 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to JavaScript 的 SOLID 原则" href="http://localhost:1313/post/javascript-%E7%9A%84-solid-%E5%8E%9F%E5%88%99/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">简单聊一聊单例设计模式
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>你是否曾经遇到过需要在应用程序的多个部分共享一个对象的情况，比如数据库连接、WebSocket 客户端或配置管理器或全局的 Logger 对象？
-你如何管理这样一个对象，使其在整个应用程序或进程生命周期中保持一致且可访问？这就是单例设计模式发挥作用的地方。
-概述 单例是一种创建型设计模式，属于设计模式的一类，用于解决使用new关键字或操作符创建对象的原生方式所带来的不同问题。
-单例设计模式主要致力于解决两个主要问题：
-我们如何为实例提供一个全局访问点？ 我们如何确保一个类或特定类型的对象只有一个实例？ 它可以简化并规范我们管理特定种类或类型的全局状态的方式，例如数据库连接、WebSocket 客户端、缓存服务，或者任何我们在整个应用程序生命周期中需要在内存中持久化和修改的内容。
-如何实现单例设计模式 class Singleton { private static instance: Singleton private construct() { // 私有构造函数确保只能通过静态方法创建唯一实例 } public static getInstance () { if (!this.instance) { this.instance = new Singleton() } return this.instance } } 该类应该定义一个静态属性来存储唯一可共享的实例。static 关键字意味着实例对象与类的实例无关，而是与类定义本身相关联。类的构造函数应该标记为private 则无法通过 new 创建实例。获取类实例的唯一方法是调用 getInstance 静态方法。
-const instance = Singleton.getInstance() 我们可以通过调用与单例类相关联的静态方法getInstance来使用上述类。getInstance 方法保证即使我们在代码库的不同位置多次实例化我们的类，我们始终得到相同的实例。
-第一个实际场景 在 node 服务中，需要记录调用接口产生的 log，因此要设计一个全局的 Logger 集中管理日志行为。
-class Logger { private static instance: Logger; private logs: string[] = []; private constructor() {} public static getInstance(): Logger { if (!Logger.instance) { Logger.instance = new Logger(); } return Logger.instance; } public log(message: string) { this.logs.push(message); } } // 使用 const logger = Logger.getInstance(); logger.log(&#39;Application started&#39;); 在这个例子中，private constructor() 确保：
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-24 00:00:00 +0800 +0800'>November 24, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>279 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to 简单聊一聊单例设计模式" href="http://localhost:1313/post/%E7%AE%80%E5%8D%95%E8%81%8A%E4%B8%80%E8%81%8A%E5%8D%95%E4%BE%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">可追踪的前端日志架构方案
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>作为前端开发如何知道用户在页面上操作行为是否符合预期？用户点击某个按钮或使用某个功能异常时我们能否快速定位？上线的功能是否会导致线上 bug? 曾经一度这些问题深深困扰我们，作为一个没有测试团队的自研型产品研发团队，我们的上线依靠发布前走查关键测试用例来避免线上问题，但这种方式耗时耗力不说，因为人为测试总有遗漏的地方，也不能保证 100% 稳定可靠，只能保证核心功能不出问题。
-因此，我们需要一套可靠的前端日志系统，来帮助我们实时观测用户使用数据及线上异常情况，另可以快速定位问题，不至于出现问题还需要跟用户远程复现（效率太低）。我们把技术方案瞄准为 ELK 套件 架构来帮助解决以下问题：
-全链路问题排查，通过日志搜索查询用户的入参出参报错等全链路信息、按时间序列分析或还原用户的操作行为排查问题 数据统计分析，通过日志数据可以灵活的自定义统计分析，如系统的UV、PV、用户行为分析、接口调用量、接口响应速度、异常报错统计等等 自定义上报，因前端无法直接打印日志到服务器或数据库中，需要满足前端的一些浏览点击、资源加载、js报错、自定义上报等场景日志等需求 智能归因分析，监控报警需要做好报警的收敛和治理，如何使用AIGC技术去做智能化的报警分析是非常值得探索的方向 持久化存储，一些数据统计分析需求需要部分日志持久化存储，自行控制日志的生命周期。 系统架构 整体的系统架构采用的就是经典的ELK架构，即 Elasticsearch &#43; Logstash &#43; Kibana 的组合，同时引入了filebeat作为轻量化的nginx日志采集的组件。
-整体的系统架构如下：
-整体的方案是借助ELK架构去收集前端服务器的nginx日志及后端日志进行结构化存储到ES集群，通过ES强大的全文搜索能力及Kibana组件数据可视化能力进行日志的搜索和分析。
-nginx服务器 前端服务主要使用的就是nginx进行页面部署和一些接口的代理转发，nginx日志本身就会记录用户所有的接口请求，但是nginx日志默认是不能记录到请求的响应值的和做一些前端自定义上报日志记录的，所以我们需要对nginx进行一些配置个改造。
-为了能打印到接口的响应值，我们引入了OpenResty替代nginx，使用OpenResty结合lua脚本就可以非常简单的获取到接口的返回值并打印到nginx的access日志里，主要是获取接口的返回buffered并使用zlib库进行解码。
-下面是nginx配置文件的简单示例，可以根据自己业务需求获取及打印所需字段：
-log_format main escape=json &#39;{&#34;user&#34;:&#34;$user&#34;,&#34;uri&#34;:&#34;$uri&#34;,&#34;$http_appkey&#34;,&#34;req_body&#34;,&#34;resp_body&#34;:&#34;$resp_body&#34;,&#34;timestamp&#34;:&#34;$time_iso8601&#34;,&#34;ups_res_time&#34;:&#34;$upstream_response_time&#34;}&#39;; location /api/ { proxy_pass http://api.xxxx.jd.com/; body_filter_by_lua &#39; local zlib = require(&#34;zlib&#34;) if type(ngx.arg[1]) == &#34;string&#34; then local resp_body = string.sub(ngx.arg[1], 1, 5000000) ngx.ctx.buffered = (ngx.ctx.buffered or &#34;&#34;) .. resp_body if ngx.arg[2] then local inflate = zlib.inflate() local ok, decoded = pcall(inflate, ngx.ctx.buffered) ngx.var.resp_body = ok and decoded or ngx.ctx.buffered end else ngx.var.resp_body = &#34;&#34; end &#39;; } 为了实现前端可以自定义上报一些报警日志到nginx，我们采用的是构造一些约定的请求和对应的nginx日志字段，前段需要上报日志的时候去发起请求并把上报内容放到请求体，nginx端将其写入nginx日志即可完成对应的流程。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-11-20 00:00:00 +0800 +0800'>November 20, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>231 words</span>&nbsp;·&nbsp;<span>Link</span></footer>
-  <a class="entry-link" aria-label="post link to 可追踪的前端日志架构方案" href="http://localhost:1313/post/%E5%8F%AF%E8%BF%BD%E8%B8%AA%E7%9A%84%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E6%9E%B6%E6%9E%84%E6%96%B9%E6%A1%88/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
@@ -344,7 +457,219 @@ log_format main escape=json &#39;{&#34;user&#34;:&#34;$user&#34;,&#34;uri&#34;:&
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
         <path d="M12 6H0l6-6z" />
     </svg>
-</a>
+</a><canvas id="particles-canvas"></canvas>
+
+<script>
+(function() {
+    
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
+    let animationId;
+    let isActive = true;
+    
+    
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    
+    
+    const config = {
+        particleCount: isMobile ? 30 : 60,
+        connectionDistance: 120,
+        particleSpeed: 0.5,
+        particleSize: 2,
+        colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dfe6e9']
+    };
+    
+    
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    
+    
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * config.particleSpeed;
+            this.vy = (Math.random() - 0.5) * config.particleSpeed;
+            this.size = Math.random() * config.particleSize + 1;
+            this.color = config.colors[Math.floor(Math.random() * config.colors.length)];
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
+        
+        update() {
+            
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            
+            if (mouse.x !== null && mouse.y !== null && !isMobile) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < mouse.radius) {
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    const directionX = dx / distance;
+                    const directionY = dy / distance;
+                    this.vx += directionX * force * 0.02;
+                    this.vy += directionY * force * 0.02;
+                }
+            }
+            
+            
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+            
+            
+            const maxSpeed = 2;
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            if (speed > maxSpeed) {
+                this.vx = (this.vx / speed) * maxSpeed;
+                this.vy = (this.vy / speed) * maxSpeed;
+            }
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+    
+    
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < config.particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+    
+    
+    function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < config.connectionDistance) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = particles[i].color;
+                    ctx.globalAlpha = (1 - distance / config.connectionDistance) * 0.2;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+    }
+    
+    
+    function animate() {
+        if (!isActive) return;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        
+        drawConnections();
+        
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    
+    
+    document.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+    
+    
+    document.addEventListener('click', (e) => {
+        createFirework(e.clientX, e.clientY);
+    });
+    
+    
+    function createFirework(x, y) {
+        const particleCount = 20;
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
+        
+        for (let i = 0; i < particleCount; i++) {
+            const angle = (Math.PI * 2 / particleCount) * i;
+            const velocity = Math.random() * 3 + 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            const particle = document.createElement('div');
+            particle.className = 'cursor-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.backgroundColor = color;
+            particle.style.boxShadow = `0 0 10px ${color}`;
+            document.body.appendChild(particle);
+            
+            
+            const tx = Math.cos(angle) * velocity * 50;
+            const ty = Math.sin(angle) * velocity * 50;
+            
+            particle.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+        }
+    }
+    
+    
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            isActive = false;
+            cancelAnimationFrame(animationId);
+        } else {
+            isActive = true;
+            animate();
+        }
+    });
+    
+    
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
+    
+    
+    resize();
+    initParticles();
+    animate();
+    
+    
+    const profileTitle = document.querySelector('.profile h1');
+    if (profileTitle) {
+        profileTitle.classList.add('glow-text', 'float-animation');
+    }
+})();
+</script>
 
 <script>
     let menu = document.getElementById('menu');
