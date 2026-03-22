@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>毫秒级实时合图服务方案 | Jacoob</title>
+<meta name="keywords" content="">
+<meta name="description" content="基于 Nginx &#43; Lua &#43; C 的毫秒级实时广告图合成技术方案">
+<meta name="author" content="Jacoob">
+<link rel="canonical" href="http://localhost:1313/post/%E6%AF%AB%E7%A7%92%E7%BA%A7%E5%AE%9E%E6%97%B6%E5%90%88%E5%9B%BE%E6%9C%8D%E5%8A%A1%E6%96%B9%E6%A1%88/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.da3211e5ef867bf2b75fd5a6515cfed7195c011e8ab735694e203810a827097b.css" integrity="sha256-2jIR5e&#43;Ge/K3X9WmUVz&#43;1xlcAR6KtzVpTiA4EKgnCXs=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E6%AF%AB%E7%A7%92%E7%BA%A7%E5%AE%9E%E6%97%B6%E5%90%88%E5%9B%BE%E6%9C%8D%E5%8A%A1%E6%96%B9%E6%A1%88/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jacoob (Alt + H)">Jacoob</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="首页">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/post/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      毫秒级实时合图服务方案
+    </h1>
+    <div class="post-description">
+      基于 Nginx &#43; Lua &#43; C 的毫秒级实时广告图合成技术方案
+    </div>
+    <div class="post-meta"><span title='2024-11-18 00:00:00 +0800 +0800'>November 18, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>131 words</span>&nbsp;·&nbsp;<span>Jacoob</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>我所在的团队几年前开始实现一款基于 URL 拼接方式的实时合图能力，应用场景则是用在广告图千人千面的场景下，很多 App 首页都有 banner 广告位，为了最大程度提升广告的效率，广告算法推荐需要实现了一套通过不同的 sku + 不同的文案 + 不同的模版，然后生成一张广告图的技术方案。</p>
+<p>这套技术方案抛开推荐算法不提，最为重要的是如何在用户打开 App 的瞬间能够合成出广告图，而我当时主要负责服务端广告图合成技术。于是就有了本文的技术方案- 毫秒级广告图合成。</p>
+<h2 id="url-设计">URL 设计<a hidden class="anchor" aria-hidden="true" href="#url-设计">#</a></h2>
+<p>对于图片服务器而言，要求业务逻辑尽量简单，最大化利用图片路径来做参数传递，当浏览器打开一个图片资源时，源服务器可以快速找到所在服务器分片并迅速定位到文件资源返回给上游。基于此我们设计了一套 URL 方式能够承载动态信息：</p>
+<pre tabindex="0"><code>http://img.example.com/${appName}/${image}/${variable}/${token}/${meta}/q.jpg
+</code></pre><ul>
+<li><strong>appName</strong>: 业务名</li>
+<li><strong>variable</strong>: 图片信息 + 文案信息 + 模版信息</li>
+<li><strong>token</strong>: 加密参数, 把 variable 加密下校验 URL 合法性</li>
+<li><strong>meta</strong>: 裁剪信息 + 缩放信息 + 质量信息</li>
+</ul>
+<p><img alt="URL设计" loading="lazy" src="https://jacoobwang.github.io/post-images/1731931555471.png"></p>
+<h2 id="技术架构">技术架构<a hidden class="anchor" aria-hidden="true" href="#技术架构">#</a></h2>
+<p><img alt="架构图" loading="lazy" src="https://jacoobwang.github.io/post-images/1731939773625.png"></p>
+<p>架构设计一切从性能出发，使用了 Nginx + lua + c 扩展的方式来实现服务，而并不需要 nginx 接受请求转发给其它服务进程处理，减少 IO 开销与进程切换的开销。</p>
+<p>ngx_lua 采用 &ldquo;one-coroutine-per-request&rdquo; 的处理模型，对于每个用户请求，ngx_lua会唤醒一个协程用于执行用户代码处理请求，当请求处理完成这个协程会被销毁。每个协程都有一个独立的全局环境（变量空间），继承于全局共享的、只读的&quot;comman data&quot;。所以，被用户代码注入全局空间的任何变量都不会影响其他请求的处理，并且这些变量在请求处理完成后会被释放，这样就保证所有的用户代码都运行在一个&quot;sandbox&quot;（沙箱），这个沙箱与请求具有相同的生命周期。 得益于Lua协程的支持，ngx_lua在处理10000个并发请求时只需要很少的内存。根据测试，ngx_lua处理每个请求只需要2KB的内存，如果使用LuaJIT则会更少。所以ngx_lua非常适合用于实现可扩展的、高并发的服务。</p>
+<h3 id="lua-逻辑">lua 逻辑<a hidden class="anchor" aria-hidden="true" href="#lua-逻辑">#</a></h3>
+<p>Nginx 接受到请求后通过 location 匹配到对应的 lua 脚本并执行，lua 里面的逻辑主要包含参数提取，主要通过正则的方式取出来文案+图片+模版+缩放等信息，然后获取模版+获取图片信息然后调用 c 扩展实现合图，最后返回合成后的图片信息。</p>
+<h3 id="nginx-缓存">Nginx 缓存<a hidden class="anchor" aria-hidden="true" href="#nginx-缓存">#</a></h3>
+<p>这里还涉及到一个缓存优化，因为模版信息及图片获取信息依赖外部接口，因此为了减少外部请求（昂贵），借助于 Nginx 缓存可以实现基于内存级别的缓存。</p>
+<p>当启用了 Nginx 的缓存功能时，Nginx 会将服务端的响应保存在本地磁盘上，在后续的请求中只有请求满足缓存的条件就会命中缓存，Nginx不会再将请求转发到后端的服务上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>    proxy_cache                     file;
+</span></span><span style="display:flex;"><span>    proxy_cache_key                 $1$is_args$args;
+</span></span><span style="display:flex;"><span>    proxy_cache_min_uses            1;
+</span></span><span style="display:flex;"><span>    proxy_cache_valid               <span style="color:#ae81ff">200</span> 1d;
+</span></span><span style="display:flex;"><span>    proxy_no_cache                  $no_cache;
+</span></span><span style="display:flex;"><span>    proxy_cache_expire              $2;
+</span></span></code></pre></div><h3 id="合图引擎">合图引擎<a hidden class="anchor" aria-hidden="true" href="#合图引擎">#</a></h3>
+<p>合图引擎使用 c 实现，图形绘制能力基于 Graphics Magick 实现，大致流程如下：</p>
+<p><img alt="合图流程" loading="lazy" src="https://jacoobwang.github.io/post-images/1731986613979.png"></p>
+<h3 id="cdn域名">CDN域名<a hidden class="anchor" aria-hidden="true" href="#cdn域名">#</a></h3>
+<p>最后通过 cdn 域名来缓解合图源站的压力，通过把域名改造为 CDN 域名能够大大降低合图的数量。只要 URL 没有发生改变，请求会先到 CDN ，如果 CDN 没有才会会源站请求合成图片，合成之后则推到 CDN 源站存储，以便后续快速获取资源。</p>
+<h2 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h2>
+<p>最后这套方案的实时合图图层数量小于 10 的情况下，性能 TP99 稳定在 200ms 以内，图层数越多则消耗的时间会越长，但已经能满足当下的业务诉求。</p>
+<p>有了这套能力之后也尝试拓展更多应用场景，动态 banner 也使用了这套能力，能瞬间合成多张图片后通过 FFmpeg 合成为 GIF 或 MP4。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/post/%E5%8F%AF%E8%BF%BD%E8%B8%AA%E7%9A%84%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E6%9E%B6%E6%9E%84%E6%96%B9%E6%A1%88/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>可追踪的前端日志架构方案</span>
+  </a>
+  <a class="next" href="http://localhost:1313/post/%E5%9B%BE%E8%BD%AC%E8%AE%BE%E8%AE%A1%E7%A8%BF%E8%BD%AC%E4%BB%A3%E7%A0%81%E6%96%B9%E6%A1%88%E6%80%9D%E8%80%83/">
+    <span class="title">Next »</span>
+    <br>
+    <span>图转设计稿转代码方案思考</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Jacoob</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

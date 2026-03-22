@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>图转设计稿转代码方案思考 | Jacoob</title>
+<meta name="keywords" content="">
+<meta name="description" content="基于 OCR 和 SAM 模型的图片转设计稿技术方案">
+<meta name="author" content="Jacoob">
+<link rel="canonical" href="http://localhost:1313/post/%E5%9B%BE%E8%BD%AC%E8%AE%BE%E8%AE%A1%E7%A8%BF%E8%BD%AC%E4%BB%A3%E7%A0%81%E6%96%B9%E6%A1%88%E6%80%9D%E8%80%83/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.da3211e5ef867bf2b75fd5a6515cfed7195c011e8ab735694e203810a827097b.css" integrity="sha256-2jIR5e&#43;Ge/K3X9WmUVz&#43;1xlcAR6KtzVpTiA4EKgnCXs=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E5%9B%BE%E8%BD%AC%E8%AE%BE%E8%AE%A1%E7%A8%BF%E8%BD%AC%E4%BB%A3%E7%A0%81%E6%96%B9%E6%A1%88%E6%80%9D%E8%80%83/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jacoob (Alt + H)">Jacoob</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="首页">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/post/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      图转设计稿转代码方案思考
+    </h1>
+    <div class="post-description">
+      基于 OCR 和 SAM 模型的图片转设计稿技术方案
+    </div>
+    <div class="post-meta"><span title='2024-11-17 00:00:00 +0800 +0800'>November 17, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>210 words</span>&nbsp;·&nbsp;<span>Jacoob</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>最近在 GitHub 上看到一个非常火的图转代码开源项目（https://github.com/abi/screenshot-to-code) ，star 数量达到了 5万+，结合我自己在做的 UI2Code 项目，探究下它的具体实现方法。</p>
+<h2 id="为什么值得学习">为什么值得学习？<a hidden class="anchor" aria-hidden="true" href="#为什么值得学习">#</a></h2>
+<p>过往在 UI2Code 项目中都是基于设计稿件，通过解析出结构化的 Json 数据，然后来做布局处理，最后转化成代码。这里有一个前提，即需要提供 UI 设计稿，设计稿通常被定义为 figma 稿件 或者 sketch 稿件等。而这个开源项目使用的是静态图片，是无图层信息的位图，那这也是最吸引我的地方。</p>
+<h2 id="screentshot-to-code">screentshot-to-code<a hidden class="anchor" aria-hidden="true" href="#screentshot-to-code">#</a></h2>
+<p>上传截图自动生成网页 HTML，背后原理是使用 Claude Sonnet 3.5 或 GPT-4o 生成代码，使用 DALL-E 3 生成相似图像。</p>
+<p><img alt="screenshot-to-code" loading="lazy" src="https://jacoobwang.github.io/post-images/1731838578249.png"></p>
+<p>经过一番摸索测试，发现这个项目生成的效果不太稳定，如果用在业务中看起来不太可行。那么有没有一种更稳定的实现方式呢？</p>
+<h2 id="实现路径">实现路径<a hidden class="anchor" aria-hidden="true" href="#实现路径">#</a></h2>
+<p>先构思下整体流程：</p>
+<p><img alt="流程图" loading="lazy" src="https://jacoobwang.github.io/post-images/1731815847849.png"></p>
+<p>大体而言，跟 UI2Code 流程无太大差异，最大区别还是在第一个步骤：如何将图片转成设计稿件。设计稿件转代码已经是一套现有非常成熟的解决方案。</p>
+<p>下面看下如何解决图片转设计稿件。</p>
+<h2 id="图转稿件">图转稿件<a hidden class="anchor" aria-hidden="true" href="#图转稿件">#</a></h2>
+<p>首先，需要明确下稿件有哪几种数据类型，下面以我们自研的类 figma 工具而言，一个稿件的图层类型如下：</p>
+<p><img alt="图层类型" loading="lazy" src="https://jacoobwang.github.io/post-images/1731816721418.png"></p>
+<p>而我们从静态图片中能够提取出来的数据类型有三种：</p>
+<ol>
+<li>
+<p><strong>文本类型</strong>
+文本可以通过 ocr 的方式获取图像上包含的文字信息和文字坐标以及文字的颜色等信息。</p>
+</li>
+<li>
+<p><strong>图像类型</strong>
+需要去分解一张大图上的各个小图，从而实现图片类型图层的提取。</p>
+</li>
+<li>
+<p><strong>容器类型</strong>
+容器是一个组，它是若干文本和图像的区块，可以理解把一张图片划分成多个组，前端同学可以理解为我们经常用 div 来包裹若干内容图层。</p>
+</li>
+</ol>
+<h2 id="文本-ocr">文本 OCR<a hidden class="anchor" aria-hidden="true" href="#文本-ocr">#</a></h2>
+<p>OCR 是比较成熟的技术，为了快速验证，选取 <a href="https://github.com/PaddlePaddle/PaddleOCR?tab=readme-ov-file">https://github.com/PaddlePaddle/PaddleOCR?tab=readme-ov-file</a> 作为方案实现。提取文字内容和文字坐标。</p>
+<h3 id="如何提取文字颜色">如何提取文字颜色？<a hidden class="anchor" aria-hidden="true" href="#如何提取文字颜色">#</a></h3>
+<p>通过 OCR 获取文字坐标后，尝试通过 cv 的方式获取文字颜色。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_font_color</span>(self, image, text_nodes):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> node <span style="color:#f92672">in</span> text_nodes:
+</span></span><span style="display:flex;"><span>        x0 <span style="color:#f92672">=</span> node[<span style="color:#e6db74">&#39;x&#39;</span>]
+</span></span><span style="display:flex;"><span>        x1 <span style="color:#f92672">=</span> node[<span style="color:#e6db74">&#39;x&#39;</span>] <span style="color:#f92672">+</span> node[<span style="color:#e6db74">&#39;width&#39;</span>]
+</span></span><span style="display:flex;"><span>        y0 <span style="color:#f92672">=</span> node[<span style="color:#e6db74">&#39;y&#39;</span>]
+</span></span><span style="display:flex;"><span>        y1 <span style="color:#f92672">=</span> node[<span style="color:#e6db74">&#39;y&#39;</span>] <span style="color:#f92672">+</span> node[<span style="color:#e6db74">&#39;height&#39;</span>]
+</span></span><span style="display:flex;"><span>        _img <span style="color:#f92672">=</span> image[y0:y1, x0:x1]
+</span></span><span style="display:flex;"><span>        _gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(_img, cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+</span></span><span style="display:flex;"><span>        threshold <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean(_gray)
+</span></span><span style="display:flex;"><span>        rec, mask_ <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>threshold(_gray, threshold, <span style="color:#ae81ff">255</span>, cv2<span style="color:#f92672">.</span>THRESH_BINARY)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">=</span> len(np<span style="color:#f92672">.</span>where(mask_ <span style="color:#f92672">==</span> <span style="color:#ae81ff">255</span>)[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">/</span> (mask_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> mask_<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> p <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span>:
+</span></span><span style="display:flex;"><span>            font_value <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>
+</span></span><span style="display:flex;"><span>            back_value <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            font_value <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            back_value <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        font_color <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean(_img[np<span style="color:#f92672">.</span>where(mask_ <span style="color:#f92672">==</span> font_value)], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        back_color <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean(_img[np<span style="color:#f92672">.</span>where(mask_ <span style="color:#f92672">==</span> back_value)], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        node[<span style="color:#e6db74">&#39;font_color&#39;</span>] <span style="color:#f92672">=</span> (int(font_color[<span style="color:#ae81ff">0</span>]), int(font_color[<span style="color:#ae81ff">1</span>]), int(font_color[<span style="color:#ae81ff">2</span>]))
+</span></span><span style="display:flex;"><span>        node[<span style="color:#e6db74">&#39;bg_color&#39;</span>] <span style="color:#f92672">=</span> (int(back_color[<span style="color:#ae81ff">0</span>]), int(back_color[<span style="color:#ae81ff">1</span>]), int(back_color[<span style="color:#ae81ff">2</span>]))
+</span></span><span style="display:flex;"><span>        print(node)
+</span></span></code></pre></div><h2 id="图像分割">图像分割<a hidden class="anchor" aria-hidden="true" href="#图像分割">#</a></h2>
+<p>分割则需要用到当下比较流行的 SAM 模型， <a href="https://docs.ultralytics.com/zh/models/fast-sam/">https://docs.ultralytics.com/zh/models/fast-sam/</a></p>
+<h2 id="容器成组">容器成组<a hidden class="anchor" aria-hidden="true" href="#容器成组">#</a></h2>
+<p>成组的识别主要基于规则判断，简化识别逻辑。可以基于图像节点与文本节点是否相交重叠，如果存在重叠，考虑使用一个容器来包裹文本和图像。</p>
+<h2 id="节点数据类型">节点数据类型<a hidden class="anchor" aria-hidden="true" href="#节点数据类型">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;style&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;border&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;borderWidth&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;borderColor&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;backgroundColor&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;borderRadius&#34;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;color&#34;</span>:<span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;fontSize&#34;</span>: <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;position&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;x&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;y&#34;</span>: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;size&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;width&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;height&#34;</span>: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;children&#34;</span>: []
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>通过输入一张图片，解析出一个 node[] 即完成了图片转稿件的流程，而后续稿件转代码是固有流程，就不需要再实现了。</p>
+<p>因此本文是图转稿件相关的核心技术，当然除了使用算法模型对图像理解之外，也可以结合 LLM 来优化整个流程，但如果用在企业服务中，还是直接使用垂直领域的模型效果更好更稳定。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/post/%E6%AF%AB%E7%A7%92%E7%BA%A7%E5%AE%9E%E6%97%B6%E5%90%88%E5%9B%BE%E6%9C%8D%E5%8A%A1%E6%96%B9%E6%A1%88/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>毫秒级实时合图服务方案</span>
+  </a>
+  <a class="next" href="http://localhost:1313/post/es-toolkit-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E8%BD%BB%E9%87%8F%E7%9A%84-lodash/">
+    <span class="title">Next »</span>
+    <br>
+    <span>es-toolkit 更快更轻量的 lodash</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Jacoob</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

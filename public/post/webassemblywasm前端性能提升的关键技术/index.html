@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>WebAssembly（Wasm）：前端性能提升的关键技术 | Jacoob</title>
+<meta name="keywords" content="">
+<meta name="description" content="WebAssembly 技术介绍及在前端性能优化中的应用">
+<meta name="author" content="Jacoob">
+<link rel="canonical" href="http://localhost:1313/post/webassemblywasm%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.da3211e5ef867bf2b75fd5a6515cfed7195c011e8ab735694e203810a827097b.css" integrity="sha256-2jIR5e&#43;Ge/K3X9WmUVz&#43;1xlcAR6KtzVpTiA4EKgnCXs=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/webassemblywasm%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jacoob (Alt + H)">Jacoob</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="首页">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/post/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      WebAssembly（Wasm）：前端性能提升的关键技术
+    </h1>
+    <div class="post-description">
+      WebAssembly 技术介绍及在前端性能优化中的应用
+    </div>
+    <div class="post-meta"><span title='2024-11-10 00:00:00 +0800 +0800'>November 10, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>214 words</span>&nbsp;·&nbsp;<span>Jacoob</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>想象一下你正在构建一个高性能的 Web 应用程序，比如一个 3D 游戏、一个图像编辑器或者一个数据处理仪表盘。你需要应用程序快速流畅，在不减速的情况下执行各种复杂操作。但是仅靠 JavaScript 能做到的有限：无论你如何优化，总会有 JavaScript 无法快速运行的代码。</p>
+<p>WebAssembly（Wasm）—— 有了这项酷炫的技术，现在我们可以在浏览器中运行高性能代码，几乎就像在原生应用程序中一样。</p>
+<h2 id="webassembly-究竟是什么">WebAssembly 究竟是什么<a hidden class="anchor" aria-hidden="true" href="#webassembly-究竟是什么">#</a></h2>
+<p>WebAssembly 或 Wasm 到底是什么呢？它基本上是 JavaScript 的超级伙伴。WebAssembly 是一种低级二进制格式，可以在浏览器中以接近原生的速度运行。它是为计算密集型任务而构建的，而这些任务 JavaScript 自己处理起来效果不太好。</p>
+<p>最棒的是，WebAssembly 与特定编程语言无关。它是一个与语言无关的平台，像 C、C++ 或 Rust 等语言的代码可以直接在浏览器中运行。开发者终于可以将其他语言的高性能代码编译成 WebAssembly，在 Web 上与 JavaScript 一起使用。</p>
+<h2 id="webassembly-特性">WebAssembly 特性<a hidden class="anchor" aria-hidden="true" href="#webassembly-特性">#</a></h2>
+<p><strong>极速性能</strong></p>
+<p>Wasm 代码的运行速度几乎与原生应用程序一样快，所以你可以将它用于性能密集型任务。如果你正在构建一个图像编辑器，Wasm 可以轻松处理实时图像处理，如调整大小、颜色调整或应用滤镜，而让 JavaScript 处理用户界面。</p>
+<p><strong>跨浏览器一致</strong></p>
+<p>所有主流浏览器都支持 WebAssembly，即 Chrome、Firefox、Safari 和 Edge。这意味着无论你的用户在哪里，Wasm 代码的运行方式都相似。所以，我们可以保证应用程序的性能始终一致且快速。</p>
+<p><strong>更多语言选择</strong></p>
+<p>有了 WebAssembly，你不限于使用 JavaScript。你可以引入其他语言，如 C++ 或 Rust，它们以性能和内存效率著称。这对于速度至关重要的项目，或者当你想重用现有代码库时非常有用。</p>
+<p><strong>优化资源使用</strong></p>
+<p>WebAssembly 被开发为低内存占用。这使得它适合资源有限的设备，如移动设备。这一点非常重要，因为现代应用程序需要在各种设备上运行。</p>
+<h2 id="何时应该使用-webassembly">何时应该使用 WebAssembly<a hidden class="anchor" aria-hidden="true" href="#何时应该使用-webassembly">#</a></h2>
+<p>并非每个 Web 项目都需要 WebAssembly。对于许多事情，JavaScript 仍然完全够用：表单验证、基本交互、DOM 操作…… 但如果你需要更快的速度，或者你正在处理特别大量的数据，以下是 Wasm 可能派上用场的时候：</p>
+<ul>
+<li><strong>图形密集型应用程序</strong>：需要 3D 渲染的应用程序，如基于 Web 的游戏或模拟等</li>
+<li><strong>实时数据处理</strong>：需要快速计算的应用程序，如金融 / 科学分析工具等</li>
+<li><strong>Web 上的遗留代码</strong>：如果你有现有的用 C++ 或 Rust 编写的代码，WebAssembly 允许你将其带到 Web 上而无需完全重写。</li>
+</ul>
+<h3 id="举个栗子">举个栗子<a hidden class="anchor" aria-hidden="true" href="#举个栗子">#</a></h3>
+<p>我所在的团队就开发了一款类似于 figma 的图形编辑软件，其底层的渲染引擎则是由 c++ 实现，然后通过编译成 WebAssembly 后提供给 js 层调用，从而保障丝滑的操作体验。</p>
+<h2 id="开发一个-webassembly-应用">开发一个 WebAssembly 应用<a hidden class="anchor" aria-hidden="true" href="#开发一个-webassembly-应用">#</a></h2>
+<p>让我们通过一个简单的例子来看看 WebAssembly 如何与 JavaScript 交互。我们将用 C 编写一个计算斐波那契数列的函数（当数字较大时，这是一项计算密集型任务），然后从 JavaScript 中调用它。</p>
+<h3 id="步骤一用-c-编写函数">步骤一、用 C 编写函数<a hidden class="anchor" aria-hidden="true" href="#步骤一用-c-编写函数">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">uint32_t</span> <span style="color:#a6e22e">fibonacci</span>(<span style="color:#66d9ef">uint32_t</span> n) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> n;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fibonacci</span>(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">fibonacci</span>(n <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="步骤二编译">步骤二、编译<a hidden class="anchor" aria-hidden="true" href="#步骤二编译">#</a></h3>
+<p>要将 C 编译为 WebAssembly，你需要 Emscripten，这是一个将 C/C++ 代码转换为 Wasm 的工具。安装 Emscripten 后，使用以下命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>emcc fibonacci.c -s WASM<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> -o fibonacci.js
+</span></span></code></pre></div><p>此命令将生成两个文件：</p>
+<ul>
+<li>fibonacci.wasm：WebAssembly 二进制文件</li>
+<li>fibonacci.js：一个用于加载 WebAssembly 模块的 JavaScript 文件</li>
+</ul>
+<h3 id="步骤三在-javascript-中使用-webassembly">步骤三、在 JavaScript 中使用 WebAssembly<a hidden class="anchor" aria-hidden="true" href="#步骤三在-javascript-中使用-webassembly">#</a></h3>
+<p>创建一个 HTML 文件来加载并运行 WebAssembly 代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">title</span>&gt;WebAssemblyDemo&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">h1</span>&gt;Fibonacci Sequence with webAssembly&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;calculateFibonacci()&#34;</span>&gt;Calculate Fibonacci&lt;/<span style="color:#f92672">button</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;result&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fibonacci.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><p>当你在浏览器中打开这个文件并点击按钮时，WebAssembly 将高效地计算斐波那契数列，而不会给 JavaScript 带来压力。</p>
+<h2 id="webassembly-和-javascript完美搭档">WebAssembly 和 JavaScript：完美搭档<a hidden class="anchor" aria-hidden="true" href="#webassembly-和-javascript完美搭档">#</a></h2>
+<p>WebAssembly 被设计为 JavaScript 的补充，而不是替代品。它们协同工作效果最佳：Wasm 进行繁重的计算工作，JavaScript 处理用户界面逻辑和浏览器交互。</p>
+<p>例如场景：<strong>数据可视化</strong></p>
+<p>想象你正在构建一个数据可视化应用程序，需要处理非常大的数据集。WebAssembly 可以处理数据处理和代码中其他对性能敏感的计算部分，而 JavaScript 仍然可以用于渲染图表等事情，在性能和交互性之间提供良好的平衡。</p>
+<h2 id="展望">展望<a hidden class="anchor" aria-hidden="true" href="#展望">#</a></h2>
+<p>通过在浏览器中实现接近原生的性能，我们终于可以构建那些以前仅限于原生桌面平台的雄心勃勃的应用程序和体验。</p>
+<p>对于前端开发者来说，WebAssembly 提供了一个机会，可以开始处理比仅使用 JavaScript 性能更好的应用程序。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/post/es-toolkit-%E6%9B%B4%E5%BF%AB%E6%9B%B4%E8%BD%BB%E9%87%8F%E7%9A%84-lodash/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>es-toolkit 更快更轻量的 lodash</span>
+  </a>
+  <a class="next" href="http://localhost:1313/post/uselayouteffect%E4%B8%8Euseeffectreact-hooks-%E7%90%86%E8%A7%A3/">
+    <span class="title">Next »</span>
+    <br>
+    <span>useLayoutEffect与useEffect：React Hooks 理解</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Jacoob</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

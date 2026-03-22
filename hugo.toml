@@ -1,0 +1,55 @@
+baseURL = 'https://jacoobwang.github.io'
+languageCode = 'zh-CN'
+title = 'Jacoob'
+theme = 'PaperMod'
+
+[params]
+  author = 'Jacoob'
+  description = '温故而知新'
+  defaultTheme = 'auto'
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = true
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+
+[params.profileMode]
+  enabled = true
+  title = 'Jacoob'
+  subtitle = '温故而知新'
+  imageUrl = '/images/avatar.png'
+  imageWidth = 120
+  imageHeight = 120
+
+[[params.socialIcons]]
+  name = 'github'
+  url = 'https://github.com/jacoobwang'
+
+[[params.socialIcons]]
+  name = 'rss'
+  url = 'index.xml'
+
+[menu]
+  [[menu.main]]
+    identifier = 'home'
+    name = '首页'
+    url = '/'
+    weight = 10
+  [[menu.main]]
+    identifier = 'archives'
+    name = '归档'
+    url = '/archives'
+    weight = 20
+  [[menu.main]]
+    identifier = 'about'
+    name = '关于'
+    url = '/about'
+    weight = 30
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[permalinks]
+  post = '/post/:slug/'
