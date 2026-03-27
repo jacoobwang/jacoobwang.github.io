@@ -23,6 +23,10 @@ theme = 'PaperMod'
   imageWidth = 120
   imageHeight = 120
 
+[params.githubContributions]
+  username = 'jacoobwang'
+  title = 'GitHub Contributions'
+
 [[params.socialIcons]]
   name = 'github'
   url = 'https://github.com/jacoobwang'

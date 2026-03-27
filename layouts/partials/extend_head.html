@@ -96,5 +96,59 @@
         transform: translateY(-10px);
     }
 }
+
+.github-contributions-card {
+    width: min(100%, 920px);
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(14px);
+}
+
+.dark .github-contributions-card {
+    background: rgba(17, 25, 40, 0.78);
+    border-color: rgba(148, 163, 184, 0.18);
+    box-shadow: 0 20px 60px rgba(2, 6, 23, 0.32);
+}
+
+.github-contributions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.github-contributions-header h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.github-contributions-header a {
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+.github-contributions-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.dark .github-contributions-card img {
+    background: #0b1220;
+}
+
+@media (max-width: 768px) {
+    .github-contributions-card {
+        padding: 1rem;
+    }
+}
 </style>
 {{- /* Head custom content area end */ -}}
