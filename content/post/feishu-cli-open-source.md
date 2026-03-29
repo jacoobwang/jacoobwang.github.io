@@ -1,5 +1,5 @@
 ---
-title: "飞书 Cli 开源了"
+title: "Cli 才是未来 - 飞书 Cli 开源了，全面拥抱 Agent"
 date: 2026-03-29T09:59:45+08:00
 draft: false
 description: ""
