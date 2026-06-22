@@ -49,7 +49,7 @@ theme = 'PaperMod'
   [[menu.main]]
     identifier = 'about'
     name = '关于'
-    url = '/about'
+    url = 'https://github.com/jacoobwang'
     weight = 30
 
 [outputs]
